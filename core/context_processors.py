@@ -30,6 +30,20 @@ def brand(request):
     """
     active_brand = getattr(request, 'brand', None)
 
+    # brand_urls: normalmente son los dominios reales fijos de
+    # settings.BRAND_URLS (cruzan de marca a marca por dominio). Pero
+    # si el host actual todavía no es ninguno de esos dominios (ver
+    # BrandMiddleware) — típicamente el *.onrender.com antes de
+    # conectar los dominios propios — no hay otro dominio al que
+    # cruzar todavía, así que ambos links del gateway apuntan al MISMO
+    # host actual con ?marca=..., que el middleware sabe interpretar.
+    host = request.get_host().lower()
+    if host in settings.BRAND_HOSTS:
+        brand_urls = settings.BRAND_URLS
+    else:
+        base = request.build_absolute_uri('/tienda/')
+        brand_urls = {b: f'{base}?marca={b}' for b in settings.BRANDS}
+
     banner_items = []
     banner_urgency = None
     banner_link = None
@@ -62,7 +76,7 @@ def brand(request):
     return {
         'brand': active_brand,
         'brand_config': getattr(request, 'brand_config', None),
-        'brand_urls': settings.BRAND_URLS,
+        'brand_urls': brand_urls,
         'banner_items': banner_items,
         'banner_urgency': banner_urgency,
         'banner_link': banner_link,
