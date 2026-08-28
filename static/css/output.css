@@ -1050,9 +1050,6 @@
   .bg-\[\#0b0b0c\] {
     background-color: #0b0b0c;
   }
-  .bg-\[\#131319\]\/80 {
-    background-color: color-mix(in oklab, #131319 80%, transparent);
-  }
   .bg-\[\#131319\]\/95 {
     background-color: color-mix(in oklab, #131319 95%, transparent);
   }

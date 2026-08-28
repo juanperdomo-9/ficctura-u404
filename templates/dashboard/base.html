@@ -148,9 +148,21 @@
            referencia de Las Manolas. En desktop (md+) nada de esto se
            nota — el sidebar vuelve a quedar fijo como estaba.
         ========================================================== */
+        /* OJO (bug real, se vio en producción a 1280px de ancho): estas
+           reglas van SIN media query a propósito acá abajo. Con Tailwind,
+           `md:hidden` y esta regla propia tienen la MISMA especificidad
+           (un solo selector de clase cada una) — gana la que queda
+           última en el CSS, y esta hoja (inline, al final del <body>)
+           queda DESPUÉS del output.css del <head>. Si acá se pone
+           `display: flex` sin condición, le termina ganando a
+           `md:hidden` y la topbar queda visible en desktop también. Por
+           eso el default es `display: none` y recién adentro del
+           @media de abajo pasa a `flex` — no depende de que la clase de
+           Tailwind sobreviva la pelea de especificidad. */
         .panel-topbar {
+            display: none;
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-            display: flex; align-items: center; justify-content: space-between;
+            align-items: center; justify-content: space-between;
             padding: .85rem 1.1rem;
             background: rgba(19,19,25,.92); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,.08);
@@ -164,10 +176,12 @@
         body.panel-nav-open #panel-menu-btn span:nth-child(2) { opacity: 0; }
         body.panel-nav-open #panel-menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-        .panel-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+        .panel-overlay { display: none; position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
         body.panel-nav-open .panel-overlay { opacity: 1; pointer-events: auto; }
 
         @media (max-width: 767px) {
+            .panel-topbar { display: flex; }
+            .panel-overlay { display: block; }
             .panel-sidebar {
                 position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
                 transform: translateX(-100%);
