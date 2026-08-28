@@ -70,6 +70,18 @@ aunque el JS tarde en cargar).
                   btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
             Finalizar compra
         </a>
+        {% comment %}
+        "Seguir comprando" acá = cerrar el panel (no navegar a otro
+        lado) — este carrito es un overlay ENCIMA de la página en la
+        que ya estabas, así que "seguir viendo" es simplemente volver a
+        esa misma página. Mismo botón/lógica que la ✕ de arriba (ver
+        closeCart() en cart.js).
+        {% endcomment %}
+        <button type="button" id="cart-continue"
+                class="mt-3 block w-full text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm border transition-colors
+                       {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %}">
+            Seguir comprando
+        </button>
     </div>
 
 </aside>

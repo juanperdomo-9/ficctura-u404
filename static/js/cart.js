@@ -43,6 +43,11 @@ function initCart() {
 
     document.getElementById("cart-close")?.addEventListener("click", closeCart);
 
+    // "Seguir comprando" (28/8): mismo cierre que la ✕ — este panel es
+    // un overlay encima de la página en la que ya estabas, "seguir
+    // comprando" es simplemente volver a verla.
+    document.getElementById("cart-continue")?.addEventListener("click", closeCart);
+
     cartScrimEl?.addEventListener("click", closeCart);
 
     document.addEventListener("keydown", (e) => {
