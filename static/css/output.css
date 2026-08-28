@@ -1996,17 +1996,14 @@
     .md\:gap-14 {
       gap: calc(var(--spacing) * 14);
     }
-    .md\:bg-\[\#131319\]\/80 {
-      background-color: color-mix(in oklab, #131319 80%, transparent);
-    }
-    .md\:p-10 {
-      padding: calc(var(--spacing) * 10);
-    }
     .md\:px-10 {
       padding-inline: calc(var(--spacing) * 10);
     }
     .md\:py-3\.5 {
       padding-block: calc(var(--spacing) * 3.5);
+    }
+    .md\:pb-10 {
+      padding-bottom: calc(var(--spacing) * 10);
     }
     .md\:pl-6 {
       padding-left: calc(var(--spacing) * 6);

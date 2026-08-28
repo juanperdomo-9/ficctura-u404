@@ -21,21 +21,21 @@
     <div class="panel-blob panel-blob--b"></div>
 
     {% comment %}
-    Barra superior SOLO en mobile (md:hidden) — el hamburguesa vive acá,
-    igual que en la referencia de Las Manolas. En desktop el sidebar ya
-    está siempre visible, así que esta barra no hace falta.
+    Barra superior fija, SIEMPRE visible (pedido del usuario, 28/8: el
+    sidebar no queda fijo en ningún tamaño de pantalla, solo aparece al
+    tocar el hamburguesa — como un navbar, pero a la izquierda).
     {% endcomment %}
-    <div class="panel-topbar md:hidden">
+    <div class="panel-topbar">
         <button type="button" id="panel-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="panel-sidebar">
             <span></span><span></span><span></span>
         </button>
         <span class="panel-badge !w-8 !h-8 !text-[10px]">{{ brand_config.name|slice:":2"|upper }}</span>
     </div>
 
-    {% comment %}Fondo oscuro atrás del sidebar cuando está abierto en mobile — tocarlo lo cierra.{% endcomment %}
-    <div id="panel-overlay" class="panel-overlay md:hidden"></div>
+    {% comment %}Fondo oscuro atrás del sidebar cuando está abierto — tocarlo lo cierra.{% endcomment %}
+    <div id="panel-overlay" class="panel-overlay"></div>
 
-    <aside id="panel-sidebar" class="panel-sidebar relative z-10 w-60 shrink-0 bg-[#131319]/95 md:bg-[#131319]/80 backdrop-blur border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
+    <aside id="panel-sidebar" class="panel-sidebar relative z-10 w-60 shrink-0 bg-[#131319]/95 backdrop-blur border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
         <div class="mb-7 flex items-center gap-3">
             <span class="panel-badge">{{ brand_config.name|slice:":2"|upper }}</span>
             <div>
@@ -58,7 +58,7 @@
         </div>
     </aside>
 
-    <main class="relative z-10 flex-1 p-5 pt-20 md:p-10 min-w-0">
+    <main class="relative z-10 flex-1 px-5 pb-5 md:px-10 md:pb-10 pt-20 min-w-0">
         {% if messages %}
         <div class="mb-6 space-y-2">
             {% for message in messages %}
@@ -141,26 +141,15 @@
         .variant-row, .photo-row { display: none; }
 
         /* ==========================================================
-           Responsive (28/8) — el sidebar fijo de siempre no entraba en
-           una pantalla de celular. En mobile pasa a un panel "off
-           canvas" (fuera de la pantalla, a la izquierda) que se abre
-           con el hamburguesa de la barra superior, igual patrón que la
-           referencia de Las Manolas. En desktop (md+) nada de esto se
-           nota — el sidebar vuelve a quedar fijo como estaba.
+           Sidebar tipo "navbar a la izquierda" (pedido del usuario,
+           28/8): SIEMPRE arranca oculto — en cualquier tamaño de
+           pantalla, no solo mobile — y aparece nada más al tocar el
+           hamburguesa de la barra superior fija. Antes esto solo pasaba
+           debajo de 768px y en desktop el sidebar quedaba siempre
+           visible; ahora es el mismo comportamiento en todos lados.
         ========================================================== */
-        /* OJO (bug real, se vio en producción a 1280px de ancho): estas
-           reglas van SIN media query a propósito acá abajo. Con Tailwind,
-           `md:hidden` y esta regla propia tienen la MISMA especificidad
-           (un solo selector de clase cada una) — gana la que queda
-           última en el CSS, y esta hoja (inline, al final del <body>)
-           queda DESPUÉS del output.css del <head>. Si acá se pone
-           `display: flex` sin condición, le termina ganando a
-           `md:hidden` y la topbar queda visible en desktop también. Por
-           eso el default es `display: none` y recién adentro del
-           @media de abajo pasa a `flex` — no depende de que la clase de
-           Tailwind sobreviva la pelea de especificidad. */
         .panel-topbar {
-            display: none;
+            display: flex;
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
             align-items: center; justify-content: space-between;
             padding: .85rem 1.1rem;
@@ -176,19 +165,15 @@
         body.panel-nav-open #panel-menu-btn span:nth-child(2) { opacity: 0; }
         body.panel-nav-open #panel-menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-        .panel-overlay { display: none; position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+        .panel-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
         body.panel-nav-open .panel-overlay { opacity: 1; pointer-events: auto; }
 
-        @media (max-width: 767px) {
-            .panel-topbar { display: flex; }
-            .panel-overlay { display: block; }
-            .panel-sidebar {
-                position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
-                transform: translateX(-100%);
-                transition: transform .22s ease;
-            }
-            body.panel-nav-open .panel-sidebar { transform: translateX(0); }
+        .panel-sidebar {
+            position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
+            transform: translateX(-100%);
+            transition: transform .22s ease;
         }
+        body.panel-nav-open .panel-sidebar { transform: translateX(0); }
     </style>
 
     {% block extra_js %}{% endblock %}
