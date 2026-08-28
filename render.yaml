@@ -42,6 +42,17 @@ services:
         value: ""
       - key: DATABASE_URL
         sync: false
+      # Cloudinary (fotos de producto — el disco de Render es efímero,
+      # sin esto las fotos se pierden en cada deploy). Sacar el Cloud
+      # Name/API Key/API Secret del dashboard de cloudinary.com una vez
+      # creada la cuenta gratis. Sin estas 3, el sitio sigue funcionando
+      # pero vuelve a guardar en el disco local (se borra en cada deploy).
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
       # Payway y Twilio/WhatsApp quedan sin cargar a propósito — el
       # sitio funciona igual sin ellos (ver notas en config/settings.py).
       # Cuando el cliente confirme esas credenciales, se cargan acá como

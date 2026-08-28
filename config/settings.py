@@ -55,6 +55,13 @@ _extra_hosts = os.environ.get('ALLOWED_HOSTS', '')
 if _extra_hosts:
     ALLOWED_HOSTS += [h.strip() for h in _extra_hosts.split(',') if h.strip()]
 
+# Cloudinary (28/8): el disco de Render es efímero — cualquier foto que
+# se suba por el panel se pierde en cada deploy. Con estas 3 env vars
+# cargadas, las fotos de producto van a Cloudinary en vez de al disco
+# local; sin ellas (como en desarrollo local) sigue guardando en
+# MEDIA_ROOT como siempre. Ver STORAGES más abajo.
+CLOUDINARY_CONFIGURED = bool(os.environ.get('CLOUDINARY_CLOUD_NAME'))
+
 
 # Application definition
 
@@ -69,6 +76,9 @@ INSTALLED_APPS = [
     'catalog',
     'dashboard',
 ]
+
+if CLOUDINARY_CONFIGURED:
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -186,21 +196,29 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # momento del collectstatic o hace fallar el build entero.
 STORAGES = {
     'default': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'BACKEND': (
+            'cloudinary_storage.storage.MediaCloudinaryStorage' if CLOUDINARY_CONFIGURED
+            else 'django.core.files.storage.FileSystemStorage'
+        ),
     },
     'staticfiles': {
         'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
     },
 }
 
+if CLOUDINARY_CONFIGURED:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+    }
+
 MEDIA_URL = '/media/'
 
-# OJO (pendiente, no es parte de este arreglo): en Render el disco es
-# efímero salvo que se pague un Disk persistente — las fotos que suba
-# el panel acá se van a borrar en cada deploy. Sirve para probar el
-# sitio ya, pero antes de cargar catálogo real hay que resolver esto
-# (Disk persistente de Render, o subir las imágenes a un storage
-# externo tipo S3/Cloudinary vía django-storages).
+# MEDIA_ROOT solo se usa cuando CLOUDINARY_CONFIGURED es False (local,
+# o Render sin las 3 env vars de Cloudinary cargadas todavía) — con
+# Cloudinary activo, ProductImage.image.url ya apunta solo a la URL de
+# Cloudinary, este ROOT no se toca para nada.
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
