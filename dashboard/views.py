@@ -3,10 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from catalog.models import Category, Order, Product
+from catalog.models import BrandPromotion, Category, Order, PaymentDiscount, Product, Promotion
 
 from .decorators import staff_required
-from .forms import CategoryForm, ProductForm, ProductImageFormSet, ProductVariantFormSet
+from .forms import (
+    BrandPromotionForm, CategoryForm, PaymentDiscountForm, ProductForm,
+    ProductImageFormSet, ProductVariantFormSet, PromotionForm,
+)
 
 
 def login_view(request):
@@ -217,3 +220,77 @@ def order_set_status(request, pk):
         order.save(update_fields=['status'])
         messages.success(request, 'Estado actualizado.')
     return redirect('dashboard:order_detail', pk=order.pk)
+
+
+# ==========================================================
+# OFERTAS — antes esta sección del sidebar linkeaba a /admin/ (pedido
+# del usuario, 28/8: que NO vaya ahí). BrandPromotion y PaymentDiscount
+# son un solo renglón POR MARCA (unique=True en el modelo) — no hay
+# "lista", se edita directo esa única fila; Promotion (3x2, etc.) sí es
+# una lista de verdad, con su propio alta/edición/borrado.
+# ==========================================================
+
+@staff_required
+def offers(request):
+    brand_promo, _ = BrandPromotion.objects.get_or_create(brand=request.brand)
+    payment_discount, _ = PaymentDiscount.objects.get_or_create(brand=request.brand)
+    promotions = Promotion.objects.filter(brand=request.brand)
+
+    return render(request, 'dashboard/offers.html', {
+        'banner_form': BrandPromotionForm(instance=brand_promo, brand=request.brand, prefix='banner'),
+        'discount_form': PaymentDiscountForm(instance=payment_discount, prefix='descuento'),
+        'promotions': promotions,
+    })
+
+
+@staff_required
+@require_POST
+def offer_banner(request):
+    brand_promo, _ = BrandPromotion.objects.get_or_create(brand=request.brand)
+    form = BrandPromotionForm(request.POST, instance=brand_promo, brand=request.brand, prefix='banner')
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Banner de marca actualizado.')
+    else:
+        messages.error(request, f'No se pudo guardar el banner: {form.errors.as_text()}')
+    return redirect('dashboard:offers')
+
+
+@staff_required
+@require_POST
+def offer_discount(request):
+    payment_discount, _ = PaymentDiscount.objects.get_or_create(brand=request.brand)
+    form = PaymentDiscountForm(request.POST, instance=payment_discount, prefix='descuento')
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Descuento por medio de pago actualizado.')
+    else:
+        messages.error(request, f'No se pudo guardar el descuento: {form.errors.as_text()}')
+    return redirect('dashboard:offers')
+
+
+@staff_required
+def promotion_form(request, pk=None):
+    instance = get_object_or_404(Promotion, pk=pk, brand=request.brand) if pk else None
+
+    if request.method == 'POST':
+        form = PromotionForm(request.POST, instance=instance, brand=request.brand)
+        if form.is_valid():
+            promo = form.save(commit=False)
+            promo.brand = request.brand
+            promo.save()
+            messages.success(request, 'Promoción guardada.')
+            return redirect('dashboard:offers')
+    else:
+        form = PromotionForm(instance=instance, brand=request.brand)
+
+    return render(request, 'dashboard/promotion_form.html', {'form': form, 'instance': instance})
+
+
+@staff_required
+@require_POST
+def promotion_delete(request, pk):
+    promo = get_object_or_404(Promotion, pk=pk, brand=request.brand)
+    promo.delete()
+    messages.success(request, 'Promoción eliminada.')
+    return redirect('dashboard:offers')

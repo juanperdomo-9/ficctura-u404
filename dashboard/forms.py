@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from catalog.models import Category, Product, ProductImage, ProductVariant
+from catalog.models import BrandPromotion, Category, PaymentDiscount, Product, ProductImage, ProductVariant, Promotion
 
 
 class DashStyledFormMixin:
@@ -64,6 +64,67 @@ ProductVariantFormSet = inlineformset_factory(
         'sku': forms.TextInput(attrs=_dash_input),
     },
 )
+
+# "Ofertas" — pedido del usuario (28/8): antes esta sección redirigía a
+# /admin/ (Promociones ya estaba bien armada ahí, se linkeaba para no
+# duplicar trabajo) — ahora pide que NO vaya al admin de Django, así
+# que se arma acá con el mismo criterio que el resto del panel.
+def _dt_local():
+    # Función en vez de una única instancia compartida: Django usa el
+    # widget que se le pase en Meta.widgets TAL CUAL (no lo clona al
+    # armar los base_fields de la clase) — si el mismo objeto se
+    # reutilizara para más de un campo, terminarían compartiendo el
+    # mismo dict `.attrs` por izq. Cada campo pide su propia instancia.
+    return forms.DateTimeInput(attrs={'type': 'datetime-local', **_dash_input})
+
+
+class BrandPromotionForm(DashStyledFormMixin, forms.ModelForm):
+    """Banner/urgencia GENERAL de la marca — un solo renglón por marca (ver modelo), por eso no tiene lista, se edita directo."""
+
+    def __init__(self, *args, brand=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if brand:
+            self.fields['linked_promotion'].queryset = Promotion.objects.filter(brand=brand)
+        self.fields['linked_promotion'].required = False
+
+    class Meta:
+        model = BrandPromotion
+        fields = [
+            'is_active', 'linked_promotion', 'message', 'link_url',
+            'urgency_type', 'urgency_stock_limit', 'urgency_stock_remaining',
+            'urgency_countdown_ends_at',
+        ]
+        widgets = {'urgency_countdown_ends_at': _dt_local()}
+
+
+class PaymentDiscountForm(DashStyledFormMixin, forms.ModelForm):
+    """Descuento por transferencia/efectivo — también un solo renglón por marca."""
+
+    class Meta:
+        model = PaymentDiscount
+        fields = ['is_active', 'transferencia_percent', 'efectivo_percent', 'banner_text', 'countdown_ends_at']
+        widgets = {'countdown_ends_at': _dt_local()}
+
+
+class PromotionForm(DashStyledFormMixin, forms.ModelForm):
+    """Regla "llevá X, llevate Y" (3x2 y variantes) — esta sí es una lista, puede haber varias por marca."""
+
+    def __init__(self, *args, brand=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if brand:
+            self.fields['buy_category'].queryset = Category.objects.filter(brand=brand)
+            self.fields['get_category'].queryset = Category.objects.filter(brand=brand)
+        self.fields['get_category'].required = False
+
+    class Meta:
+        model = Promotion
+        fields = [
+            'name', 'badge_text', 'banner_text', 'is_active',
+            'buy_category', 'buy_quantity', 'get_category', 'get_quantity', 'get_discount_percent',
+            'starts_at', 'ends_at',
+        ]
+        widgets = {'starts_at': _dt_local(), 'ends_at': _dt_local()}
+
 
 ProductImageFormSet = inlineformset_factory(
     Product, ProductImage,

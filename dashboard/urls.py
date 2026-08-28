@@ -22,4 +22,11 @@ urlpatterns = [
     path('pedidos/', views.order_list, name='order_list'),
     path('pedidos/<int:pk>/', views.order_detail, name='order_detail'),
     path('pedidos/<int:pk>/estado/', views.order_set_status, name='order_set_status'),
+
+    path('ofertas/', views.offers, name='offers'),
+    path('ofertas/banner/', views.offer_banner, name='offer_banner'),
+    path('ofertas/descuento/', views.offer_discount, name='offer_discount'),
+    path('ofertas/promocion/nueva/', views.promotion_form, name='promotion_add'),
+    path('ofertas/promocion/<int:pk>/', views.promotion_form, name='promotion_form'),
+    path('ofertas/promocion/<int:pk>/eliminar/', views.promotion_delete, name='promotion_delete'),
 ]

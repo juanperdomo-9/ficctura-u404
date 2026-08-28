@@ -1,18 +1,18 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Productos{% endblock %}
 {% block content %}
-<div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
     <h1 class="font-bold text-2xl">Productos</h1>
-    <a href="{% url 'dashboard:product_add' %}" class="dash-btn">+ Nuevo</a>
+    <a href="{% url 'dashboard:product_add' %}" class="dash-btn shrink-0">+ Nuevo</a>
 </div>
 
 <div class="dash-card divide-y divide-white/10">
     {% for p in products %}
-    <div class="flex items-center justify-between px-5 py-3.5">
+    <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-3.5">
         <a href="{% url 'dashboard:product_form' p.pk %}" class="hover:underline">
             {{ p.name }} <span class="text-xs text-white/40">— {{ p.category }} — {{ p.get_status_display }}</span>
         </a>
-        <form method="post" action="{% url 'dashboard:product_delete' p.pk %}" onsubmit="return confirm('¿Eliminar este producto?');">
+        <form method="post" action="{% url 'dashboard:product_delete' p.pk %}" onsubmit="return confirm('¿Eliminar este producto?');" class="shrink-0">
             {% csrf_token %}
             <button type="submit" class="text-xs text-red-400 hover:underline">Eliminar</button>
         </form>

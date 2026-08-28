@@ -1,0 +1,77 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Promoción{% endblock %}
+{% block content %}
+<a href="{% url 'dashboard:offers' %}" class="text-sm text-white/50 hover:underline">← Ofertas</a>
+<h1 class="font-bold text-2xl mt-2 mb-6">{% if instance %}Editar{% else %}Nueva{% endif %} promoción</h1>
+
+<form method="post" class="dash-card p-6 max-w-xl space-y-4">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <p class="text-xs text-red-400">{{ form.non_field_errors }}</p>
+    {% endif %}
+
+    <label class="flex items-center gap-2 text-sm">
+        {{ form.is_active }} Activa
+    </label>
+
+    <div>
+        <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Nombre</label>
+        {{ form.name }}
+        {% if form.name.errors %}<p class="text-xs text-red-400 mt-1">{{ form.name.errors }}</p>{% endif %}
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Texto del badge</label>
+            {{ form.badge_text }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Texto del banner</label>
+            {{ form.banner_text }}
+        </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-4 grid sm:grid-cols-2 gap-4">
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Comprando de la categoría</label>
+            {{ form.buy_category }}
+            {% if form.buy_category.errors %}<p class="text-xs text-red-400 mt-1">{{ form.buy_category.errors }}</p>{% endif %}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Cuántas unidades</label>
+            {{ form.buy_quantity }}
+        </div>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-4">
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Te regala/descuenta de (vacío = misma)</label>
+            {{ form.get_category }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Cuántas de regalo</label>
+            {{ form.get_quantity }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">% de descuento (100=gratis)</label>
+            {{ form.get_discount_percent }}
+        </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-4 grid sm:grid-cols-2 gap-4">
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Empieza el (opcional)</label>
+            {{ form.starts_at }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Termina el (opcional)</label>
+            {{ form.ends_at }}
+        </div>
+    </div>
+
+    <div class="flex gap-3 pt-2">
+        <button type="submit" class="dash-btn">Guardar</button>
+        <a href="{% url 'dashboard:offers' %}" class="dash-btn dash-btn--ghost">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

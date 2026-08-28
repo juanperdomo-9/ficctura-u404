@@ -9,12 +9,33 @@
 </head>
 <body class="relative bg-panel-ink text-[#eeeef2] font-sans min-h-screen flex overflow-x-hidden">
 
-    {# Blobs decorativos — mismo recurso que un dashboard premium típico
-       (fondo con manchas de color desenfocadas), fijos detrás de todo. #}
+    {% comment %}
+    Blobs decorativos — mismo recurso que un dashboard premium típico
+    (fondo con manchas de color desenfocadas), fijos detrás de todo.
+    OJO: Django el {# #} de una sola línea nomás — partido en dos
+    líneas como estaba antes NO se reconoce como comentario y se manda
+    tal cual al HTML (bug real, se vio en producción). {% comment %}
+    sí soporta varias líneas, por eso el cambio.
+    {% endcomment %}
     <div class="panel-blob panel-blob--a"></div>
     <div class="panel-blob panel-blob--b"></div>
 
-    <aside class="relative z-10 w-60 shrink-0 bg-[#131319]/80 backdrop-blur border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
+    {% comment %}
+    Barra superior SOLO en mobile (md:hidden) — el hamburguesa vive acá,
+    igual que en la referencia de Las Manolas. En desktop el sidebar ya
+    está siempre visible, así que esta barra no hace falta.
+    {% endcomment %}
+    <div class="panel-topbar md:hidden">
+        <button type="button" id="panel-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="panel-sidebar">
+            <span></span><span></span><span></span>
+        </button>
+        <span class="panel-badge !w-8 !h-8 !text-[10px]">{{ brand_config.name|slice:":2"|upper }}</span>
+    </div>
+
+    {% comment %}Fondo oscuro atrás del sidebar cuando está abierto en mobile — tocarlo lo cierra.{% endcomment %}
+    <div id="panel-overlay" class="panel-overlay md:hidden"></div>
+
+    <aside id="panel-sidebar" class="panel-sidebar relative z-10 w-60 shrink-0 bg-[#131319]/95 md:bg-[#131319]/80 backdrop-blur border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
         <div class="mb-7 flex items-center gap-3">
             <span class="panel-badge">{{ brand_config.name|slice:":2"|upper }}</span>
             <div>
@@ -26,13 +47,7 @@
         <a href="{% url 'dashboard:category_list' %}" class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Categorías</a>
         <a href="{% url 'dashboard:product_list' %}" class="dash-nav-link {% if 'product' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Productos</a>
         <a href="{% url 'dashboard:order_list' %}" class="dash-nav-link {% if 'order' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Pedidos</a>
-        {% comment %}
-        Ofertas — pedido del usuario (13/8). No se reconstruyó acá: ya
-        existe una sección de Promociones bien armada en /admin/ (regla
-        en criollo, toggle directo, contador cíclico) hecha esta misma
-        sesión — se linkea en vez de duplicar el trabajo.
-        {% endcomment %}
-        <a href="/admin/" class="dash-nav-link" target="_blank">Ofertas →</a>
+        <a href="{% url 'dashboard:offers' %}" class="dash-nav-link {% if 'offer' in request.resolver_match.url_name or 'promotion' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Ofertas</a>
 
         <div class="mt-auto pt-4 border-t border-white/10 space-y-1">
             <a href="{% url 'catalog:list' %}" class="dash-nav-link">Ver tienda →</a>
@@ -43,7 +58,7 @@
         </div>
     </aside>
 
-    <main class="relative z-10 flex-1 p-6 md:p-10">
+    <main class="relative z-10 flex-1 p-5 pt-20 md:p-10 min-w-0">
         {% if messages %}
         <div class="mb-6 space-y-2">
             {% for message in messages %}
@@ -124,8 +139,69 @@
            adentro del pill al moverse ahí). El resto de cada fila
            queda siempre oculto, viva donde viva en el DOM. */
         .variant-row, .photo-row { display: none; }
+
+        /* ==========================================================
+           Responsive (28/8) — el sidebar fijo de siempre no entraba en
+           una pantalla de celular. En mobile pasa a un panel "off
+           canvas" (fuera de la pantalla, a la izquierda) que se abre
+           con el hamburguesa de la barra superior, igual patrón que la
+           referencia de Las Manolas. En desktop (md+) nada de esto se
+           nota — el sidebar vuelve a quedar fijo como estaba.
+        ========================================================== */
+        .panel-topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: .85rem 1.1rem;
+            background: rgba(19,19,25,.92); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        #panel-menu-btn { display: flex; flex-direction: column; justify-content: center; gap: 4px; width: 2.2rem; height: 2.2rem; }
+        #panel-menu-btn span { display: block; height: 2px; border-radius: 2px; background: #fff; transition: transform .2s ease, opacity .2s ease; }
+        #panel-menu-btn span:nth-child(1) { width: 1.3rem; }
+        #panel-menu-btn span:nth-child(2) { width: 1.3rem; }
+        #panel-menu-btn span:nth-child(3) { width: 1.3rem; }
+        body.panel-nav-open #panel-menu-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        body.panel-nav-open #panel-menu-btn span:nth-child(2) { opacity: 0; }
+        body.panel-nav-open #panel-menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .panel-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+        body.panel-nav-open .panel-overlay { opacity: 1; pointer-events: auto; }
+
+        @media (max-width: 767px) {
+            .panel-sidebar {
+                position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
+                transform: translateX(-100%);
+                transition: transform .22s ease;
+            }
+            body.panel-nav-open .panel-sidebar { transform: translateX(0); }
+        }
     </style>
 
     {% block extra_js %}{% endblock %}
+    <script>
+        (function () {
+            var body = document.body;
+            var menuBtn = document.getElementById('panel-menu-btn');
+            var overlay = document.getElementById('panel-overlay');
+            if (!menuBtn || !overlay) return;
+
+            function closeNav() {
+                body.classList.remove('panel-nav-open');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            }
+            function toggleNav() {
+                var isOpen = body.classList.toggle('panel-nav-open');
+                menuBtn.setAttribute('aria-expanded', String(isOpen));
+            }
+
+            menuBtn.addEventListener('click', toggleNav);
+            overlay.addEventListener('click', closeNav);
+            // Al navegar a otra sección en mobile, el menú se cierra solo
+            // (si no, quedaba abierto tapando la página siguiente).
+            document.querySelectorAll('.panel-sidebar a').forEach(function (link) {
+                link.addEventListener('click', closeNav);
+            });
+        })();
+    </script>
 </body>
 </html>

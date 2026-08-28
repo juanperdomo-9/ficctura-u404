@@ -21,7 +21,7 @@
 <h2 class="font-semibold text-lg mb-4">Últimos pedidos</h2>
 <div class="dash-card divide-y divide-white/10">
     {% for order in pedidos_recientes %}
-    <a href="{% url 'dashboard:order_detail' order.pk %}" class="flex items-center justify-between px-5 py-3.5 hover:bg-white/[.03]">
+    <a href="{% url 'dashboard:order_detail' order.pk %}" class="flex items-center justify-between gap-3 flex-wrap px-5 py-3.5 hover:bg-white/[.03]">
         <span>#{{ order.id }} — {{ order.name }}</span>
         <span class="text-sm text-white/50">{{ order.get_status_display }}</span>
     </a>

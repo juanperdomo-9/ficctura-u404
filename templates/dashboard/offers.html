@@ -1,0 +1,120 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Ofertas{% endblock %}
+{% block content %}
+<h1 class="font-bold text-2xl mb-6">Ofertas</h1>
+
+<div class="grid lg:grid-cols-2 gap-6 mb-8">
+
+    {% comment %}
+    Banner/urgencia de marca — un solo renglón por marca (BrandPromotion,
+    unique=True), se edita directo, no hay "lista" posible acá.
+    {% endcomment %}
+    <div class="dash-card p-6">
+        <h2 class="font-semibold mb-1">Banner de marca</h2>
+        <p class="text-xs text-white/40 mb-4">El anuncio fijo arriba de toda la tienda (fuera de una promo puntual — para eso está "Llevá X, llevate Y" más abajo). Solo uno por marca.</p>
+        <form method="post" action="{% url 'dashboard:offer_banner' %}" class="space-y-4">
+            {% csrf_token %}
+            <label class="flex items-center gap-2 text-sm">
+                {{ banner_form.is_active }} Banner activo
+            </label>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Promoción vinculada (opcional)</label>
+                {{ banner_form.linked_promotion }}
+                <p class="text-xs text-white/30 mt-1">Si la elegís, el banner se arma y se apaga solo según esa promo — dejá "Mensaje" vacío.</p>
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Mensaje</label>
+                {{ banner_form.message }}
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Link del banner (opcional)</label>
+                {{ banner_form.link_url }}
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Widget de urgencia</label>
+                {{ banner_form.urgency_type }}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Total del lote</label>
+                    {{ banner_form.urgency_stock_limit }}
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Unidades restantes</label>
+                    {{ banner_form.urgency_stock_remaining }}
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Cuenta regresiva — termina el</label>
+                {{ banner_form.urgency_countdown_ends_at }}
+            </div>
+            <button type="submit" class="dash-btn">Guardar banner</button>
+        </form>
+    </div>
+
+    {% comment %}
+    Descuento por medio de pago — también un solo renglón por marca
+    (PaymentDiscount, unique=True).
+    {% endcomment %}
+    <div class="dash-card p-6">
+        <h2 class="font-semibold mb-1">Descuento por medio de pago</h2>
+        <p class="text-xs text-white/40 mb-4">Transferencia/efectivo vs. tarjeta. Solo uno por marca.</p>
+        <form method="post" action="{% url 'dashboard:offer_discount' %}" class="space-y-4">
+            {% csrf_token %}
+            <label class="flex items-center gap-2 text-sm">
+                {{ discount_form.is_active }} Activo
+            </label>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">% por transferencia</label>
+                    {{ discount_form.transferencia_percent }}
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">% por efectivo</label>
+                    {{ discount_form.efectivo_percent }}
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Texto del banner (opcional)</label>
+                {{ discount_form.banner_text }}
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Cuenta regresiva — termina el</label>
+                {{ discount_form.countdown_ends_at }}
+            </div>
+            <button type="submit" class="dash-btn">Guardar descuento</button>
+        </form>
+    </div>
+
+</div>
+
+{% comment %}
+Promotion — "llevá X, llevate Y" (3x2 y variantes). Esta sí es una
+lista real, puede haber varias por marca.
+{% endcomment %}
+<div class="flex items-center justify-between mb-4 gap-3 flex-wrap">
+    <div>
+        <h2 class="font-semibold">Llevá X, llevate Y</h2>
+        <p class="text-xs text-white/40">3x2 y variantes — badge en el catálogo, banner mientras esté activa.</p>
+    </div>
+    <a href="{% url 'dashboard:promotion_add' %}" class="dash-btn shrink-0">+ Nueva</a>
+</div>
+
+<div class="dash-card divide-y divide-white/10">
+    {% for promo in promotions %}
+    <div class="flex items-center justify-between px-5 py-3.5 gap-3 flex-wrap">
+        <a href="{% url 'dashboard:promotion_form' promo.pk %}" class="hover:underline">
+            {{ promo.name }}
+            {% if promo.badge_text %}<span class="text-xs text-white/40">({{ promo.badge_text }})</span>{% endif %}
+            {% if promo.is_active %}<span class="text-xs text-emerald-400 ml-1">● activa</span>{% else %}<span class="text-xs text-white/30 ml-1">inactiva</span>{% endif %}
+        </a>
+        <form method="post" action="{% url 'dashboard:promotion_delete' promo.pk %}" onsubmit="return confirm('¿Eliminar esta promoción?');">
+            {% csrf_token %}
+            <button type="submit" class="text-xs text-red-400 hover:underline">Eliminar</button>
+        </form>
+    </div>
+    {% empty %}
+    <p class="px-5 py-4 text-sm text-white/40">Todavía no hay promociones de este tipo.</p>
+    {% endfor %}
+</div>
+{% endblock %}
