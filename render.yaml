@@ -1,6 +1,22 @@
-# Blueprint de Render (18/8) — deploy con "New +" → "Blueprint" apuntando
-# a este repo, Render lee este archivo y crea solo el web service + la
-# base Postgres, ya linkeados entre sí (DATABASE_URL se inyecta sola).
+# Blueprint de Render — deploy con "New +" → "Blueprint" apuntando a
+# este repo, Render lee este archivo y crea el web service.
+#
+# Base de datos: Postgres de Neon (28/8, elegido en vez de la Postgres
+# nativa de Render porque el free tier de Render se borra a los 90
+# días — el de Neon no vence). Por eso NO hay bloque "databases:" acá
+# abajo — Neon se crea aparte, a mano, en neon.tech, y su URL de
+# conexión se carga como secret en el dashboard de Render (ver
+# DATABASE_URL más abajo, con "sync: false": Render la pide en el
+# primer deploy en vez de generarla sola, porque no es un recurso que
+# Render conozca).
+#
+# Pasos para el primer deploy:
+#   1. Crear proyecto en neon.tech (gratis) → copiar el "Connection
+#      string" (empieza con postgresql://...) — Neon ya le agrega
+#      ?sslmode=require solo, no hace falta tocarlo.
+#   2. "New +" → "Blueprint" en Render, apuntar a este repo.
+#   3. Cuando Render pida el valor de DATABASE_URL (por el sync: false),
+#      pegar ahí la connection string de Neon.
 #
 # Después del primer deploy, para sumar los dominios propios (una vez
 # que estén listos): Settings → Custom Domains en el web service (los
@@ -25,16 +41,10 @@ services:
       - key: ALLOWED_HOSTS
         value: ""
       - key: DATABASE_URL
-        fromDatabase:
-          name: ficctura-u404-db
-          property: connectionString
+        sync: false
       # Payway y Twilio/WhatsApp quedan sin cargar a propósito — el
       # sitio funciona igual sin ellos (ver notas en config/settings.py).
       # Cuando el cliente confirme esas credenciales, se cargan acá como
       # env vars nuevas: PAYWAY_PUBLIC_KEY, PAYWAY_PRIVATE_KEY,
       # PAYWAY_ENV, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
       # TWILIO_WHATSAPP_FROM.
-
-databases:
-  - name: ficctura-u404-db
-    plan: free

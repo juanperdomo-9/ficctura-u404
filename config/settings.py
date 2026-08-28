@@ -117,11 +117,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-# SQLite en local (como siempre). En Render, si existe DATABASE_URL
-# (la inyecta sola el servicio de Postgres una vez linkeado — ver
-# render.yaml) se usa esa en su lugar: SQLite vive en el disco del
-# propio proceso, que en Render es efímero y se borra en cada deploy —
-# nunca sirve para guardar pedidos/productos reales ahí.
+# SQLite en local (como siempre). En producción, si existe DATABASE_URL
+# se usa esa en su lugar (Postgres de Neon — ver render.yaml, se carga
+# a mano como secret en Render porque Neon no es un recurso que Render
+# gestione solo): SQLite vive en el disco del propio proceso, que en
+# Render es efímero y se borra en cada deploy — nunca sirve para
+# guardar pedidos/productos reales ahí.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
