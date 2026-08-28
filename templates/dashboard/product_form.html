@@ -64,10 +64,10 @@
     <div class="dash-card p-6">
         <div class="flex items-center justify-between mb-4">
             <div>
-                <h2 class="font-semibold text-fuchsia-400 text-xs uppercase tracking-wide">Colores, talles y fotos</h2>
+                <h2 class="font-semibold text-[#c99bea] text-xs uppercase tracking-wide">Colores, talles y fotos</h2>
                 <p class="text-xs text-white/40 mt-1">Por cada color: qué talles vienen, con cuánto stock, y sus fotos. "General" es para lo que no depende del color.</p>
             </div>
-            <button type="button" id="add-color-btn" class="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white text-xs font-semibold px-4 py-2 hover:opacity-90 transition shrink-0 whitespace-nowrap">+ Agregar color</button>
+            <button type="button" id="add-color-btn" class="dash-btn text-xs shrink-0 whitespace-nowrap">+ Agregar color</button>
         </div>
         {% if variant_formset.non_form_errors %}
         <p class="text-xs text-red-400 mb-3">{{ variant_formset.non_form_errors }}</p>

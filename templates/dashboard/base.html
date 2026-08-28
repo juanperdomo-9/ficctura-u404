@@ -7,12 +7,20 @@
     <title>{% block title %}Panel{% endblock %} — {{ brand_config.name }}</title>
     <link rel="stylesheet" href="{% static_v 'css/output.css' %}">
 </head>
-<body class="bg-[#0f0f12] text-[#e8e8ea] font-sans min-h-screen flex">
+<body class="relative bg-panel-ink text-[#eeeef2] font-sans min-h-screen flex overflow-x-hidden">
 
-    <aside class="w-60 shrink-0 bg-[#141417] border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
-        <div class="mb-6">
-            <p class="text-[11px] uppercase tracking-[0.25em] text-white/40">Panel</p>
-            <p class="font-bold text-lg">{{ brand_config.name }}</p>
+    {# Blobs decorativos — mismo recurso que un dashboard premium típico
+       (fondo con manchas de color desenfocadas), fijos detrás de todo. #}
+    <div class="panel-blob panel-blob--a"></div>
+    <div class="panel-blob panel-blob--b"></div>
+
+    <aside class="relative z-10 w-60 shrink-0 bg-[#131319]/80 backdrop-blur border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
+        <div class="mb-7 flex items-center gap-3">
+            <span class="panel-badge">{{ brand_config.name|slice:":2"|upper }}</span>
+            <div>
+                <p class="text-[10px] uppercase tracking-[0.25em] text-white/40">Panel</p>
+                <p class="font-bold text-[15px] leading-tight">{{ brand_config.name }}</p>
+            </div>
         </div>
         <a href="{% url 'dashboard:resumen' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'resumen' %}dash-nav-link--active{% endif %}">Resumen</a>
         <a href="{% url 'dashboard:category_list' %}" class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Categorías</a>
@@ -35,11 +43,11 @@
         </div>
     </aside>
 
-    <main class="flex-1 p-6 md:p-10">
+    <main class="relative z-10 flex-1 p-6 md:p-10">
         {% if messages %}
         <div class="mb-6 space-y-2">
             {% for message in messages %}
-            <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 px-4 py-3 text-sm">{{ message }}</div>
+            <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 px-4 py-3 text-sm">{{ message }}</div>
             {% endfor %}
         </div>
         {% endif %}
@@ -47,15 +55,67 @@
     </main>
 
     <style>
-        .dash-nav-link { display: block; padding: .6rem .75rem; border-radius: .75rem; font-size: .85rem; color: rgba(255,255,255,.6); transition: background-color .15s, color .15s; }
+        /* ==========================================================
+           Sistema visual del panel (28/8) — antes era gris plano
+           genérico; esto le da una identidad propia: paleta "aurora"
+           que mezcla el dorado de U404 con el azul de Ficctura (un
+           gradiente que representa a las DOS marcas, no copia los
+           colores de ninguna referencia externa), tarjetas con sombra
+           real en vez de solo un borde, botones en pill con lift al
+           hover, y blobs de fondo desenfocados para que no se sienta
+           tan chato. Todo vive acá (una sola vez) porque cada página
+           del panel extiende este base.html — cambiar acá alcanza
+           para toda la app.
+        ========================================================== */
+        :root {
+            --panel-ink: #0c0c11;
+            --panel-gold: #f4c10f;   /* mismo dorado que --color-u404-accent */
+            --panel-violet: #a25fd1; /* punto medio del gradiente */
+            --panel-blue: #2e6da4;   /* mismo azul que --color-ficctura-accent */
+            --panel-aurora: linear-gradient(120deg, var(--panel-gold), var(--panel-violet) 52%, var(--panel-blue));
+            --panel-shadow-card: 0 2px 10px rgba(0,0,0,.25), 0 18px 40px rgba(0,0,0,.35);
+            --panel-shadow-card-hover: 0 10px 26px rgba(0,0,0,.35), 0 30px 60px rgba(0,0,0,.4);
+            --panel-shadow-button: 0 8px 22px rgba(162,95,209,.35);
+        }
+
+        .bg-panel-ink { background-color: var(--panel-ink); }
+
+        .panel-blob { position: fixed; z-index: 0; border-radius: 9999px; filter: blur(90px); pointer-events: none; opacity: .22; }
+        .panel-blob--a { top: -12%; left: 8%; width: 30rem; height: 30rem; background: var(--panel-aurora); }
+        .panel-blob--b { bottom: -18%; right: -6%; width: 24rem; height: 24rem; background: var(--panel-blue); opacity: .16; }
+
+        .panel-badge {
+            display: flex; align-items: center; justify-content: center;
+            width: 2.6rem; height: 2.6rem; border-radius: .9rem;
+            background: var(--panel-aurora);
+            color: #16151c; font-weight: 900; font-size: .8rem; letter-spacing: .02em;
+            box-shadow: var(--panel-shadow-button);
+            shrink: 0;
+        }
+
+        .dash-nav-link { display: flex; align-items: center; gap: .5rem; padding: .6rem .8rem; border-radius: .8rem; font-size: .85rem; color: rgba(255,255,255,.55); border-left: 3px solid transparent; transition: background-color .15s, color .15s, border-color .15s; }
         .dash-nav-link:hover { background: rgba(255,255,255,.06); color: #fff; }
-        .dash-nav-link--active { background: rgba(255,255,255,.1); color: #fff; font-weight: 600; }
-        .dash-card { border-radius: 1.25rem; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); }
-        .dash-input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); border-radius: .6rem; padding: .55rem .75rem; color: #fff; font-size: .875rem; }
-        .dash-input:focus { outline: none; border-color: rgba(255,255,255,.4); }
-        .dash-btn { display: inline-block; padding: .6rem 1.25rem; border-radius: .6rem; background: #fff; color: #111; font-weight: 600; font-size: .85rem; }
-        .dash-btn:hover { opacity: .9; }
-        .dash-btn--ghost { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #fff; }
+        .dash-nav-link--active { background: rgba(255,255,255,.08); color: #fff; font-weight: 600; border-left-color: var(--panel-violet); }
+
+        .dash-card { border-radius: 1.25rem; border: 1px solid rgba(255,255,255,.09); background: rgba(255,255,255,.035); box-shadow: var(--panel-shadow-card); transition: box-shadow .2s, transform .2s, border-color .2s; }
+        a.dash-card:hover, .dash-card--hover:hover { box-shadow: var(--panel-shadow-card-hover); border-color: rgba(255,255,255,.16); }
+
+        .dash-input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14); border-radius: .85rem; padding: .6rem .85rem; color: #fff; font-size: .875rem; transition: border-color .15s, box-shadow .15s; }
+        .dash-input:focus { outline: none; border-color: var(--panel-violet); box-shadow: 0 0 0 3px rgba(162,95,209,.22); }
+
+        .dash-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+            padding: .65rem 1.4rem; border-radius: 9999px;
+            background: var(--panel-aurora);
+            color: #16151c; font-weight: 700; font-size: .85rem;
+            box-shadow: var(--panel-shadow-button);
+            transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+        }
+        .dash-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(162,95,209,.45); }
+        .dash-btn:active { transform: translateY(0); }
+        .dash-btn--ghost { background: rgba(255,255,255,.06); color: #fff; box-shadow: none; border: 1px solid rgba(255,255,255,.16); }
+        .dash-btn--ghost:hover { background: rgba(255,255,255,.1); box-shadow: none; }
+
         /* Filas "crudas" del formset (variant-row / photo-row): son los
            forms reales de Django, viajan dentro del <form> para que
            todo se guarde bien, pero el JS del panel arma su propia UI

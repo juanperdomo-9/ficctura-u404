@@ -14,3 +14,7 @@ media/
 
 # Node
 node_modules/
+
+# Estado local de la sesión de Claude Code (no es config del proyecto,
+# a diferencia de .claude/launch.json que sí se versiona)
+.claude/scheduled_tasks.lock

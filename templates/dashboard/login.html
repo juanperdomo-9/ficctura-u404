@@ -7,23 +7,55 @@
     <title>Panel — {{ brand_config.name }}</title>
     <link rel="stylesheet" href="{% static_v 'css/output.css' %}">
 </head>
-<body class="bg-[#0f0f12] text-[#e8e8ea] font-sans min-h-screen flex items-center justify-center px-6">
-    <form method="post" class="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[.04] p-8">
+<body class="relative bg-panel-ink text-[#eeeef2] font-sans min-h-screen flex items-center justify-center px-6 overflow-hidden">
+
+    <div class="panel-blob panel-blob--a"></div>
+    <div class="panel-blob panel-blob--b"></div>
+
+    <form method="post" class="relative z-10 dash-card w-full max-w-sm p-8">
         {% csrf_token %}
-        <p class="text-[11px] uppercase tracking-[0.25em] text-white/40 mb-1">Panel</p>
-        <h1 class="font-bold text-xl mb-6">{{ brand_config.name }}</h1>
+
+        <div class="mb-7 flex flex-col items-center gap-3 text-center">
+            <span class="panel-badge !w-14 !h-14 !text-base">{{ brand_config.name|slice:":2"|upper }}</span>
+            <div>
+                <p class="font-bold text-xl">Panel — {{ brand_config.name }}</p>
+                <p class="text-sm text-white/45 mt-1">Ingresá para gestionar el catálogo</p>
+            </div>
+        </div>
 
         {% if error %}
-        <p class="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-3 py-2 text-sm">{{ error }}</p>
+        <p class="mb-4 rounded-2xl border border-red-500/30 bg-red-500/10 text-red-300 px-3 py-2 text-sm">{{ error }}</p>
         {% endif %}
 
         <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Usuario</label>
-        <input type="text" name="username" required class="w-full mb-4 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-white/40">
+        <input type="text" name="username" required autofocus class="dash-input mb-4">
 
         <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Contraseña</label>
-        <input type="password" name="password" required class="w-full mb-6 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-white/40">
+        <input type="password" name="password" required class="dash-input mb-6">
 
-        <button type="submit" class="w-full py-3 rounded-lg bg-white text-[#111] font-semibold text-sm hover:opacity-90">Entrar</button>
+        <button type="submit" class="dash-btn w-full">Entrar</button>
     </form>
+
+    <style>
+        :root {
+            --panel-ink: #0c0c11;
+            --panel-gold: #f4c10f;
+            --panel-violet: #a25fd1;
+            --panel-blue: #2e6da4;
+            --panel-aurora: linear-gradient(120deg, var(--panel-gold), var(--panel-violet) 52%, var(--panel-blue));
+            --panel-shadow-card: 0 2px 10px rgba(0,0,0,.25), 0 18px 40px rgba(0,0,0,.35);
+            --panel-shadow-button: 0 8px 22px rgba(162,95,209,.35);
+        }
+        .bg-panel-ink { background-color: var(--panel-ink); }
+        .panel-blob { position: fixed; z-index: 0; border-radius: 9999px; filter: blur(90px); pointer-events: none; opacity: .22; }
+        .panel-blob--a { top: -12%; left: 8%; width: 30rem; height: 30rem; background: var(--panel-aurora); }
+        .panel-blob--b { bottom: -18%; right: -6%; width: 24rem; height: 24rem; background: var(--panel-blue); opacity: .16; }
+        .panel-badge { display: flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: .9rem; background: var(--panel-aurora); color: #16151c; font-weight: 900; font-size: .8rem; box-shadow: var(--panel-shadow-button); }
+        .dash-card { border-radius: 1.25rem; border: 1px solid rgba(255,255,255,.09); background: rgba(255,255,255,.035); box-shadow: var(--panel-shadow-card); }
+        .dash-input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14); border-radius: .85rem; padding: .6rem .85rem; color: #fff; font-size: .875rem; transition: border-color .15s, box-shadow .15s; }
+        .dash-input:focus { outline: none; border-color: var(--panel-violet); box-shadow: 0 0 0 3px rgba(162,95,209,.22); }
+        .dash-btn { display: inline-flex; align-items: center; justify-content: center; padding: .7rem 1.4rem; border-radius: 9999px; background: var(--panel-aurora); color: #16151c; font-weight: 700; font-size: .9rem; box-shadow: var(--panel-shadow-button); transition: transform .15s ease, box-shadow .15s ease; }
+        .dash-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(162,95,209,.45); }
+    </style>
 </body>
 </html>
