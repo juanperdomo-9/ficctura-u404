@@ -246,13 +246,31 @@ def _cart_payload(cart, error=None):
 def cart_view(request):
     """Página completa del carrito — funciona sin JS (el panel lateral es progressive enhancement encima de esto)."""
     cart = Cart(request)
+    items = cart.items()
+
+    # "Te puede interesar" — pedido del usuario (28/8): recomendaciones
+    # al azar en el carrito para invitar a seguir comprando. order_by('?')
+    # en vez de algo más sofisticado (más comprados, mismo estilo, etc.)
+    # porque no hay datos de comportamiento todavía para basar eso — random
+    # sobre lo disponible de la marca, sin repetir lo que ya está en el
+    # carrito.
+    already_in_cart = [item['variant'].product_id for item in items]
+    recommended = (
+        Product.objects.filter(brand=request.brand)
+        .available()
+        .exclude(pk__in=already_in_cart)
+        .select_related('category')
+        .prefetch_related('images')
+        .order_by('?')[:4]
+    )
 
     return render(request, 'catalog/cart.html', {
-        'items': cart.items(),
+        'items': items,
         'promotions': cart.get_applicable_discounts(),
         'subtotal': cart.get_subtotal(),
         'discount': cart.get_discount_total(),
         'total': cart.get_total(),
+        'recommended': recommended,
     })
 
 

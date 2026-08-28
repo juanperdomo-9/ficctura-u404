@@ -36,22 +36,60 @@ function initSizeCalculator() {
 
     const form = document.getElementById("size-calc-form");
 
-    if (!form) return;
+    if (form) {
 
-    form.addEventListener("submit", (e) => {
+        form.addEventListener("submit", (e) => {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const height = parseFloat(document.getElementById("size-calc-height").value);
-        const weight = parseFloat(document.getElementById("size-calc-weight").value);
-        const build = form.querySelector('input[name="size-calc-build"]:checked')?.value || "mediana";
+            const height = parseFloat(document.getElementById("size-calc-height").value);
+            const weight = parseFloat(document.getElementById("size-calc-weight").value);
+            const build = form.querySelector('input[name="size-calc-build"]:checked')?.value || "mediana";
 
-        if (!height || !weight) return;
+            if (!height || !weight) return;
 
-        const size = recommendSize(height, weight, build);
-        showResult(size);
+            const size = recommendSize(height, weight, build);
+            showResult(size);
 
-    });
+        });
+
+    }
+
+    initBackToPurchase();
+
+}
+
+// "Volver a mi compra" — pedido del usuario (28/8). Sin tracking de
+// sesión del lado del servidor: si document.referrer es del mismo
+// sitio y no es esta misma página de talles (evita el caso de haber
+// entrado, recargado, o venir de otro link a talles), se muestra el
+// botón apuntando ahí. Si no hay referrer útil (entraste directo, por
+// WhatsApp, favoritos, etc.), el botón se queda oculto.
+function initBackToPurchase() {
+
+    const btn = document.getElementById("back-to-purchase");
+
+    if (!btn) return;
+
+    const ref = document.referrer;
+
+    if (!ref) return;
+
+    try {
+
+        const refUrl = new URL(ref);
+
+        if (refUrl.origin !== window.location.origin) return;
+        if (refUrl.pathname === window.location.pathname) return;
+
+        btn.href = ref;
+        btn.classList.remove("hidden");
+
+    } catch {
+
+        // referrer raro/no parseable — se deja oculto, no rompe nada.
+
+    }
 
 }
 

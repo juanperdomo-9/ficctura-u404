@@ -178,6 +178,20 @@
                 </button>
             </form>
 
+            {% comment %}
+            "Volver a mi compra" — pedido del usuario (28/8): si llegaste
+            acá desde una ficha de producto (a mitad de elegir talle),
+            este botón te devuelve ahí. Se arma con JS (document.referrer)
+            porque esta página no sabe de dónde vino el visitante del lado
+            del servidor — sin referrer útil (llegaste directo, por link
+            compartido, etc.) el botón no se muestra, no hay a dónde
+            "volver".
+            {% endcomment %}
+            <a id="back-to-purchase" href="#" class="hidden mt-3 btn-lift w-full block text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm border transition-colors
+                      {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %}">
+                ← Volver a mi compra
+            </a>
+
             <div id="size-calc-result" class="hidden mt-6 text-center rounded-sm border px-6 py-6
                         {% if brand == 'u404' %}border-u404-accent bg-u404-accent/10{% else %}border-ficctura-accent bg-ficctura-accent/10{% endif %}">
                 <p class="font-sans text-xs uppercase tracking-[0.2em] mb-1 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">

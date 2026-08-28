@@ -79,13 +79,39 @@
             </div>
         </div>
 
-        <a href="{% url 'catalog:checkout' %}"
-           class="block w-full text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
-                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
-            Finalizar compra
-        </a>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <a href="{% url 'catalog:checkout' %}"
+               class="flex-1 block text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                      btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                Finalizar compra
+            </a>
+            <a href="{% url 'catalog:list' %}"
+               class="flex-1 block text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm border transition-colors
+                      {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %}">
+                Seguir comprando
+            </a>
+        </div>
         {% endif %}
     </div>
+
+    {% comment %}
+    "Te puede interesar" — pedido del usuario (28/8): recomendaciones al
+    azar para invitar a seguir viendo el catálogo desde el carrito. Se
+    arma en cart_view (catalog/views.py) con order_by('?'), sin repetir
+    lo que ya está en el carrito.
+    {% endcomment %}
+    {% if recommended %}
+    <div class="max-w-4xl mx-auto mt-16 pt-12 border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+        <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-xl md:text-2xl uppercase tracking-wide mb-8 text-center">
+            Te puede interesar
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+            {% for product in recommended %}
+            {% include 'catalog/_product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </main>
 
 {% if brand == 'u404' %}
