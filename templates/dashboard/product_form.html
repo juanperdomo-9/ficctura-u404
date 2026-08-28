@@ -80,6 +80,17 @@
         <p class="text-xs text-red-400 mb-1">Fila {{ forloop.counter }}: {{ vform.errors }}</p>
         {% endif %}
         {% endfor %}
+        {% comment %}
+        Antes esto no existía — si una foto fallaba validación (tamaño,
+        formato no soportado, etc.) el guardado entero se caía sin
+        mostrar nada ("toco guardar y desaparecen", reporte real del
+        cliente 28/8). Mismo patrón que las filas de talles arriba.
+        {% endcomment %}
+        {% for iform in image_formset %}
+        {% if iform.errors %}
+        <p class="text-xs text-red-400 mb-1">Foto {{ forloop.counter }}: {{ iform.errors }}</p>
+        {% endif %}
+        {% endfor %}
         {{ variant_formset.management_form }}
         {{ image_formset.management_form }}
         <div id="color-groups" class="grid sm:grid-cols-2 gap-4 mb-4"></div>
