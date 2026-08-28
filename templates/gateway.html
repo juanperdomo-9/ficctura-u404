@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static asset_tags %}
+
+{% block title %}Universo 404 × Ficctura{% endblock %}
+
+{% block content %}
+<main class="h-screen w-screen flex flex-col md:flex-row overflow-hidden bg-u404-bg relative">
+
+    {# Lockup superior — identifica el portal como un solo sistema #}
+    <div class="reveal-up absolute top-0 inset-x-0 z-20 flex items-center justify-center pt-5 pointer-events-none">
+        <span class="font-sans text-[11px] tracking-[0.5em] uppercase text-u404-ink/70">
+            Ficctura <span class="text-u404-accent">×</span> Universo_404
+        </span>
+    </div>
+
+    {# ================= ÉPICAS — Universo 404 ================= #}
+    <a href="{{ brand_urls.u404 }}"
+       class="cursor-u404 panel group relative flex-1 flex flex-col items-center justify-center gap-4 bg-u404-bg text-u404-ink
+              transition-all duration-500 ease-out hover:flex-[1.12] overflow-hidden"
+       style="--spot-color: rgba(244,193,15,.18);">
+
+        {# grid técnico de fondo, con deriva autónoma (CSS) + paralax de cursor (JS, vía spotlight) #}
+        <div class="panel-grid pointer-events-none absolute -inset-4 opacity-[0.16] animate-[grid-drift_16s_ease-in-out_infinite]
+                    [background-image:linear-gradient(#3a3a40_1px,transparent_1px),linear-gradient(90deg,#3a3a40_1px,transparent_1px)]
+                    [background-size:44px_44px]"></div>
+
+        {# spotlight que sigue el cursor #}
+        <div class="spotlight pointer-events-none absolute inset-0"></div>
+
+        {# barrido de escaneo #}
+        <div class="pointer-events-none absolute inset-x-0 h-40 bg-gradient-to-b from-transparent via-u404-accent/10 to-transparent
+                    animate-[scan-sweep_7s_ease-in-out_infinite]"></div>
+
+        {# marcas de esquina estilo HUD #}
+        <span class="absolute top-7 left-7 w-7 h-7 border-t-2 border-l-2 border-u404-accent/50 group-hover:border-u404-accent transition-colors duration-300"></span>
+        <span class="absolute top-7 right-7 w-7 h-7 border-t-2 border-r-2 border-u404-accent/50 group-hover:border-u404-accent transition-colors duration-300"></span>
+        <span class="absolute bottom-7 left-7 w-7 h-7 border-b-2 border-l-2 border-u404-accent/50 group-hover:border-u404-accent transition-colors duration-300"></span>
+        <span class="absolute bottom-7 right-7 w-7 h-7 border-b-2 border-r-2 border-u404-accent/50 group-hover:border-u404-accent transition-colors duration-300"></span>
+
+        {# etiqueta de marca — delicada, sin corchetes/código #}
+        <span class="reveal-up relative font-sans text-[13px] tracking-[0.4em] text-u404-accent/80 uppercase">
+            Universo 404
+        </span>
+
+        <span data-glitch data-scramble
+              class="reveal-up relative font-u404 font-black text-6xl md:text-8xl lg:text-[8.5rem] uppercase tracking-wide leading-none
+                     animate-[float-slow_6s_ease-in-out_infinite]
+                     transition-transform duration-500 ease-out group-hover:scale-[1.04]
+                     [text-shadow:0_0_40px_rgba(244,193,15,0.25)]">
+            Épicas
+        </span>
+
+        <span class="reveal-up relative font-sans text-sm md:text-base uppercase tracking-[0.15em] text-u404-muted max-w-xs text-center px-6">
+            Uniformes de trabajo para universos que no existen
+        </span>
+
+        <span class="magnetic reveal-up relative mt-3 inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.35em] uppercase
+                     border border-u404-accent/60 text-u404-accent px-5 py-2 transition-colors duration-300
+                     group-hover:bg-u404-accent group-hover:text-u404-bg">
+            Entrar
+            <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="square"/>
+            </svg>
+        </span>
+    </a>
+
+    {# ================= Divisor central ================= #}
+    <div class="hidden md:flex items-center justify-center w-0 relative z-10">
+        <span class="absolute w-16 h-16 rounded-full border border-dashed border-u404-accent/40 animate-[ring-spin_18s_linear_infinite]"></span>
+        <span class="absolute w-12 h-12 rounded-full bg-u404-bg border-2 border-u404-accent text-u404-accent flex items-center justify-center text-xl font-u404 font-bold shadow-[0_0_35px_rgba(244,193,15,0.3)]">
+            ×
+        </span>
+    </div>
+    <div class="flex md:hidden items-center justify-center py-3 relative z-10 bg-u404-bg">
+        <span class="absolute w-14 h-14 rounded-full border border-dashed border-u404-accent/40 animate-[ring-spin_18s_linear_infinite]"></span>
+        <span class="relative w-10 h-10 rounded-full bg-u404-bg border-2 border-u404-accent text-u404-accent flex items-center justify-center text-lg font-u404 font-bold">
+            ×
+        </span>
+    </div>
+
+    {# ================= BÁSICAS — Ficctura ================= #}
+    <a href="{{ brand_urls.ficctura }}"
+       class="cursor-ficctura panel group relative flex-1 flex flex-col items-center justify-center gap-4 bg-ficctura-bg text-ficctura-ink
+              transition-all duration-500 ease-out hover:flex-[1.12] overflow-hidden"
+       style="--spot-color: rgba(46,109,164,.2);">
+
+        {# grid técnico de fondo, con deriva autónoma — más sutil (marca "neutra/seria") #}
+        <div class="panel-grid pointer-events-none absolute -inset-4 opacity-[0.09] animate-[grid-drift_20s_ease-in-out_infinite_1s]
+                    [background-image:linear-gradient(#b8b0a0_1px,transparent_1px),linear-gradient(90deg,#b8b0a0_1px,transparent_1px)]
+                    [background-size:44px_44px]"></div>
+
+        <div class="spotlight pointer-events-none absolute inset-0"></div>
+
+        <span class="absolute top-7 left-7 w-7 h-7 border-t-2 border-l-2 border-ficctura-accent/50 group-hover:border-ficctura-accent transition-colors duration-300"></span>
+        <span class="absolute top-7 right-7 w-7 h-7 border-t-2 border-r-2 border-ficctura-accent/50 group-hover:border-ficctura-accent transition-colors duration-300"></span>
+        <span class="absolute bottom-7 left-7 w-7 h-7 border-b-2 border-l-2 border-ficctura-accent/50 group-hover:border-ficctura-accent transition-colors duration-300"></span>
+        <span class="absolute bottom-7 right-7 w-7 h-7 border-b-2 border-r-2 border-ficctura-accent/50 group-hover:border-ficctura-accent transition-colors duration-300"></span>
+
+        <span class="reveal-up relative font-sans text-[13px] tracking-[0.4em] text-ficctura-accent uppercase">
+            Ficctura
+        </span>
+
+        <span data-scramble
+              class="reveal-up relative font-ficctura font-semibold text-6xl md:text-8xl lg:text-[8.5rem] uppercase tracking-wide leading-none
+                     animate-[float-slow_7s_ease-in-out_infinite_.4s]
+                     transition-transform duration-500 ease-out group-hover:scale-[1.04]">
+            Básicas
+        </span>
+
+        <span class="reveal-up relative font-sans text-sm md:text-base uppercase tracking-[0.15em] text-ficctura-muted max-w-xs text-center px-6">
+            Obsesionados con crear el calce perfecto
+        </span>
+
+        <span class="magnetic reveal-up relative mt-3 inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.35em] uppercase
+                     border border-ficctura-accent text-ficctura-accent-hover px-5 py-2 transition-colors duration-300
+                     group-hover:bg-ficctura-accent group-hover:text-white">
+            Entrar
+            <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="square"/>
+            </svg>
+        </span>
+    </a>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static_v 'js/gateway.js' %}"></script>
+{% endblock %}

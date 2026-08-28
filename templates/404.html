@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Página no encontrada — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen flex flex-col items-center justify-center gap-5 px-6 text-center pt-[calc(var(--header-h)+2rem)] pb-16
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <span class="font-sans font-semibold text-[13px] tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent/80{% else %}text-ficctura-accent{% endif %}">
+        {{ brand_config.name }}
+    </span>
+
+    <h1 class="{% if brand == 'u404' %}font-u404 font-black{% else %}font-ficctura font-semibold{% endif %} text-5xl md:text-7xl uppercase tracking-wide">
+        404
+    </h1>
+
+    <p class="max-w-md text-sm md:text-base {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        {% if brand == 'u404' %}
+        Esta página no existe en este universo.
+        {% else %}
+        No encontramos esta página.
+        {% endif %}
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3 mt-2">
+        <a href="{% url 'catalog:list' %}"
+           class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm
+                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %} transition-colors">
+            Ver catálogo →
+        </a>
+        <a href="{% url 'core:shop' %}"
+           class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm border
+                  {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %} transition-colors">
+            Ir al inicio
+        </a>
+    </div>
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

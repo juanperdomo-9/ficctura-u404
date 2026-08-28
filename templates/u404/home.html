@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block content %}
+{% include 'u404/_navbar.html' %}
+
+{# ===== Hero ===== #}
+<section class="min-h-screen flex flex-col items-center justify-center gap-5 bg-u404-bg text-u404-ink px-6 text-center relative overflow-hidden pt-[calc(var(--header-h)+2rem)]">
+
+    <div class="pointer-events-none absolute inset-0 opacity-[0.06]
+                [background-image:linear-gradient(#2a2a2e_1px,transparent_1px),linear-gradient(90deg,#2a2a2e_1px,transparent_1px)]
+                [background-size:44px_44px]"></div>
+
+    <span class="relative font-sans font-semibold text-[13px] tracking-[0.4em] text-u404-accent/80 uppercase">
+        Universo 404
+    </span>
+
+    <h1 class="relative font-u404 font-black text-4xl md:text-6xl uppercase tracking-wide max-w-3xl leading-[1.05]
+               [text-shadow:0_0_40px_rgba(244,193,15,0.2)]">
+        Creamos uniformes de trabajo<br>para universos que no existen
+    </h1>
+
+    <p class="relative text-u404-muted max-w-xl text-sm md:text-base uppercase tracking-[0.1em]">
+        Remeras con historia, referencias y sentido del humor.
+    </p>
+
+    <a href="{% url 'catalog:list' %}"
+       class="relative mt-4 inline-block font-sans text-sm font-semibold uppercase tracking-[0.25em] px-8 py-4 rounded-sm
+              btn-lift bg-u404-accent text-u404-bg hover:bg-u404-accent-hover transition-colors">
+        Ver catálogo →
+    </a>
+
+    <a href="/" class="relative text-[11px] uppercase tracking-[0.25em] text-u404-muted hover:text-u404-accent transition-colors mt-2">
+        ← Volver
+    </a>
+</section>
+
+{# ===== Destacados ===== #}
+<section class="bg-u404-bg text-u404-ink px-6 md:px-10 py-16 border-t border-u404-border">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="font-u404 font-bold text-xl md:text-2xl uppercase tracking-wide mb-8 text-center">
+            Destacados
+        </h2>
+
+        {% if featured_products %}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for product in featured_products %}
+            {% include 'catalog/_product_card.html' %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-u404-muted font-sans text-sm uppercase tracking-[0.1em]">
+            Catálogo en construcción — muy pronto acá.
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+{# ===== Relación con Ficctura ===== #}
+<section data-fx-focus class="bg-u404-surface text-u404-ink px-6 py-16 border-t border-u404-border">
+    {% comment %}
+    Copy aprobado por el cliente (brief + confirmado por audio 10/8) para
+    explicar por qué las básicas FICCTURA aparecen dentro del catálogo
+    de U404: "Universo 404 hace el diseño; como no hacen remeras, se
+    quedaron con la mejor remera del mercado, la de Fictura".
+    {% endcomment %}
+    <p class="max-w-md mx-auto text-center text-u404-muted text-sm italic">
+        Lo nuestro es el diseño de los estampados. Por eso buscamos la mejor remera del mercado,
+        con el mejor calce y calidad, para usar sus remeras con nuestras gráficas.
+    </p>
+</section>
+
+{% include 'u404/_footer.html' %}
+{% endblock %}

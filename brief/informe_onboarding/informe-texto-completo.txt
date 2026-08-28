@@ -1,0 +1,495 @@
+UNIVERSO 404 + FICCTURA
+Informe de situación y onboarding para desarrollo web / ecommerce
+Síntesis documental del chat del grupo hasta el 8 de agosto de 2026, 10:56
+
+Pieza compartida en el chat con ambas marcas.
+Objetivo: que una persona que se incorpora al grupo pueda entender qué se definió, qué se propuso, qué se compartió y qué sigue pendiente, con foco especial en webs, ecommerce, identidad, catálogo y recursos visuales.
+
+1. Alcance, fuentes y criterio del informe
+Este documento registra lo conversado en el grupo “Universo 404” desde su creación el 17/07/2026 hasta el último mensaje del archivo exportado, fechado 08/08/2026 10:56. Se organiza por tema y, cuando una idea cambió con el tiempo, se conserva la secuencia para que quede claro cuál era la propuesta anterior y cuál fue la conversación más reciente.
+Fuente principal: archivo “Chat de WhatsApp con Universo 404.txt” incluido en el ZIP adjunto.
+Multimedia incluida en el ZIP: 81 imágenes JPG, 80 notas de voz OPUS, 5 videos MP4 y stickers WEBP.
+Documentos externos compartidos en el chat: carpeta de Google Drive “Universo y Ficctura”, dos manuales de marca, un calendario de contenido y dos planillas de métricas.
+Los 80 audios están inventariados, pero su contenido no se transcribe automáticamente en este informe. Para cumplir la indicación de no inventar, no se atribuye como hecho ninguna afirmación que solo pueda estar dentro de un audio y que no tenga confirmación escrita, visual o documental posterior.
+Las imágenes se describen por lo que muestran y por el contexto textual con el que fueron enviadas. Los mockups no se tratan como fotos finales de producto cuando el chat los identifica como bocetos o imágenes generadas.
+2. Estado del proyecto al cierre del chat
+Tema
+Estado documentado al 08/08/2026
+Marcas
+FICCTURA y UNIVERSO 404 definidas como marcas relacionadas pero con propuestas distintas.
+Dominios
+ficctura.com.ar y universo404.com.ar comprados el 24/07; renovación anual anotada.
+Identidad
+Logos e identidades base considerados listos en los manuales; paleta de colores y tipografías figuran todavía “A DEFINIR”, y aplicaciones “A DESARROLLAR”.
+Producción
+Orden de 176 remeras: 100 básicas y 76 estampadas. La primera muestra estampada se retrasó por rehacer la matriz; el 08/08 se esperaba para el martes siguiente.
+Web
+El 08/08 Pau informa que Juan arranca con la página y propone sumarlo al grupo para guiarlo.
+Ecommerce
+Payway identificado como medio de tarjeta con menor comisión de los consultados; se habló de tarjeta en 3 cuotas, transferencia y efectivo.
+Catálogo inicial U404
+Orden de producción con Nakatomi, Volver al Futuro, AC/DC y Guns. Luego se sumaron conceptos sin licencia y una estrategia de “agotado / reservar interés / próximamente”.
+FICCTURA
+Básicos premium centrados en calce y calidad; blanco y negro en la primera producción.
+Fotos finales
+Todavía no estaban disponibles al cierre. Se esperaba fotografiar la muestra real desde todos los ángulos y usar esas fotos como base para imágenes de producto.
+Precios
+El 05/08 se rectificó un piso propuesto de $35.000 para básica y $38.000 para estampada por unidad; packs, descuentos y precio tarjeta/transferencia seguían por cerrar.
+
+3. Participantes y tareas que aparecen en la conversación
+Sin asignar cargos formales, el chat muestra las siguientes responsabilidades de hecho:
+Persona
+Intervenciones/tareas documentadas
+Nico
+Diseños, concepto de marca, copys, coordinación con taller, moldería y muestra, definición de calce, armado de piezas y stickers, propuesta de productos y arquitectura de catálogo, revisión final de muestra.
+Noe
+Configuración de redes y accesos, documentos/manuales de marca, dominios, investigación de medios de pago, contenidos, métricas y publicidad.
+Pau
+Feedback comercial y de producto, experiencia de venta/talles, contenido, precio, cuotas, necesidad de descripciones claras y coordinación para incorporar a Juan.
+Gonzalo
+Feedback sobre modelos, talles, precios, competencia, producto y contenidos.
+Juan
+Mencionado el 08/08 como la persona que “arranca con la Página” y que se incorporaría al grupo para recibir guía.
+
+4. Arquitectura de marcas y relación entre FICCTURA y UNIVERSO 404
+La conversación separa las marcas por propuesta, pero comparte producto base, calce y calidad. La relación más reciente para la web aparece el 07/08.
+Marca
+Definición documentada
+FICCTURA
+Marca de básicos premium. El fuerte es el calce, la calidad, la versatilidad y la durabilidad. No se plantea como marca de estampas.
+UNIVERSO 404
+Marca de prendas con historias, referencias y diseño conceptual. Usa el calce de FICCTURA como base y suma gráfica, narrativa y humor.
+Relación de producto
+“El corte perfecto de FICCTURA pero con una historia con onda” fue la fórmula usada en el chat para U404.
+Relación web más reciente
+Las básicas FICCTURA también deberían aparecer dentro del catálogo de U404, identificadas como FICCTURA, para unificar la compra. La web de FICCTURA quedaría más exclusiva para básicos, con banner/atajo hacia U404.
+
+5. Identidad de marca: FICCTURA
+
+Planilla de identidad FICCTURA compartida el 17/07.
+5.1 Esencia y posicionamiento
+Frase central del manual: “Somos una marca obsesionada con crear el calce perfecto”.
+Definición: prendas premium para quienes priorizan un buen calce, comodidad y estilo sin resignar calidad.
+El chat remarca que FICCTURA no debe presentarse como “marca inclusiva para cuerpos diferentes”. La idea expresada es normalizar al cliente y hacerlo sentir actual/cool, no etiquetarlo por edad o cuerpo.
+Personalidad del manual: cercana, segura, minimalista, moderna, transparente y elegante, sin exageraciones.
+Valores documentados: calidad sin concesiones, comodidad real, diseño pensado, honestidad, confianza, atención al detalle y durabilidad.
+5.2 Mensajes y copys ya escritos
+“Por fin encontré una marca que pensó en mí”.
+“Por fin una marca que entendió lo que necesito”.
+“Encontrar una remera que realmente te quede bien cambia todo”.
+“Crecer no debería significar empezar a vestirse de contador…” (la idea se repite también en el reel madre).
+En el chat se propuso el “Modelo Sobrio”: remera básica, cuello redondo, blanco o negro.
+5.3 Público FICCTURA
+Manual: principalmente hombres de aproximadamente 20 a 55 años.
+Ubicación inicial: La Plata, CABA y Gran Buenos Aires, con proyección nacional.
+Cliente que quiere verse bien sin pensar demasiado qué ponerse; trabaja, sale, viaja y busca una remera que funcione en contextos cotidianos e informales.
+La comunicación debe poner el foco en calce, confianza, calidad y facilidad de compra, no en una etiqueta corporal.
+6. Identidad de marca: UNIVERSO 404
+La primera planilla visual enviada el 17/07 todavía decía “UNIFORME 404”. El propio chat aclara luego que debía reemplazarse por “UNIVERSO 404” conservando el símbolo. El material siguiente y el manual ya usan UNIVERSO 404.
+
+Planilla anterior compartida con nombre UNIFORME 404. Se conserva como referencia de sistema visual, no como nombre vigente.
+6.1 Esencia y personalidad
+Frase central del manual: “Creamos uniformes de trabajo para universos que no existen.”
+La marca se define alrededor de historias, nostalgia, pertenencia, identidad y referencias que el público reconoce.
+Nico resume la personalidad en tres componentes: “el corte, los diseños y el sentido del humor”.
+El manual insiste en que U404 “no hace merchandising”; plantea prendas con concepto e historia.
+Personalidad de contenido: referencias ocultas, proceso creativo, historia detrás de cada diseño, storytelling, comunidad y producto premium.
+6.2 Frases y lenguaje
+“No es una estampa. Es una referencia.”
+“Si entendés el diseño, ya sos parte.”
+“Hay historias que nunca dejamos atrás.”
+“No hacemos merchandising. Diseñamos universos.”
+“Las mejores referencias son las que no necesitan explicación.”
+Frase propuesta para explicar la relación con FICCTURA en web: “Lo nuestro es el diseño de los estampados, por eso buscamos la mejor remera del mercado, con el mejor calce y calidad para usar sus remeras con nuestras gráficas”.
+Reel madre: “Son remeras que cuentan la historia que te hubiese encantado vivir” y “ropa de mundos que no existen… pero deberían”.
+6.3 Público U404
+Manual: principalmente hombres de 25 a 55 años.
+En el chat, la campaña inicial se piensa especialmente para 30 a 55 años y se menciona la “generación X”.
+Adultos con trabajo y responsabilidades que siguen identificados con películas, series, videojuegos, música e historias de su juventud.
+La nostalgia debe combinarse con diseño, humor y una prenda de calidad; no con merchandising genérico.
+7. Producto base y calce: reglas que deben reflejarse en la web
+
+Orden de producción compartida el 22/07.
+Elemento
+Definición registrada
+Tela
+Algodón peinado 20.1 en la orden de producción.
+Colores primera producción
+Blanco y negro.
+Cuello
+Redondo en la primera producción.
+Calce torso
+La intención es favorecer hombros, brazos y algo de pecho, sin apretar el abdomen.
+Abdomen
+Se pidió medir a la altura del ombligo; la panza no debe quedar apretada. Si hace falta, se prioriza comodidad abdominal aunque arriba quede algo más suelto.
+Especificaciones de muestra
+Limpieza de hombro a hombro; ribb de manga a la mitad de la muestra blanca; frente/torso/largo de muestra negra; referencia XL; “panza 1 cm+”.
+Tabla de talles
+Debe incluir todas las medidas y explícitamente la circunferencia/diámetro a la altura del ombligo para recomendar talle por espalda o por abdomen.
+Descripción web
+Pau remarca que no se puede errar en color o corte y que la ficha debe mostrar mangas, ancho, talles, tipo de algodón y medidas completas.
+
+7.1 Orden de producción inicial
+Total presupuestado: 176 remeras.
+50 blancas básicas sin estampa.
+50 negras básicas sin estampa.
+38 blancas estampadas.
+38 negras estampadas.
+Diseños mostrados en la orden: Nakatomi y Volver al Futuro sobre blanco; AC/DC y Guns sobre negro.
+8. Webs: evolución de la propuesta y estado más reciente
+Los manuales de marca, fechados/modificados el 27/07, enumeran como alcance “1 sitio web”. En la conversación del 07/08 se desarrolla una estructura con presencia web diferenciada para ambas marcas y compra unificada desde U404. Este informe conserva ambas etapas y toma la conversación del 07/08 como la definición más reciente registrada en el chat.
+8.1 Dominios
+universo404.com.ar: comprado el 24/07.
+ficctura.com.ar: comprado el 24/07.
+La compra se hizo con el CUIT de Noe para poder vincular los dominios luego con la página.
+Renovación: anual. Noe indicó que dejó recordatorio y que también recibiría aviso por email.
+8.2 Arquitectura más reciente discutida (07/08)
+Web / catálogo U404: concentra el universo de diseños y también incorpora las básicas FICCTURA.
+Las básicas deben identificarse explícitamente como “Básicas FICCTURA” dentro de U404.
+La compra debería quedar unificada para no complicar al cliente.
+Web FICCTURA: enfocada en básicos, con identidad más exclusiva/minimalista y con un banner o atajo hacia U404.
+U404 debe explicar que sus gráficas se montan sobre la remera de mejor calce/calidad desarrollada por FICCTURA.
+8.3 Catálogo U404: stock, agotados y “próximamente”
+El 06/08 se propone no limitar la web a los cuatro modelos disponibles.
+Mostrar otros modelos como “agotados” o no disponibles, con una opción de reserva/interés sin pago.
+La función buscada es medir qué diseños tienen demanda y generar una lista de personas a contactar cuando vuelvan a estar disponibles.
+Noe propone que el botón lleve a WhatsApp con un mensaje del tipo “me gustó tal remera y no la vi en stock”, para conservar el contacto.
+También se propone crear secciones “Próximamente” para gorras, buzos y pantalones, aunque todavía no exista mercadería, con un botón “me interesa” o equivalente para medir demanda.
+Los conceptos sin licencia compartidos el 07/08 se pensaron como posible colección permanente; las prendas con licencias, cuando se consigan, como posibles “ediciones limitadas”.
+9. Ecommerce: funciones, checkout y operaciones
+Área
+Requisito/conversación documentada
+Catálogo
+Carga de productos, actualización de stock y dos catálogos de producto mencionados en los manuales.
+Pedidos
+Gestión de pedidos, coordinación de envíos, atención online y seguimiento de clientes.
+Carrito
+Se menciona automatizar recuperación de carritos abandonados “si la plataforma lo permite”.
+Postventa
+Automatización de seguimiento postventa y futura integración con email marketing.
+WhatsApp
+WhatsApp Business y automatización de respuestas; para productos no disponibles, botón de interés que abra WhatsApp con el producto identificado.
+Instagram/Facebook
+Vincular catálogo con Instagram Shopping y Facebook Shop.
+Analítica
+Google Analytics, Search Console, Tag Manager, Meta Business Manager y Pixel de Meta figuran en pendientes/medios.
+SEO
+SEO básico figura como pendiente en ambos manuales.
+
+10. Medios de pago
+El 07/08 Noe informa que Payway es el método de tarjeta que menos cobra entre los consultados y que puede dejarlo habilitado cuando se confirme.
+Para abrirlo se necesita el CUIT de una persona; esa persona debe facturar lo que ingrese por tarjeta.
+Métodos mencionados: tarjeta en 3 cuotas, transferencia y efectivo.
+Se conversa que el precio publicado podría ser el precio de tarjeta y que transferencia/efectivo tengan un descuento porcentual.
+Pau propone resaltar ese descuento por transferencia.
+El porcentaje final de descuento y el precio final por medio de pago no quedan cerrados en el chat.
+11. Precios, costos, packs y promociones: evolución
+Fecha
+Dato/propuesta
+17/07
+Se plantea que las estampadas deberían costar al menos $2.000–$3.000 más que las básicas para cubrir la diferencia de estampado.
+24/07
+Costo promedio hablado: $17.000 por remera; básicas $16.000 y estampadas $18.000 aproximadamente.
+28/07
+Ejemplo de costo: remera $17.000 + bolsa $300 + publicidad $1.000 = $18.300. Con 80% aplicado al costo: $32.940. Con comisión de tarjeta promedio 3,5%: $34.100 redondeado. Se aclara que faltaba contemplar facturación/impuestos.
+03/08
+Nico propone transitoriamente U404 $29.000 y FICCTURA $26.000; también cobrar $8.000 un envío que costara $6.000 y evaluar gratis desde 3 remeras.
+05/08
+Nico rectifica: piso propuesto $35.000 la básica y $38.000 la estampada por unidad; descuentos por pack/promos después. Objetivo de mantener inicialmente debajo de $40.000.
+07/08
+Con tarjeta se plantea precio más alto/lista y destacar descuento por transferencia. No queda número final cerrado.
+
+11.1 Packs propuestos el 25/07
+Se propusieron nombres de packs alineados con el humor corporativo de U404. El mismo mensaje aclara que todo era “modificable, adaptable y mejorable”.
+Pack
+Composición/beneficio propuesto
+Junior
+1N + 1B + 1U404 — envío gratis.
+Senior
+2N + 2B + 2U404 — envío gratis + 10% de descuento.
+Team Leader
+4U404 + 2B + 2N — envío gratis + 15% de descuento.
+CEO
+4U404 + 4B + 4N — envío gratis + 15% de descuento + 1 básica gratis.
+
+12. Envíos y entrega
+17/07: mensajería CABA $6.500; Correo Argentino estimado $9.000–$10.000; La Plata zona centro $4.500.
+28/07: Pau propone mostrar el precio de la remera y, al finalizar la compra, opciones de entrega: correo, retiro o mensajería.
+Se conversa que el envío normalmente se cobra aparte, pero puede haber envío sin cargo a partir de un monto o en packs.
+03/08: se usa como referencia un costo de envío de $6.000 y se propone cobrar $8.000; evaluar envío gratis con 3 o más remeras.
+No queda definido en el chat un integrador/logística final ni tarifas definitivas por zona.
+13. Mercado Libre y canal propio
+18/07: Noe plantea que Mercado Libre es importante por la confianza y mediación que ofrece al comprador de marcas pequeñas.
+03/08: se informa una comisión aproximada del 17%. Nico responde que inicialmente no se usaría Mercado Libre y que, si se necesitara más adelante, ese costo se incorporaría al cálculo de precio.
+La conversación más reciente, por lo tanto, prioriza inicialmente venta directa por las webs/redes y deja Mercado Libre para evaluar luego.
+14. Catálogo de producto: primera colección U404
+La orden de producción del 22/07 y los mockups del 26/07 dejan documentados cuatro diseños de la primera tanda:
+
+
+Nakatomi / Tower Security
+Volver al Futuro / Temporal Research – Test Unit
+
+
+
+AC/DC / Stage Power – Crew Unit
+Guns / Stage Crew – Backline Team
+
+El 25/07 se propusieron nombres narrativos: “Primera Chamba” para GNR/AC/DC, “Navideño” para Nakatomi y “Viajeros” para BTTF.
+El 26/07 se propone incorporar en la manga izquierda un QR que lleve a la web de U404.
+El 07/08 se propone presentar GNR y AC/DC como “edición limitada”, sin mencionarlas por nombre en el copy, dejando que la referencia se vea en la imagen.
+La conversación sobre licencias no queda resuelta: el grupo manifiesta preocupación por derechos y plantea averiguar costos/licencias para GNR y AC/DC.
+15. Diseños U404 presentados como “sin licencia” el 07/08
+Nico comparte una tanda de diseños y aclara expresamente que estos diseños no requieren licencia. También aclara que el calce mostrado en esos mockups no es el de FICCTURA y que las gráficas de espalda probablemente serían algo más pequeñas. Se consideran ideas para ampliar el catálogo y posiblemente sostener una colección permanente.
+
+
+Route 66 Tour Unit
+Stage Security
+
+
+
+Tour Bus Logistics
+Load In / Load Out Crew
+
+
+
+Studio Operations
+Front of House
+
+
+
+Venue Manager — versión de bar ficticio
+Sunset Strip Night Crew
+
+
+
+Festival Field Operations
+Backline Department
+
+
+
+Versión con banda inventada — basada en concepto Guns
+Versión con banda inventada — basada en concepto AC/DC
+
+15.1 Diseño separado por tema de licencia
+
+CBGB Venue Manager. En el propio chat se indica que “debería requerir licencia”.
+15.2 Estrategia propuesta para estos diseños
+Crear una colección permanente U404 con diseños propios que mantengan la idea de “uniforme de un mundo/historia” sin usar marcas reconocibles.
+Reservar futuras piezas con licencias reales como “ediciones limitadas”.
+El estándar expresado para los diseños propios es que tendrían que ser “MUY buenos” para compensar que no llevan bandas o logos reconocibles.
+16. Línea exploratoria oversize / 15–25 años
+El 22/07 se abre una exploración distinta: prendas oversize aproximadamente para 15–25 años. En ese momento se discutía si incorporarlas a U404, convertirlas en cápsula o crear otra marca. Se las presenta como diseños originales que no requieren licencia.
+
+
+Noise Control Crew
+404 LAN Club
+
+
+
+Garage 404 Race Weekend Crew
+Error 404 / Future Not Found
+
+
+
+Tribuna Sur / 90 Minutos
+Anomaly Response Unit
+
+17. Imágenes de producto para la web: qué existe y qué falta
+Tipo de material
+Estado al cierre
+Mockups de diseño
+Sí. Existen mockups de la primera colección y de múltiples conceptos nuevos.
+Mockups con personas
+Sí. Se compartieron imágenes de Nakatomi puesta en calle/bar y una referencia de calce de básica.
+Foto real de la muestra final
+No estaba disponible al cierre del chat.
+Plan de fotos reales
+Cuando la primera GNR esté armada: Nico se la prueba, revisa el producto y toma fotos “bien de todos lados”.
+Uso de esas fotos
+Servir como base para generar imágenes con IA que respeten el producto real; si se elimina la estampa, también servirían como base visual para FICCTURA.
+Datos de ficha
+Medidas completas, mangas, ancho, talles, algodón y medida de abdomen/ombligo deben acompañar el producto.
+
+
+
+Mockup Nakatomi — espalda / calle
+Mockup Nakatomi — frente / calle
+
+
+
+Mockup Nakatomi — frente / bar
+Mockup Nakatomi — espalda / bar
+
+18. Packaging, QR y stickers
+
+
+QR “ALL ACCESS” propuesto para manga izquierda
+Plancha de stickers dividida por los cuatro modelos
+
+Bolsas ecommerce: se compartió un enlace de Mercado Libre para evaluar medidas.
+Se habló de bolsas transparentes tipo sobre con cierre autoadhesivo para el producto.
+Stickers: primero se estimó hoja de 12 stickers; luego se diseñó una plancha dividida en cuatro cuadrantes, uno por cada remera de la primera colección, para enviar el cuarto correspondiente con cada producto.
+Más adelante se habla de stickers UV resistentes al agua, impresos por plancha de 1 m x 1 m.
+QR U404: propuesta de imprimirlo en la manga izquierda para llevar a la web; el diseño visual dice “ALL ACCESS / SCAN FOR DIGITAL ACCESS / STAFF / NO.U404”.
+19. Redes, contenido y tono que deben acompañar a la web
+Instagram FICCTURA y U404 fueron creados; para U404 se terminó usando el usuario “eluniverso404” luego de problemas con universo.404/uniforme.404.
+Se crearon páginas de Facebook y se trabajó la vinculación con Instagram; el manual todavía marcaba “Facebook. Falta de universo” como pendiente al 27/07.
+Se habló de TikTok, WhatsApp Business, Google Business Profile y ecosistema de Meta/Google.
+Se propuso comprar un número separado para la marca, preferentemente de CABA, para no usar números personales.
+Reels: se busca contar historias y no hacer publicidad genérica de “un hombre hablando a cámara” como la competencia.
+Referencia creativa compartida: Pastas Sole, por mostrar contexto e historia y no solo producto.
+El reel madre U404/FICCTURA debía combinar nostalgia, una vida alternativa de “plomo” de recital, calce actual y calidad; al final mostrar dos accesos: “BÁSICAS” hacia FICCTURA y “ÉPICAS” hacia U404.
+Después del reel largo se propusieron versiones de menos de 30 segundos con lo fundamental.
+19.1 Distribución de contenido según manuales
+Marca
+Mix de contenido documentado
+FICCTURA
+40% producto / 30% lifestyle / 20% educación / 10% marca.
+U404
+35% marca e historias / 30% producto / 20% lifestyle / 15% comunidad.
+
+20. Publicidad, analítica y automatización
+17/07: presupuesto inicial propuesto para publicidad en redes de $3.300 por día, aproximadamente $100.000 al mes; Google Ads quedaría para después.
+Manuales: Meta Ads, Google Ads, remarketing, pruebas A/B y optimización permanente.
+Métricas mencionadas: alcance, clics, costo por resultado, tasa de conversión, ROAS y ventas.
+Herramientas listadas: Google Analytics, Google Search Console, Google Tag Manager, Meta Business Manager y Pixel de Meta.
+Automatizaciones: respuestas de WhatsApp e Instagram, recuperación de carrito si la plataforma lo permite, postventa y email marketing futuro.
+21. Archivos y documentos compartidos que necesita conocer quien desarrolla
+El 27/07 Noe comparte la carpeta de Drive y dice que allí dejó “los otros archivos” para concentrar todo. El contenido visible de esa carpeta al momento de este informe es:
+Archivo
+Contenido / uso
+FICCTURA manual de marca
+Esencia, comunicación, público, contenido, pendientes web/ecommerce, publicidad y alcance.
+UNIVERSO 404 manual de marca
+Esencia, comunicación, público, contenido, pendientes web/ecommerce, publicidad y alcance.
+CALENDARIO DE CONTENIDO
+Calendario inicial de FICCTURA, con reel de origen, carrusel de proceso y otros contenidos previos al lanzamiento.
+PLANILLA METRICAS Universo 404
+Planilla XLSX incluida en Drive.
+PLANILLA METRICAS Ficctura
+Planilla XLSX incluida en Drive.
+Contenido terminado
+Carpeta visible en Drive; al consultar su contenido aparece vacía.
+
+Carpeta de Drive compartida en el chat:
+https://drive.google.com/drive/folders/1PD4UEKtJkiD6dPMLdfHnb_gqIQESDiUE
+Manual FICCTURA:
+https://docs.google.com/document/d/1LNS01JA4lWbg39XHHWP7Isa70KKFR5HnqlDmwvJTUjY/edit?usp=drivesdk
+Manual UNIVERSO 404:
+https://docs.google.com/document/d/1_Ap-rZW_ga3tkNSCzJSDhb3hsFs_cW5-J5jQBTTRF1Y/edit?usp=drivesdk
+22. Estado de identidad visual para implementación web
+Elemento
+Estado en los manuales / chat
+Logos
+Marcados como LISTO en alcance. FICCTURA tiene planilla visual en el ZIP. Para U404, el ZIP conserva la planilla anterior “UNIFORME 404”; el chat dice que luego se compartió la planilla corregida de UNIVERSO 404 como multimedia, pero ese archivo aparece omitido en la exportación.
+Relación visual entre marcas
+El alcance dice que los dos logos deben ser “del estilo para que no se pierda la relación”.
+Paleta de colores
+A DEFINIR en ambos manuales.
+Tipografías
+A DEFINIR en ambos manuales.
+Aplicaciones de marca
+A DESARROLLAR en ambos manuales.
+Estética FICCTURA visible en planilla
+Minimalista, limpia, estructurada; “calidad y buen calce”.
+Estética U404 visible en planilla anterior
+Futurista/corporativa/industrial, geometría angular y sistema tipo credencial/identificación.
+
+23. Marcas, derechos y licencias: lo que se habló
+21/07 se pregunta cómo registrar la marca; se comenta que hay una persona que explicó a Nico el procedimiento, pero en este chat no se documenta el registro como completado.
+28/07 se identifica como tema pendiente averiguar derechos/licencias, especialmente GNR y AC/DC, porque un aumento de publicidad/ventas podría generar reclamos.
+06/08 se decide evitar llenar la web con imágenes que puedan generar problemas de derechos y se propone crear diseños que no requieran licencia.
+07/08 se comparte una tanda de diseños presentados como “sin licencia” y se propone que sean colección permanente; licencias reales se plantean como futuras ediciones limitadas.
+El diseño CBGB se separa en la conversación porque Nico dice que “debería requerir licencia”; luego crea una versión equivalente con bar ficticio.
+24. Pendientes y decisiones todavía no cerradas
+Esta lista no agrega recomendaciones; reúne asuntos que en el chat o manuales aparecen expresamente como pendientes, abiertos o sujetos a confirmación.
+Hosting y plataforma tecnológica de ecommerce.
+Diseño final de las webs y aplicación concreta del sistema visual.
+Paleta de colores y tipografías oficiales de ambas marcas.
+Archivo final de identidad U404 con nombre UNIVERSO 404 en una versión descargable dentro de la carpeta de trabajo.
+Tabla final de talles y medidas completas, incluyendo ombligo/abdomen.
+Fotos reales de la muestra aprobada y, después, fotos finales de producto.
+Precio final por producto, porcentajes definitivos de descuento por transferencia y reglas finales de packs/promos.
+Configuración final de Payway, CUIT/facturación y activación de tarjeta/3 cuotas.
+Esquema definitivo de envíos, tarifas, retiro y umbral de envío gratis.
+Qué modelos adicionales se publicarán como agotados/reservables y cuáles solo como “próximamente”.
+Resolución de licencias/derechos de los modelos con marcas reales.
+Definición final sobre línea oversize 15–25: cápsula U404, tercera marca u otra estructura.
+Catálogo final para Instagram Shopping/Facebook Shop y vinculación con web.
+Analytics, Search Console, Tag Manager, Pixel y automatizaciones.
+SEO básico.
+25. Cronología breve de decisiones
+Fecha
+Hitos registrados
+17/07
+Creación del grupo; primeros cuatro diseños; logos; compra de dominio como tarea; Instagram/Facebook; costos de bolsas/envíos/publicidad; diferencia de precio básica/estampada.
+18/07
+Debate de talles/calce; público mayor y posibilidad de llegar a 20 años; Mercado Libre como canal de confianza.
+21/07
+Reunión/taller y producción; Nakatomi/BTTF; redes; documento de marca FICCTURA; corrección de enfoque corporal/comunicación.
+22/07
+Orden de 176 remeras; medida de ombligo; exploración oversize 15–25 con seis diseños originales.
+24/07
+Compra de universo404.com.ar y ficctura.com.ar; número de teléfono separado; debate de precio/packs.
+25/07
+Plancha de stickers; packs Junior/Senior/Team Leader/CEO; nombres narrativos de modelos; definición U404 = corte + diseño + humor.
+26/07
+QR en manga izquierda de U404, dirigido a la web.
+27/07
+Reel madre y storytelling; manual U404; Drive centralizado; competencia y referencias de contenido.
+28/07
+Cálculo de costos/precios y tarjeta; opciones de envío; preocupación por licencias; precio competitivo.
+29–31/07
+Modelo/persona para reels y luego propuesta de locución + imágenes/IA + nostalgia.
+03/08
+Reinversión inicial; precio/envío tentativo; Mercado Libre diferido por comisión.
+04/08
+Idea de preventa/entrega a una semana; fotos de muestra como base; necesidad de descripción exacta.
+05/08
+Precio piso rectificado a 35/38; packaging listo para despacho; fotos reales previstas; stickers UV.
+06/08
+Propuesta web de agotados/reserva de interés, “próximamente” y WhatsApp; creación de diseños sin licencia.
+07/08
+Tanda de diseños propios; colección permanente vs ediciones limitadas; arquitectura web U404 + FICCTURA; Payway/3 cuotas/transferencia/efectivo.
+08/08
+Muestra retrasada por rehacer matriz; expectativa de tenerla el martes; Juan empieza con la página y se propone sumarlo al grupo.
+
+26. Resumen operativo específico para quien desarrolla las webs
+Este bloque no agrega nuevas decisiones: concentra en un solo lugar lo que la conversación pide o presupone para la implementación.
+Trabajar con dos dominios ya comprados: universo404.com.ar y ficctura.com.ar.
+U404 es el catálogo más amplio y debe poder vender también las básicas FICCTURA, identificadas como tales.
+FICCTURA se presenta como sitio de básicos premium/calce; debe tener un acceso visible hacia U404.
+La compra debe ser simple y, según la conversación del 07/08, unificada desde el catálogo U404 cuando el cliente mezcle productos.
+El catálogo necesita estados de producto: disponible, agotado/no disponible con captura de interés, y próximamente.
+Para agotados/próximamente, se habló de un CTA hacia WhatsApp que ya incluya el modelo que interesa al usuario.
+Las fichas deben priorizar información de calce y medidas: talles, ancho, mangas, algodón y abdomen/ombligo.
+No usar los mockups de 07/08 como referencia exacta de calce: el propio mensaje aclara que ese calce no es el de FICCTURA.
+Preparar soporte para tarjeta Payway/3 cuotas, transferencia y efectivo; precio/beneficio por transferencia todavía pendiente de cierre.
+Checkout con opciones de entrega: correo, retiro, mensajería; tarifas y envío gratis aún deben parametrizarse cuando se definan.
+Prever catálogo para Meta, Pixel, Analytics, Search Console, Tag Manager y SEO básico, todos mencionados en los manuales.
+Prever automatización de WhatsApp/Instagram y, si la plataforma lo permite, recuperación de carrito abandonado y seguimiento postventa.
+No asumir paleta ni tipografías definitivas: ambos manuales todavía las marcan “A DEFINIR”.
+No asumir que todas las imágenes de remeras se pueden publicar como venta regular: el chat separa primera colección, conceptos sin licencia, un diseño CBGB señalado como licenciado y futuras ediciones limitadas.
+Las fotos reales definitivas todavía faltaban. La muestra real será la referencia de calce/producto para generar material final.
+27. Índice de imágenes web relevantes incluidas en el paquete de activos
+Carpeta del ZIP de activos
+Contenido
+01_identidad
+Brand sheet FICCTURA, referencia anterior UNIFORME 404 y pieza con ambos logos.
+02_u404_primera_coleccion
+Mockups con QR de AC/DC, Nakatomi, BTTF y Guns.
+03_u404_conceptos_sin_licencia
+Doce conceptos compartidos el 07/08 como diseños sin licencia o versiones ficticias.
+04_u404_referencia_licencia
+CBGB, separado porque el chat lo identifica como diseño que debería requerir licencia.
+05_oversize_15_25_exploratorio
+Seis diseños oversize originales para exploración 15–25.
+06_fit_mockups
+Mockups con persona / referencia de calce y presentación.
+07_packaging_qr_stickers
+QR de manga y plancha de stickers.
+08_produccion
+Orden de 176 remeras y última imagen de prueba/matriz.
+
+28. Nota de cierre documental
+El último estado visible del grupo no es el de una web ya definida en diseño o plataforma, sino el de un proyecto con identidad, dominios, producto inicial y lógica comercial suficientemente documentados para comenzar el desarrollo, mientras siguen abiertos varios parámetros operativos: fotos reales, tabla de talles final, precio final, medios de pago activados, logística, sistema visual final y alcance exacto de los productos publicados. El 08/08 la incorporación de Juan al grupo se plantea precisamente para guiar el desarrollo a partir de este material.

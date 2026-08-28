@@ -1,0 +1,16 @@
+# Secretos / entorno local
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+*.log
+
+# Node
+node_modules/

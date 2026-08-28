@@ -1,0 +1,58 @@
+{% load catalog_extras %}
+{% if product.status == 'sold_out' %}
+<a href="{% url 'catalog:reserve' product.slug %}" class="group block product-card-lift" data-fx-focus>
+{% else %}
+<a href="{% url 'catalog:detail' product.slug %}" class="group block product-card-lift" data-fx-focus>
+{% endif %}
+    <div class="aspect-[3/4] mb-3 overflow-hidden rounded-sm border
+                {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}
+                flex items-center justify-center relative">
+
+        {% with image=product.primary_image %}
+        {% if image %}
+        <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}"
+             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105
+                    {% if product.status == 'sold_out' %}blur-[3px] grayscale-[60%] opacity-60{% endif %}">
+        {% else %}
+        <span class="font-sans text-[11px] uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            Sin imagen
+        </span>
+        {% endif %}
+        {% endwith %}
+
+        <div class="absolute top-2 left-2 flex flex-col gap-1">
+            {% if product.status == 'sold_out' %}
+            <span class="font-sans text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-bg/90 text-u404-accent{% else %}bg-ficctura-bg/90 text-ficctura-accent{% endif %}">
+                Agotada
+            </span>
+            {% endif %}
+            {% if product.is_limited_edition %}
+            <span class="font-sans text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+                Edición limitada
+            </span>
+            {% endif %}
+        </div>
+
+        {% if product.status == 'sold_out' %}
+        {% comment %}
+        Pedido del usuario (10/8): las agotadas se muestran difuminadas
+        con un botón que lleva a reservar para la próxima entrega — así
+        el cliente puede ver cuántas reservas tiene cada modelo y decidir
+        qué priorizar en la próxima producción (ver ProductReservation).
+        {% endcomment %}
+        <div class="absolute inset-0 flex items-center justify-center px-3">
+            <span class="font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center px-4 py-2 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-bg/90 text-u404-accent border border-u404-accent/60{% else %}bg-ficctura-bg/90 text-ficctura-accent border border-ficctura-accent/60{% endif %}">
+                Reservar próxima entrega →
+            </span>
+        </div>
+        {% endif %}
+    </div>
+
+    <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">{{ product.name }}</p>
+    <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        {{ product.price|pesos }}
+    </p>
+</a>

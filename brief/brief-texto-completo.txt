@@ -1,0 +1,545 @@
+
+FICCTURA  ×  UNIVERSO 404
+BRIEF OPERATIVO
+WEBS · ECOMMERCE · PUBLICIDAD
+Estado documental al 8 de agosto de 2026
+
+Documento de incorporación para desarrollo web, ecommerce y comunicación.
+Consolida únicamente decisiones, textos, materiales e instrucciones respaldados por el chat y los documentos compartidos.
+
+0. Cómo leer este documento
+Este brief no reemplaza el historial del grupo: lo convierte en instrucciones de trabajo. Cuando una idea fue modificada más adelante, se toma como referencia la formulación escrita más reciente. Cuando algo fue conversado pero no quedó cerrado, se marca como pendiente en lugar de completarlo por cuenta propia.
+VIGENTE
+Decisión escrita más reciente o criterio aceptado y no reemplazado después.
+
+PROPUESTO
+Idea concreta discutida, pero sin cierre suficiente para tratarla como especificación final.
+
+PENDIENTE
+Dato que el equipo todavía debe resolver antes de publicar o activar.
+
+Limitación de los audios
+El ZIP contiene 80 notas de voz en formato OPUS. Se verificó que los archivos existen, pero no fue posible obtener una transcripción automática fiable en este entorno. Por ese motivo este brief no atribuye contenido a ningún audio. Sí incorpora decisiones que, después de un audio, quedaron confirmadas por escrito, mediante imágenes o en los documentos de Drive.
+Fuentes de trabajo
+Export completo del grupo de WhatsApp “Universo 404”, desde 17/7/2026 hasta 8/8/2026.
+Manual de marca FICCTURA compartido en Google Drive.
+Manual de marca UNIVERSO 404 compartido en Google Drive.
+Calendario de contenido compartido en Google Drive.
+Imágenes, mockups, orden de producción, piezas de identidad, stickers y QR adjuntos al chat.
+Links compartidos
+Carpeta central “Universo y Ficctura”
+Manual de marca FICCTURA
+Manual de marca UNIVERSO 404
+Calendario de contenido
+
+1. Decisiones que el equipo debe tomar como base
+Tema
+Estado
+Instrucción / situación
+Arquitectura web
+VIGENTE
+Existen dos dominios y se habló de dos webs. U404 debe incluir también las básicas de FICCTURA para que una compra mixta pueda resolverse sin obligar al cliente a saltar entre sitios. FICCTURA queda centrada en básicas y debe tener un atajo/banner hacia U404.
+Dominios
+VIGENTE
+www.universo404.com.ar y ficctura.com.ar fueron comprados y confirmados el 24/7.
+Catálogo U404
+VIGENTE
+U404: prendas gráficas + básicas FICCTURA identificadas como tales. Además, se propuso mostrar modelos agotados y categorías “próximamente” para captar interés.
+Catálogo FICCTURA
+VIGENTE
+Solo básicos FICCTURA. El diferencial es calce + calidad; no mezclar en su identidad principal el lenguaje de estampas.
+Carrito unificado en U404
+VIGENTE
+La razón escrita para incluir FICCTURA dentro de U404 fue “para que la compra esté unificada y no compliquemos al cliente”.
+Pago
+VIGENTE
+Payway fue elegido como opción de menor comisión analizada. Se definieron tarjeta en 3 cuotas, transferencia y efectivo. La activación depende de CUIT/facturación.
+Precio mostrado
+VIGENTE
+La conversación más reciente favorece precio de lista más alto y destacar descuento por transferencia. No quedó fijado el porcentaje del descuento.
+Envío
+VIGENTE
+El envío se trata como adicional en compra individual. En checkout deben existir opciones de entrega: correo, retiro y mensajería. Packs pueden incluir envío gratis.
+Agotados / interés
+VIGENTE
+En U404 se aprobó como estrategia llevar un botón a WhatsApp para registrar interés en un modelo sin stock.
+Producto inicial
+VIGENTE
+Orden de producción de 176 remeras: 100 básicas (50 blancas + 50 negras) y 76 estampadas (38 blancas + 38 negras), algodón peinado 20/1.
+Fotos reales
+PENDIENTE
+Al 8/8 la primera muestra impresa todavía no estaba disponible por rehacer la matriz. El plan es fotografiarla de todos lados y usarla como base visual para U404 y para representar el calce FICCTURA.
+Tabla de talles
+PENDIENTE
+Debe incorporar medidas completas y diámetro/medida a la altura del ombligo. La tabla final del taller todavía no aparece cerrada en el chat.
+Paleta y tipografías
+PENDIENTE
+Los dos manuales marcan explícitamente “Paleta de colores A DEFINIR” y “Tipografías A DEFINIR”, aunque los logos y la identidad general figuran como listos.
+2. Relación entre las dos marcas
+FICCTURA
+“Somos una marca obsesionada con crear el calce perfecto”.
+Esencia escrita en el manual de marca.
+
+FICCTURA es la marca de básicos. En el chat se corrigió expresamente cualquier mezcla con el concepto de estampados: su fuerte debe quedar claro como calce y calidad.
+VIGENTE
+El producto se diseña para marcar brazos, hombros y algo de pecho, dejando el abdomen cómodo. La panza no debe quedar apretada.
+
+VIGENTE
+No comunicar la propuesta como “inclusión de cuerpos diferentes”. El criterio escrito es normalizar al usuario y hacerlo sentir actual/cool, no etiquetarlo por edad o cuerpo.
+
+UNIVERSO 404
+“Creamos uniformes de trabajo para universos que no existen.”
+Esencia escrita en el manual de marca.
+
+U404 toma el producto base de FICCTURA y suma narrativa, referencias, diseño gráfico, nostalgia y humor. El 25/7 quedó formulado en el chat como: “El corte perfecto de FICCTURA pero con una historia con onda.”
+VIGENTE
+La personalidad de U404 fue resumida en el grupo como: “el corte, los diseños y el sentido del humor”.
+
+Texto que explica la relación en U404
+“Lo nuestro es el diseño de los estampados, por eso buscamos la mejor remera del mercado, con el mejor calce y calidad para usar sus remeras con nuestras gráficas”.
+Versión más trabajada compartida el 7/8. Es copy disponible para explicar por qué aparecen básicas FICCTURA dentro del catálogo U404.
+
+
+Pieza conceptual compartida el 25/7: visualiza la relación FICCTURA + U404 y el tono humorístico.
+
+Pieza conceptual compartida el 25/7: ejemplo de lenguaje gráfico U404.
+
+3. Identidad verbal: banco de frases existente
+Estas frases ya existen en los manuales o en el chat. Se reproducen para que web y publicidad trabajen sobre material real, no sobre slogans inventados en desarrollo.
+FICCTURA — frases de identidad
+“Por fin encontré una marca que pensó en mí”.
+“Por fin una marca que entendió lo que necesito”.
+“Encontrar una remera que realmente te quede bien cambia todo”.
+“Crecer no debería significar empezar a vestirse de contador, ahora tengo la ropa que me hace sentir de la edad que siento y no de la que tengo”.
+“Vestirse bien debería ser una experiencia simple. No una búsqueda interminable.”
+Tono definido en el manual: no grita, no exagera, no usa frases vacías, no intenta convencer; habla como alguien que conoce el problema porque también lo vivió.
+UNIVERSO 404 — frases de identidad
+“No es una estampa. Es una referencia.”
+“Si entendés el diseño, ya sos parte.”
+“Hay historias que nunca dejamos atrás.”
+“No hacemos merchandising. Diseñamos universos.”
+“Las mejores referencias son las que no necesitan explicación.”
+“Creamos uniformes de trabajo para universos que no existen.”
+“El corte perfecto de FICCTURA pero una historia con onda.”
+Microcopy / navegación que ya apareció en la conversación
+“BÁSICAS” → acceso a FICCTURA.
+“ÉPICAS” → acceso a U404.
+“Agotada” / modelos sin stock con mecanismo para registrar interés.
+“Próximamente” para categorías todavía no producidas.
+Botón/WhatsApp con mensaje equivalente a: “me gustó tal remera y no la vi en stock”.
+Destacar visualmente el descuento por transferencia.
+
+4. Arquitectura web operativa
+4.1 www.universo404.com.ar
+VIGENTE
+Debe funcionar como el ecommerce más amplio: productos U404 + básicas FICCTURA identificadas como “Básicas FICCTURA”.
+
+Home con identidad narrativa U404.
+Catálogo de prendas U404 disponibles.
+Bloque/categoría de Básicas FICCTURA dentro del mismo catálogo.
+Compra mixta dentro de U404 sin obligar al usuario a completar dos procesos separados.
+Fichas de producto con fotos frente/espalda/detalles, historia del modelo, material, calce, medidas/talles, stock y modalidad de entrega.
+Modelos sin stock visibles como agotados, con captación de interés.
+Secciones “Próximamente” para gorras, buzos y pantalones, con opción “me interesa”/captura de contacto.
+WhatsApp como canal directo para falta de stock/interés.
+Medios de pago: tarjeta (3 cuotas), transferencia y efectivo.
+Entrega al final del checkout: correo, retiro o mensajería.
+4.2 ficctura.com.ar
+VIGENTE
+Debe concentrarse en básicos, calce y calidad. No trasladar al discurso principal de FICCTURA el relato de estampas o licencias.
+
+Home enfocada en el problema de encontrar una remera que realmente quede bien.
+Catálogo exclusivamente de básicos FICCTURA.
+Explicación clara del calce, medidas y recomendación de talle.
+Banner o atajo visible hacia U404.
+Contenido de producto: tela, costuras, cuello, mangas, caída, durabilidad y calce.
+Contenido educativo sobre por qué el molde y el corte cambian una prenda.
+PENDIENTE
+No quedó cerrado por escrito si el checkout de ficctura.com.ar será propio o si la conversión terminará en U404. Esta decisión debe resolverse antes de implementar pagos en FICCTURA.
+
+4.3 Cambio respecto del manual inicial
+Los manuales todavía describen el alcance como “1 sitio web”. El 7/8, después de que ambos dominios ya estaban comprados, se discutió explícitamente una web U404 y una web FICCTURA con funciones distintas. Para desarrollo debe tomarse esta conversación posterior como el estado más reciente.
+
+5. Ecommerce: requisitos funcionales
+Función
+Especificación
+Stock
+Mostrar disponibilidad real. En U404, conservar modelos agotados para captar intención.
+Interés sin pago
+El interés en agotados/próximos no implica reserva paga: se planteó como aviso/captura de contacto.
+WhatsApp
+Botón programado con mensaje contextual del producto sin stock. Objetivo: obtener el contacto y poder avisar cuando llegue.
+Talles
+La ficha debe incluir medidas y una explicación de recomendación según espalda/torso y abdomen. La panza nunca debe quedar apretada.
+Producto
+Mostrar frente, espalda y detalles. En el primer producto físico se acordó fotografiar “de todos lados”.
+Pagos
+Payway; tarjeta en 3 cuotas; transferencia; efectivo.
+Precio
+Mostrar un precio de lista y resaltar descuento por transferencia. El % todavía no está definido.
+Envío
+No cargarlo automáticamente dentro del precio unitario. Resolver al finalizar compra: correo / retiro / mensajería.
+Packs
+Los packs fueron pensados con envío gratis y descuentos escalonados. El naming y copy fueron bien recibidos; los números deben revalidarse con precio final.
+Carritos abandonados
+Figura como automatización deseada en los manuales, si la plataforma lo permite.
+Postventa
+Figura como automatización deseada: seguimiento postventa y futura integración con email marketing.
+Catálogo social
+Los manuales contemplan catálogo de productos y vinculación con Instagram Shopping y Facebook Shop.
+Precios y promociones: qué está y qué no está cerrado
+PROPUESTO
+5/8: piso de referencia $35.000 básica y $38.000 estampada en venta por unidad; intención de mantenerse inicialmente por debajo de $40.000.
+
+VIGENTE
+7/8: criterio comercial aceptado: precio de lista más alto y destacar descuento por transferencia.
+
+PENDIENTE
+Precio final publicado, porcentaje de descuento por transferencia, recargo/costo real de cuotas, impuestos y tarifa final de envío.
+
+VIGENTE
+Mercado Libre fue evaluado, pero el 3/8 se aclaró que inicialmente no se usaría; si se incorpora más adelante, se recalcularán costos.
+
+Packs: naming y copy ya propuestos
+Pack
+Composición escrita
+Copy
+Beneficio escrito
+Junior
+1N + 1B + 1U404
+“Vas bien pero recién estas arrancando”
+Envío gratis
+Senior
+2N + 2B + 2U404
+“Ya estas algo experimentado pero falta.”
+Envío gratis + 10% desc.
+Team Leader
+4U404 + 2B + 2N
+“Escalando como un campeón.”
+Envío gratis + 15% desc.
+CEO
+4U404 + 4B + 4N
+“Sos el jefe.”
+Envío gratis + 15% desc + 1 básica gratis
+6. Producto y catálogo de lanzamiento
+
+Orden compartida el 22/7: especificación de producción y cuatro gráficos de la primera tanda.
+Especificación escrita en la orden
+176 remeras.
+Algodón peinado 20/1.
+Colores: blanco y negro.
+50 blancas básicas sin estampa.
+50 negras básicas sin estampa.
+38 blancas estampadas.
+38 negras estampadas.
+Cuello redondo.
+Limpieza de hombro a hombro.
+Ribb de manga según la referencia de muestra.
+Frente/torso/largo según muestra negra.
+Referencia de talle XL y aumento de espacio abdominal en la muestra.
+Mockups de la primera línea
+
+Mockups compartidos con QR incorporado: BTTF, Nakatomi, AC/DC y Guns.
+VIGENTE
+El 7/8 se propuso publicar GNR y AC/DC como “edición limitada” y no mencionar específicamente las bandas en el texto; solo mostrar el diseño en imagen.
+
+PENDIENTE
+Las fotos definitivas deben apoyarse en la muestra física una vez aprobada. Los mockups actuales sirven como referencia de diseño, no reemplazan la validación de calce real.
+
+QR en manga
+El 26/7 se propuso colocar en la manga izquierda —que estaba libre en los diseños originales— un QR que lleve a la web de U404. La idea recibió aprobación positiva en el grupo.
+
+Pieza QR compartida el 26/7 como referencia visual para la manga.
+
+7. Textos de producto ya escritos
+Se reproducen textualmente —sin reescritura publicitaria— porque fueron desarrollados en el grupo para ser parte de la personalidad de producto.
+FICCTURA — Modelo “Sobrio”
+Modelo Sobrio – Remera Básica, cuello redondo. - Blanco o NegroVan bien con jean, van bien con saco, van bien con hoodie o campera, pero mejor van solas! marcan los brazos, los hombros y un poco el pecho pero te dejan espacio en el abdomen para que puedas pedir el postre o el segundo plato (pero que sea uno o el otro, dejamos espacio para la panza pero no te zarpes!).
+Texto compartido el 25/7.
+
+U404 — introducción de producto
+“El corte perfecto de FICCTURA pero con una historia con onda.”
+Texto compartido el 25/7.
+
+Modelo “Primera Chamba” — GNR / AC/DC
+Fue tu primer laburo y lo que conseguiste fue ser plomo en recitales, mucha plata no ganaste pero te quedó flor de remera y unos hermosos recuerdos con las groupies.
+Texto compartido el 25/7.
+
+Modelo “Navideño” — Nakatomi
+Conseguiste un currito extra para trabajar de seguridad nocturna en un edificio tranquilo en la noche de navidad, te perdiste la reunión familiar pero te adelantaron que esa noche hay fiesta de la empresa así que esperas una noche tranquila y con algo de comida del catering.
+Texto compartido el 25/7.
+
+Modelo “Viajeros” — BTTF
+Mientras hacías el CBC salió la oportunidad de trabajar de asistente en un laboratorio que está desarrollando un capacitor de flujos o algo así, iba a ser por unos días pero no especificaron en que año.
+Texto compartido el 25/7.
+
+Modelo de encargado de venue/bar — historia propuesta
+Esta vendría a ser la remera del encargado del bar donde van a tocar las bandas y la lista es una que encontró en la oficina cuando empezó a trabajar, seguramente escrita por el encargado anterior y dice:Advertencias de Banda de RockCantante: No dejes a tu novia sola con él, después de eso no será tu novia.Guitarrista: Es copado, pero tampoco dejes a tu novia con él.Bajista: Es raro y callado, puede que sea un asesino en serie.Baterista: No te metas con ese tipo, te va a matar.Nota: Si hay un segundo guitarrista, no te preocupes, ese tipo suele ser bastante normal.
+Texto del 7/8. Se hizo luego una variante con bar ficticio para evitar depender del nombre CBGB.
+
+
+8. Colección U404 sin licencias: material para catálogo futuro
+El 6/8 surgió la necesidad de no llenar la web con solo cuatro productos y, al mismo tiempo, evitar depender de imágenes que pudieran generar problemas de derechos. El 7/8 se presentaron diseños descritos en el chat como originales/sin licencia. La idea posterior fue que esa línea pudiera convertirse en colección permanente y reservar las futuras licencias para “ediciones limitadas”.
+VIGENTE
+Concepto estratégico: colección permanente U404 con diseños propios; licencias, cuando se consigan, como ediciones limitadas.
+
+PENDIENTE
+No quedó cerrada la selección exacta de cuáles de estos mockups entran primero a producción ni cuáles deben publicarse como disponible/agota/próximamente.
+
+
+Diseños presentados el 7/8 como opciones sin licencia — parte 1.
+
+Variantes y desarrollos del 7/8 — parte 2. Incluye versión de venue ficticio y reinterpretaciones con bandas inventadas.
+Nota de trazabilidad: IMG-20260807-WA0021.jpg fue identificada expresamente en el chat como una versión que sí requeriría licencia por usar CBGB; después se creó IMG-20260807-WA0027.jpg con un bar ficticio.
+
+9. Publicidad: estrategia y tono ya definidos
+Público
+Manual FICCTURA: principalmente hombres de 20 a 55 años.
+Manual U404: principalmente hombres de 25 a 55 años.
+Para la campaña/reel de lanzamiento se habló específicamente de llegar a 30–55 años y se lo resumió como “la gloriosa generación X”.
+Diferencial creativo
+“Son todas iguales las publicidades, por eso ahí tiene que estar nuestro diferecial. Los otros ya los saltas, no llaman la atención, contar una historia que apele además a la nostalgia y las ganas de no recibirse de viejo tendría que llegar al público que apuntamos ahora que está entre los 30 y los 55. La gloriosa generación X.”
+Mensaje del 27/7.
+
+No centrar el reel únicamente en el producto; contar contexto/historia.
+Hacerlo dinámico, nostálgico y divertido.
+El inicio no debería revelar de inmediato que se trata de publicidad de ropa.
+Usar el relato para retener al espectador.
+Mostrar que crecer no significa abandonar la identidad de los 20.
+Subrayar calidad y calce junto con diseño.
+El 31/7 se prefirió locución + imágenes por sobre el hombre hablando a cámara para el reel madre.
+Se propusieron imágenes generadas con IA: previa de recital, staff trabajando, recital sin identificar banda, modelo en bar, etc.
+La referencia verbal para la locución fue “una voz que tire medio Pergolini”.
+A partir del reel madre se plantearon versiones de menos de 30 segundos.
+Inversión y canales
+VIGENTE
+Presupuesto inicial conversado: $3.300 por día / aproximadamente $100.000 al mes en publicidad.
+
+VIGENTE
+Empezar con publicidad en redes; Google se evaluaría después.
+
+VIGENTE
+Instagram y Facebook fueron identificados como los canales donde está más presente el público inicial del reel.
+
+PLANEADO
+Los manuales contemplan más adelante Meta Ads, Google Ads, remarketing, pruebas A/B y optimización permanente.
+
+
+10. Guion textual del reel madre
+El siguiente texto se reproduce como fue compartido el 27/7. La dirección de realización cambió después —de actor hablando a cámara a locución sobre imágenes—, pero el speech siguió siendo la base referenciada en mensajes posteriores.
+Acordate cuando tenias 18 o 20 años y estabas buscando tu primer laburo. Algo para ganarte unos mangos para salir el fin de semana, comprar un entrada a un recital o un disco y por supuesto terminaste laburando de cadete. Pero mira si en lugar de eso te pasaba la que siempre le pasa a un amigo de un amigo, te ofrecían un laburito de fin de semana aclarando que tenias que levantar cosas pesadas, estar atento y no hacer demasiadas preguntas. Sonaba turbio pero resulta que era trabajando de plomo en los recitales que iba a hacer en argentina una de las bandas más grandes del mundo y de tus favoritas. Y ahí terminaste, con acceso total al backstage, pasando las noches con la banda y viendo los recitales en vivo desde una cercanía imposible. La verdad es que nosotros no podemos darte esos recuerdos... pero podemos darte la remera que te hubiese quedado. Y para colmo, no cualquier remera. Una de buenísima calidad, con un calce pensado para quedarte mejor hoy de lo que te habría quedado a los 20. Son remeras que cuentan la historia que te hubiese encantado vivir y sabes que? Si las querés básicas también las tenemos. Porque la calidad y el calce no deberían resignarse ni cuando querés una gráfica con toda la onda, ni cuando querés una lisa para usar todos los días. Usamos algodón 20/1, lo mejor para que una remera caiga bien y no se deforme, con costuras reforzadas y en todos los casos, con toda la onda. Sin importar tu edad ni tu talle, porque la ropa también tiene que acompañar el cuerpo que tenés hoy. Porque crecer y ser un adulto no debería significar vestirse como el contador que había en la empresa donde arrancaste como cadete y nosotros nacimos para darte esa ropa que siempre quisiste tener pero que no existía. Somos habitantes del Universo 404 y tenemos ropa de mundos que no existen... pero deberian.
+Speech original del 27/7. Se preserva el texto, incluidas sus formulaciones originales.
+
+Indicaciones visuales originales del mismo mensaje
+Al inicio el hombre llevaba una básica negra; luego cambiaba por GNR, después AC/DC y volvía a una básica blanca.
+Inserts: público en recitales, joven arrancando como cadete, contador de empresa, backstage de recital gigante y staff con remeras U404.
+Duración a evaluar para no superar 90 segundos.
+Cierre con dos accesos: “BÁSICAS” → FICCTURA y “ÉPICAS” → U404.
+Generar después cortes de menos de 30 segundos con lo fundamental del reel madre.
+Dirección revisada 31/7–4/8
+Reemplazar al hombre hablando frente a cámara por una buena locución con imágenes que vayan mostrando lo narrado.
+Apelar más a nostalgia y a estructura de cuento/historia.
+No depender de tener las remeras físicas para producir el primer material.
+Usar IA para generar escenas de previa de recital, staff trabajando, recital “al palo” sin reconocer la banda y modelo en un bar.
+El comienzo debe ser ambiguo: que el espectador no sepa hacia dónde va y se quede por la historia.
+El 4/8 se reafirmó por escrito: “van apareciendo imágenes que grafican lo que dice el texto”.
+11. Guion y calendario textual de FICCTURA
+El documento “CALENDARIO DE CONTENIDO” en Drive contiene copy ya escrito para aproximadamente diez días antes del lanzamiento.
+Reel — “El problema que dio origen a Ficctura”
+La verdad es que Ficctura nació porque nos dimos cuenta de que había un problema.Que encontrar una remera que realmente te quede bien es mucho más difícil de lo que debería ser.Nos obsesionamos con diseñar remeras donde el calce sea tan importante como el diseño o la calidad de la tela.entendimos que no alcanza con elegir una buena tela o hacer un buen diseño. También hay que pensar cómo va a caer esa remera cuando alguien se la ponga.En 10 días presentamos nuestra primera colección.Si querés ver todo el proceso hasta ese día, seguinos.Y contanos en los comentarios: ¿qué es lo primero que mirás cuando elegís una remera?
+Texto existente en el calendario compartido.
+
+Carrusel — “Lo que nadie ve antes de lanzar una colección”
+Pieza
+Texto
+Visual / nota
+Portada
+Antes de presentar una colección, pasan muchas cosas que nadie ve.
+Visual: foto de computadora con lindo fondo (trabajando).
+Slide 2
+Cuando una colección sale a la venta, la mayoría solo ve el resultado. Pero antes de llegar ahí... hay decenas de decisiones.
+<w:tc><w:tcPr><w:tcW w:w="3389" w:type="dxa"/><w:vAlign w:val="center"/></w:tcPr><w:p w14:paraId="4FE12BF8" w14:textId="77777777" w:rsidR="004D5BF7" w:rsidRDefault="00000000"><w:r><w:rPr><w:b/><w:sz w:val="16"/></w:rPr><w:t>Slide 3
+No todas las remeras que diseñamos llegan a una colección. Porque preferimos empezar de nuevo antes que lanzar algo que no nos represente.
+
+Slide 4
+Detrás de una colección hay pruebas. Cambios. Correcciones. Y muchas decisiones que nunca llegan a verse.
+
+Slide 5
+Al final, no diseñamos una colección. Diseñamos la sensación de ponerte una remera y pensar: “Esta sí.”
+
+Slide 6
+En 10 días vas a conocer el resultado de todo este proceso. Y nosotros no podemos esperar a mostrártelo.
+
+El mismo calendario deja previstos, sin guion completo en el archivo, un reel sobre “qué cambia cuando una remera tiene buen calce” y un reel de “Anticipo de lo que viene”.
+
+12. Plan de contenido por marca
+FICCTURA — distribución escrita en manual
+Peso
+Tipo
+Qué mostrar
+40%
+Producto
+Cómo queda puesta; detalles de confección; calidad de tela; caída; costuras, cuello y mangas; durabilidad; comparaciones de calce.
+30%
+Lifestyle
+Personas reales usando FICCTURA en trabajo, salidas, amigos y vida cotidiana.
+20%
+Educación
+Buen corte; cómo elegir una remera; por qué el calce y el molde cambian una prenda; diferencia entre común y premium.
+10%
+Marca
+Origen, proceso de diseño, elección de telas, desarrollo de moldes y problema que dio origen a la marca.
+UNIVERSO 404 — distribución escrita en manual
+Peso
+Tipo
+Qué mostrar
+35%
+Marca e historias
+Historia detrás de cada diseño; referencias ocultas; proceso creativo; colección; inspiración; storytelling.
+30%
+Producto
+Prenda física: calidad, calce, tela, confección. Producto creativo: significado, inspiración, detalles y referencias.
+20%
+Lifestyle
+Personas usando prendas en recitales, cafés, salidas, cine, viajes, amigos y eventos.
+15%
+Comunidad
+Preguntas, encuestas, “¿Qué universo te gustaría ver?”, clientes, reacciones, lanzamientos, detrás de escena y UGC.
+Criterio visual para publicidad
+El producto debe verse bien y su calce debe ser claro; se insistió en no errar color ni corte al cargar/modelar imágenes.
+El 6/8 se pidió “cuidar más la estética del video” en una referencia compartida y eliminar elementos que sobraban.
+Para U404, las imágenes compartidas trabajan con estética backstage/staff, gráfica técnica, texturas gastadas, negro/blanco roto y acentos puntuales.
+Para FICCTURA, la identidad compartida es más minimalista y limpia; el producto básico y el calce son el centro.
+Paleta y tipografías formales siguen marcadas como “A DEFINIR” en ambos manuales: no convertir la observación de los mockups en una paleta oficial sin aprobación.
+
+13. Assets visuales que sí deben estar a mano
+Archivo
+Uso
+Estado / nota
+IMG-20260722-WA0014.jpg
+Orden de producción
+Fuente más clara del producto inicial, 176 unidades, algodón 20/1, colores, cantidades y cuatro diseños.
+IMG-20260717-WA0064.jpg
+Planilla FICCTURA
+Referencia de logo e identidad visual FICCTURA.
+IMG-20260725-WA0004.jpg
+Pieza U404
+Ejemplo de tono gráfico/técnico y humor de marca.
+IMG-20260725-WA0005.jpg
+Plancha de stickers
+Cada cuarto de plancha fue pensado para acompañar la remera correspondiente.
+IMG-20260725-WA0006.jpg
+Pieza conjunta
+Ejemplo de convivencia visual FICCTURA + U404.
+IMG-20260726-WA0013.jpg
+QR U404
+Concepto de QR a incorporar en manga izquierda.
+IMG-20260726-WA0009/10/11/12.jpg
+Mockups iniciales
+Cuatro productos con la incorporación del QR.
+IMG-20260807-WA0030…WA0020
+Diseños propios U404
+Parte de la tanda presentada como sin licencia.
+IMG-20260807-WA0027.jpg
+Venue ficticio
+Reemplazo del concepto CBGB por un bar ficticio.
+IMG-20260807-WA0031/32.jpg
+Bandas inventadas
+Versiones del concepto de crew de recital con bandas ficticias.
+
+Plancha de stickers compartida el 25/7.
+El paquete de assets entregado junto con este brief conserva los nombres originales de archivo para poder volver al mensaje correspondiente del chat.
+
+14. Integraciones y medición previstas
+Los manuales de marca listan como parte de la presencia digital / ecommerce los siguientes componentes. Varios están pendientes de implementación, por lo que el desarrollador debe preverlos en la arquitectura aunque no todos se activen el día uno.
+Instagram.
+Facebook.
+TikTok.
+WhatsApp Business.
+Google Business Profile.
+Google Analytics.
+Google Search Console.
+Google Tag Manager.
+Meta Business Manager.
+Pixel de Meta.
+Catálogo de productos.
+Página web con métodos de pago.
+Vinculación de catálogo con Instagram Shopping y Facebook Shop.
+Meta Ads.
+Google Ads.
+Remarketing.
+Automatización de respuestas por WhatsApp e Instagram.
+Recuperación de carritos abandonados, si la plataforma lo permite.
+Seguimiento postventa.
+Integración futura con email marketing.
+Métricas previstas
+En el manual se plantea monitorear alcance, clics, costo por resultado, tasa de conversión, ROAS y ventas generadas.
+
+15. Responsabilidades visibles en el chat
+No se registró un organigrama formal. Para evitar atribuir cargos inventados, esta sección solo indica tareas que cada persona tomó de manera explícita en la conversación.
+Persona
+Tareas que aparecen en el chat
+Nico
+Diseño de prendas y conceptos; copy e historias; relación con taller; especificaciones de calce; fotos/medidas de la muestra; propuestas de producto, packs y reel.
+Noelia
+Movimiento de Instagram/Facebook; armado/completado de manuales y contenido; dominios; investigación de Payway/tarjetas; piezas visuales y organización de publicidad.
+Pau
+Feedback de producto/calce; coordinación de contenido; referencias de público; precios/promos; necesidad de fotos, medidas y descripción correcta.
+Gonzalo
+Feedback de producto, competencia y precios; referencias de prendas/contenido; validaciones dentro del grupo.
+Juan
+El 8/8 se indicó que “arranca con la Página” y que se lo sumaría al grupo para guiarlo.
+
+16. Checklist para poder publicar
+Desarrollo web
+Resolver técnicamente la convivencia de dos dominios.
+Implementar U404 con catálogo U404 + Básicas FICCTURA.
+Implementar FICCTURA solo con básicos y acceso claro a U404.
+Definir antes de activar ventas si FICCTURA tendrá checkout propio o redirigirá a U404.
+Preparar Payway, transferencia y efectivo.
+Preparar checkout con correo / retiro / mensajería.
+Implementar stock, agotados y captación de interés por WhatsApp.
+Preparar categorías “Próximamente” sin habilitar cobro por productos inexistentes.
+Dejar listas integraciones de analítica/Meta y catálogo social.
+Contenido y producto
+Recibir y cargar fotos reales de la primera muestra una vez aprobada.
+Recibir tabla final de talles y medidas.
+Mostrar especialmente la medida abdominal/ombligo y explicar recomendación de talle.
+Cargar las historias de producto existentes.
+Definir qué diseños propios sin licencia pasan de concepto a catálogo.
+Definir cuál de las estampadas quedará sin estampa en espalda, idea discutida el 7/8.
+Publicidad
+Producir reel madre con dirección revisada: locución + imágenes, narrativa antes que venta directa.
+Usar el speech existente como base, sin perder nostalgia, humor, calce y calidad.
+Preparar versiones de menos de 30 segundos.
+Ejecutar calendario pre-lanzamiento de FICCTURA.
+Arrancar inversión en redes con el presupuesto conversado; Google queda para etapa posterior.
+Reemplazar/actualizar visuales generados cuando existan fotografías reales del producto.
+Datos comerciales todavía necesarios
+Precio final de lista por básica y estampada.
+% final de descuento por transferencia.
+Condiciones y costo real de las 3 cuotas.
+CUIT/facturación para activar Payway.
+Tarifas definitivas de envío y zonas.
+Política final de packs y umbral de envío gratis.
+Política de preventa: fue propuesta, pero no quedó confirmada.
+Paleta y tipografías formales para cada web.
+
+17. Resumen ejecutivo de implementación
+U404
+Web narrativa y de ecommerce amplia. Vende U404 y permite sumar básicas FICCTURA en el mismo proceso. Debe conservar la lógica de historias, referencias, humor y estética de crew/staff.
+
+FICCTURA
+Web más limpia y centrada en básicos. Su argumento principal es calce + calidad. Debe explicar el molde y la comodidad sin presentar al usuario como “cuerpo incluido”.
+
+ECOMMERCE
+Payway + 3 cuotas + transferencia + efectivo; entrega por correo/retiro/mensajería; descuento por transferencia destacado; agotados/próximos con captura de interés.
+
+PUBLICIDAD
+Contar historias antes que mostrar una publicidad convencional. Reel madre con locución e imágenes; nostalgia + humor + adultez sin resignar identidad. Redes primero; Google después.
+
+NO DEFINIR POR CUENTA PROPIA
+Checkout propio de FICCTURA, precio final, % transferencia, tabla de talles final, fotos definitivas, paleta, tipografías y selección final de futuros SKUs.
+
+
+Fin del brief · Estado al 08/08/2026

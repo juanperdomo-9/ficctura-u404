@@ -1,0 +1,491 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   FICCTURA + UNIVERSO 404 — sistema de diseño
+   ==========================================================
+   Colores elegidos por nosotros (manuales del cliente: "A
+   DEFINIR"). Tipografía indicada por el cliente el 10/8/2026,
+   actualizada el 13/8: Orbitron para títulos/códigos/placas de
+   Universo 404, Oxanium para títulos/etiquetas de Ficctura, Exo 2
+   como texto técnico/secundario compartido por las dos (antes era
+   Rajdhani). Logo principal de cada marca: archivo real, no texto
+   (ver static/img/ficctura-logo.png y u404-icon.png). Estética
+   pedida: espaciado amplio, mayúsculas, técnica/limpia/geométrica.
+
+   Criterio de color:
+   - FICCTURA: básicos premium, "más tradicional, neutro,
+     serio" (palabras del cliente) → paleta cálida/neutra tipo
+     hueso + tinta. Acento: azul (pedido del cliente el 10/8 —
+     antes era terracota; probamos celeste/pastel primero y el
+     cliente pidió un azul con más cuerpo).
+   - UNIVERSO 404: "más jodona" (palabras del cliente), estética
+     staff/backstage/credencial de recital → negro industrial +
+     un acento ámbar tipo laminado de "ALL ACCESS".
+   ========================================================== */
+
+@theme {
+    --font-u404: "Orbitron", sans-serif;
+    --font-ficctura: "Oxanium", sans-serif;
+    --font-sans: "Exo 2", sans-serif;
+
+    /* UNIVERSO 404 */
+    --color-u404-bg: #0b0b0c;
+    --color-u404-surface: #17171a;
+    --color-u404-surface-raised: #1f1f23;
+    --color-u404-border: #2a2a2e;
+    --color-u404-ink: #f5f5f0;
+    --color-u404-muted: #8c8c93;
+    --color-u404-accent: #f4c10f;
+    --color-u404-accent-hover: #d9a80a;
+
+    /* FICCTURA */
+    --color-ficctura-bg: #faf9f6;
+    --color-ficctura-surface: #f1eee8;
+    --color-ficctura-surface-raised: #ffffff;
+    --color-ficctura-border: #e3ded4;
+    --color-ficctura-ink: #1c1b18;
+    --color-ficctura-muted: #6b6559;
+    --color-ficctura-accent: #2e6da4;
+    --color-ficctura-accent-hover: #1f4f79;
+}
+
+@font-face {
+    font-family: "Orbitron";
+    src: url("../fonts/orbitron/orbitron-latin-500-normal.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Orbitron";
+    src: url("../fonts/orbitron/orbitron-latin-700-normal.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Orbitron";
+    src: url("../fonts/orbitron/orbitron-latin-900-normal.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Oxanium";
+    src: url("../fonts/oxanium/oxanium-latin-400-normal.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Oxanium";
+    src: url("../fonts/oxanium/oxanium-latin-500-normal.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Oxanium";
+    src: url("../fonts/oxanium/oxanium-latin-600-normal.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Oxanium";
+    src: url("../fonts/oxanium/oxanium-latin-700-normal.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* NOTA: Rajdhani queda sin usar en --font-sans (ver más abajo), pero se
+   dejan sus @font-face por si algo la referencia directo — no molesta,
+   no se carga si no se usa. */
+@font-face {
+    font-family: "Rajdhani";
+    src: url("../fonts/rajdhani/rajdhani-latin-400-normal.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Rajdhani";
+    src: url("../fonts/rajdhani/rajdhani-latin-500-normal.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Rajdhani";
+    src: url("../fonts/rajdhani/rajdhani-latin-600-normal.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Rajdhani";
+    src: url("../fonts/rajdhani/rajdhani-latin-700-normal.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Exo 2 — pedido del cliente (13/8): texto técnico/secundario para las
+   dos marcas (antes era Rajdhani compartido). Títulos siguen Orbitron
+   (U404) y Oxanium (Ficctura), sin cambios. */
+@font-face {
+    font-family: "Exo 2";
+    src: url("../fonts/exo-2/exo-2-latin-400-normal.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Exo 2";
+    src: url("../fonts/exo-2/exo-2-latin-500-normal.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Exo 2";
+    src: url("../fonts/exo-2/exo-2-latin-600-normal.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Exo 2";
+    src: url("../fonts/exo-2/exo-2-latin-700-normal.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: var(--font-sans);
+}
+
+/* Bug real (13/8), en la TIENDA (no solo el admin — ver
+   templates/admin/base_site.html para esa versión): con el navegador
+   en modo oscuro, el popup nativo de un <select> (Windows/Chrome) se
+   pinta con fondo blanco pase lo que pase, pero el texto seguía
+   heredando el color claro de la marca (pensado para el cuadrito
+   cerrado, que sí es transparente/oscuro) — quedaba casi invisible.
+   Se fuerza oscuro sobre claro SOLO en las opciones del desplegable;
+   el cuadrito cerrado no se toca, sigue con el estilo de cada marca. */
+select option {
+    color: #111;
+    background-color: #fff;
+}
+
+:root {
+    /* Altura real del header fijo (banner de promo + banner cruzado +
+       navbar) — la actualiza static/js/header.js en cuanto carga.
+       Este valor es solo el fallback antes de que corra el JS. */
+    --header-h: 64px;
+}
+
+@keyframes scan-sweep {
+    0%   { transform: translateY(-100%); opacity: 0; }
+    10%  { opacity: .5; }
+    90%  { opacity: .5; }
+    100% { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes ring-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+/* Deriva lenta y autónoma del grid de fondo — así cada panel tiene
+   movimiento SIEMPRE, no solo cuando alguien mueve el mouse (el
+   parallax por cursor es aparte, vía --spot-x/--spot-y). */
+@keyframes grid-drift {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(-16px, -12px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0, 0); text-shadow: 0 0 40px rgba(244, 193, 15, .25); }
+    20%      { transform: translate(-3px, 2px); text-shadow: 2px 0 #f4c10f, -2px 0 #ff3b3b; }
+    40%      { transform: translate(3px, -1px); text-shadow: -2px 0 #f4c10f, 2px 0 #2ee6ff; }
+    60%      { transform: translate(-2px, 1px); text-shadow: 0 0 40px rgba(244, 193, 15, .25); }
+    80%      { transform: translate(2px, -2px); text-shadow: 2px 0 #ff3b3b, -2px 0 #2ee6ff; }
+}
+
+.glitching {
+    animation: glitch .28s steps(3) 1;
+}
+
+/* Reveal de entrada — solo se oculta si hay JS (ver el swap de clase
+   no-js -> js en base.html). Sin JS, .reveal-up queda visible siempre,
+   así el contenido nunca depende de que el script cargue. JS agrega
+   .is-in con delay escalonado (ver static/js/gateway.js). */
+.reveal-up {
+    transition: opacity .7s cubic-bezier(.16, 1, .3, 1), transform .7s cubic-bezier(.16, 1, .3, 1);
+}
+.js .reveal-up {
+    opacity: 0;
+    transform: translateY(22px);
+}
+.js .reveal-up.is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Spotlight que sigue el cursor dentro de cada panel del gateway —
+   posición controlada por --spot-x/--spot-y (ver gateway.js). */
+.spotlight {
+    background: radial-gradient(480px circle at var(--spot-x, 50%) var(--spot-y, 50%), var(--spot-color, rgba(255,255,255,.08)), transparent 60%);
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+.group:hover .spotlight {
+    opacity: 1;
+}
+
+/* Cursor tipo mira/HUD por marca — detalle del sistema "credencial de
+   acceso" pedido para el gateway. Color hardcodeado en el SVG (no se
+   puede interpolar un var() de CSS dentro de una data URI de cursor). */
+.cursor-u404 {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='8' fill='none' stroke='%23f4c10f' stroke-width='1.5'/%3E%3Cpath d='M13 1v5M13 20v5M1 13h5M20 13h5' stroke='%23f4c10f' stroke-width='1.5'/%3E%3Ccircle cx='13' cy='13' r='1.4' fill='%23f4c10f'/%3E%3C/svg%3E") 13 13, crosshair;
+}
+.cursor-ficctura {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='8' fill='none' stroke='%232e6da4' stroke-width='1.5'/%3E%3Cpath d='M13 1v5M13 20v5M1 13h5M20 13h5' stroke='%232e6da4' stroke-width='1.5'/%3E%3Ccircle cx='13' cy='13' r='1.4' fill='%232e6da4'/%3E%3C/svg%3E") 13 13, crosshair;
+}
+
+/* ==========================================================
+   NAVBAR — menú mobile + sombra al scrollear
+   ========================================================== */
+
+.mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .35s ease, opacity .25s ease;
+}
+.mobile-menu.is-open {
+    max-height: 24rem;
+    opacity: 1;
+}
+
+[data-navbar] {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow .3s ease;
+}
+[data-navbar].is-scrolled {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+}
+
+/* ==========================================================
+   BANNER DE PROMO — ticker en movimiento + glow pulsante,
+   pedido explícito (10/8: "tiene que llamar la atención").
+   ========================================================== */
+
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.promo-marquee {
+    animation: marquee-scroll 16s linear infinite;
+    width: max-content;
+}
+.promo-marquee:hover {
+    animation-play-state: paused;
+}
+
+@keyframes promo-glow {
+    0%, 100% { box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0); }
+    50%      { box-shadow: inset 0 0 55px var(--glow-color, rgba(0, 0, 0, .25)), 0 0 22px var(--glow-color, rgba(0, 0, 0, .25)); }
+}
+.promo-glow {
+    animation: promo-glow 1.4s ease-in-out infinite;
+    border-bottom: 3px solid var(--edge-color, rgba(255, 255, 255, .6));
+}
+
+.promo-stripes {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, .12) 0, rgba(255, 255, 255, .12) 14px,
+        transparent 14px, transparent 28px
+    );
+}
+
+/* "Más llamativo" (pedido 13/8): destello que barre el banner de vez
+   en cuando, como un brillo pasando sobre metal. */
+@keyframes promo-shine {
+    0%   { transform: translateX(-40%) skewX(-20deg); opacity: 0; }
+    10%  { opacity: 1; }
+    45%  { opacity: 1; }
+    60%  { transform: translateX(220%) skewX(-20deg); opacity: 0; }
+    100% { transform: translateX(220%) skewX(-20deg); opacity: 0; }
+}
+.promo-shine {
+    width: 18%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+    animation: promo-shine 4.5s ease-in-out infinite;
+    mix-blend-mode: overlay;
+}
+
+/* Rayo del badge "Oferta flash": se sacude para llamar la atención sin marearte. */
+@keyframes promo-bolt-shake {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    10%      { transform: rotate(-16deg) scale(1.25); }
+    20%      { transform: rotate(14deg) scale(1.25); }
+    30%      { transform: rotate(0deg) scale(1); }
+}
+.promo-bolt {
+    display: inline-block;
+    animation: promo-bolt-shake 1.6s ease-in-out infinite;
+}
+
+/* Badge del contador cíclico: late para que se note el cambio de número. */
+@keyframes promo-countdown-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.14); }
+}
+.promo-countdown-badge {
+    animation: promo-countdown-pulse .8s ease-in-out infinite;
+}
+
+/* "OFERTA FLASH" — pedido 13/8: "mucho más llamativo, que se sepa que
+   hay una oferta". Toda la franja fija late (no solo el contador), y
+   el fondo alterna entre dos tonos para no dejarlo quieto ni un
+   segundo — imposible de no ver de reojo. */
+@keyframes promo-badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.035); }
+}
+.promo-badge-pulse {
+    animation: promo-badge-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes promo-flash-bg {
+    0%, 100% { background-color: var(--flash-bg-a); }
+    50%      { background-color: var(--flash-bg-b); }
+}
+.promo-flash-bg {
+    animation: promo-flash-bg 1s ease-in-out infinite;
+}
+
+/* ==========================================================
+   PANEL DE CARRITO — desliza desde la derecha. Nada de drawer
+   genérico: mismo lenguaje HUD que el resto del sitio (marcas
+   de esquina, grid, glow del acento).
+   ========================================================== */
+
+.cart-panel {
+    transform: translateX(100%);
+    transition: transform .4s cubic-bezier(.16, 1, .3, 1);
+}
+.cart-panel.is-open {
+    /* !important a propósito: sin esto, Tailwind v4 (capa "utilities"
+       donde termina cayendo este bloque) no dejaba ganar a esta regla
+       más específica contra la de arriba — bug real encontrado
+       probando el panel en mobile, el carrito nunca se abría. */
+    transform: translateX(0) !important;
+}
+
+.cart-scrim {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.cart-scrim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@keyframes cart-badge-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+.cart-badge-pop {
+    animation: cart-badge-pop .35s ease-out;
+}
+
+/* ==========================================================
+   ENFOQUE — animación de entrada al scrollear, para todo el
+   sitio EXCEPTO el gateway (que ya tiene la suya: reveal-up +
+   texto que "decodifica", ver gateway.js/.reveal-up). Pedido
+   explícito del usuario (13/8): algo distinto, no otro
+   fade+slide-up. Este es un "pull focus" de cámara: arranca
+   desenfocado/achicado y se enfoca solo al entrar en pantalla.
+   Se aplica con JS (ver static/js/scroll-fx.js) — el estado
+   "en pantalla" se fuerza por INLINE style, no por una clase
+   combinada (".fx-in .is-in"), mismo criterio que cart-panel/
+   mobile-menu: más robusto contra la cascada que una regla
+   ".a.b" más específica.
+   ========================================================== */
+
+.js [data-fx-focus] {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(.94);
+    transition: opacity .7s cubic-bezier(.16, 1, .3, 1),
+                filter .7s cubic-bezier(.16, 1, .3, 1),
+                transform .7s cubic-bezier(.16, 1, .3, 1);
+    will-change: opacity, filter, transform;
+}
+
+/* ==========================================================
+   MICRO-INTERACCIONES — pedido del usuario (13/8): "sigue
+   sintiendo todo muy estático", quiere más vida además del
+   scroll. Clase reusable para botones/CTAs primarios: se
+   levantan con sombra al hover, bajan un toque al click (feedback
+   táctil). Es :hover/:active, no una clase combinada tipo
+   ".a.b" — no pisa el problema de cascada que tuvo cart-panel.
+   ========================================================== */
+
+.btn-lift {
+    transition: transform .25s cubic-bezier(.16, 1, .3, 1),
+                box-shadow .25s ease,
+                background-color .2s ease;
+}
+.btn-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -10px rgba(0, 0, 0, .4);
+}
+.btn-lift:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .35);
+}
+
+/* Tarjeta de producto: se levanta entera al hover, no solo la
+   imagen (que ya tiene su propio zoom con group-hover:scale-105). */
+.product-card-lift {
+    transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+}
+.product-card-lift:hover {
+    transform: translateY(-6px);
+}
+
+/* Links de navegación: barrita que se dibuja de izquierda a
+   derecha al hover, en vez de solo cambiar de color. */
+.nav-underline {
+    position: relative;
+}
+.nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+}
+.nav-underline:hover::after {
+    transform: scaleX(1);
+}

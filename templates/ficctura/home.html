@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block content %}
+{% include 'ficctura/_navbar.html' %}
+
+{# ===== Hero ===== #}
+<section class="min-h-screen flex flex-col items-center justify-center gap-5 bg-ficctura-bg text-ficctura-ink px-6 text-center pt-[calc(var(--header-h)+2rem)]">
+    <span class="font-sans font-semibold text-[13px] tracking-[0.4em] text-ficctura-accent uppercase">
+        Ficctura
+    </span>
+
+    <h1 class="font-ficctura font-semibold text-4xl md:text-6xl uppercase tracking-wide max-w-3xl leading-[1.15]">
+        Somos una marca obsesionada<br>con crear el calce perfecto
+    </h1>
+
+    <p class="text-ficctura-muted max-w-xl text-sm md:text-base uppercase tracking-[0.1em]">
+        Básicos premium. Calce, calidad y nada más.
+    </p>
+
+    <a href="{% url 'catalog:list' %}"
+       class="mt-4 inline-block font-sans text-sm font-semibold uppercase tracking-[0.25em] px-8 py-4 rounded-sm
+              btn-lift bg-ficctura-accent text-white hover:bg-ficctura-accent-hover transition-colors">
+        Ver catálogo →
+    </a>
+
+    <a href="/" class="text-[11px] uppercase tracking-[0.25em] text-ficctura-muted hover:text-ficctura-accent transition-colors mt-2">
+        ← Volver
+    </a>
+</section>
+
+{# ===== Por qué existe Ficctura ===== #}
+{% comment %}
+Texto tal cual del "CALENDARIO DE CONTENIDO" del brief (reel "El
+problema que dio origen a Ficctura") — copy ya aprobado por el cliente,
+no reescrito.
+{% endcomment %}
+<section data-fx-focus class="bg-ficctura-surface text-ficctura-ink px-6 py-16 border-t border-ficctura-border">
+    <p class="max-w-lg mx-auto text-center leading-8 text-ficctura-muted">
+        La verdad es que Ficctura nació porque nos dimos cuenta de que había un problema.
+        Que encontrar una remera que realmente te quede bien es mucho más difícil de lo que debería ser.
+        Nos obsesionamos con diseñar remeras donde el calce sea tan importante como el diseño o la calidad de la tela.
+    </p>
+</section>
+
+{# ===== Destacados ===== #}
+<section class="bg-ficctura-bg text-ficctura-ink px-6 md:px-10 py-16 border-t border-ficctura-border">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="font-ficctura font-semibold text-xl md:text-2xl uppercase tracking-wide mb-8 text-center">
+            Destacados
+        </h2>
+
+        {% if featured_products %}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for product in featured_products %}
+            {% include 'catalog/_product_card.html' %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-ficctura-muted font-sans text-sm uppercase tracking-[0.1em]">
+            Catálogo en construcción — muy pronto acá.
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+{% include 'ficctura/_footer.html' %}
+{% endblock %}

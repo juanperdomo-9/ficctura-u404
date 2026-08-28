@@ -1,0 +1,29 @@
+<!doctype html>
+{% load static asset_tags %}
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel — {{ brand_config.name }}</title>
+    <link rel="stylesheet" href="{% static_v 'css/output.css' %}">
+</head>
+<body class="bg-[#0f0f12] text-[#e8e8ea] font-sans min-h-screen flex items-center justify-center px-6">
+    <form method="post" class="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[.04] p-8">
+        {% csrf_token %}
+        <p class="text-[11px] uppercase tracking-[0.25em] text-white/40 mb-1">Panel</p>
+        <h1 class="font-bold text-xl mb-6">{{ brand_config.name }}</h1>
+
+        {% if error %}
+        <p class="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-3 py-2 text-sm">{{ error }}</p>
+        {% endif %}
+
+        <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Usuario</label>
+        <input type="text" name="username" required class="w-full mb-4 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-white/40">
+
+        <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Contraseña</label>
+        <input type="password" name="password" required class="w-full mb-6 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-white/40">
+
+        <button type="submit" class="w-full py-3 rounded-lg bg-white text-[#111] font-semibold text-sm hover:opacity-90">Entrar</button>
+    </form>
+</body>
+</html>

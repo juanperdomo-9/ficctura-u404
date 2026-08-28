@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen flex flex-col items-center justify-center gap-8 px-6 text-center pt-[calc(var(--header-h)+2rem)] pb-16
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div>
+        <span class="font-sans font-semibold text-[13px] tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent/80{% else %}text-ficctura-accent{% endif %}">
+            {{ brand_config.name }}
+        </span>
+        <h1 class="{% if brand == 'u404' %}font-u404 font-black{% else %}font-ficctura font-semibold{% endif %} text-3xl md:text-5xl uppercase tracking-wide mt-3">
+            Contacto
+        </h1>
+        <p class="mt-4 max-w-md mx-auto text-sm md:text-base {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            ¿Dudas sobre un producto, un pedido o qué talle elegir? Escribinos.
+        </p>
+    </div>
+
+    {% if brand_config.whatsapp_number or brand_config.instagram %}
+    <div data-fx-focus class="flex flex-col sm:flex-row gap-4">
+        {% if brand_config.whatsapp_number %}
+        <a href="https://wa.me/{{ brand_config.whatsapp_number }}" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm
+                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %} transition-colors">
+            WhatsApp
+        </a>
+        {% endif %}
+        {% if brand_config.instagram %}
+        <a href="https://instagram.com/{{ brand_config.instagram }}" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm border
+                  {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent hover:text-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent hover:text-ficctura-accent{% endif %} transition-colors">
+            @{{ brand_config.instagram }}
+        </a>
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="font-sans text-sm uppercase tracking-[0.1em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        Estamos activando nuestros canales de contacto — muy pronto vas a poder escribirnos directo desde acá.
+    </p>
+    {% endif %}
+
+    <a href="{% url 'catalog:list' %}"
+       class="mt-4 font-sans text-sm font-semibold uppercase tracking-[0.25em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hover:underline">
+        Ver catálogo →
+    </a>
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

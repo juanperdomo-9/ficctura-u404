@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block title %}Catálogo — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-8 text-center">
+        Catálogo
+    </h1>
+
+    <form method="get" role="search" class="max-w-md mx-auto mb-12">
+        <div class="relative">
+            <input type="search" name="q" value="{{ search_query }}" placeholder="Buscar en el catálogo…"
+                   class="w-full font-sans text-sm px-4 py-3 pr-11 rounded-sm border bg-transparent outline-none transition-colors
+                          {% if brand == 'u404' %}border-u404-border text-u404-ink placeholder:text-u404-muted focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink placeholder:text-ficctura-muted focus:border-ficctura-accent{% endif %}">
+            <button type="submit" aria-label="Buscar"
+                    class="absolute right-1 top-0 h-full px-3 flex items-center justify-center {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="M20 20l-3.5-3.5" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </form>
+
+    {% if search_query and not sections %}
+    <p class="text-center {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} uppercase tracking-[0.1em] text-sm mb-12">
+        No encontramos nada para "{{ search_query }}".
+        <a href="{% url 'catalog:list' %}" class="underline {% if brand == 'u404' %}hover:text-u404-accent{% else %}hover:text-ficctura-accent{% endif %}">Ver todo el catálogo</a>
+    </p>
+    {% elif not sections and not coming_soon_categories %}
+    <p class="text-center {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} uppercase tracking-[0.1em] text-sm">
+        Todavía no hay productos cargados.
+    </p>
+    {% endif %}
+
+    {% for category, products in sections %}
+    <section id="cat-{{ category.slug }}" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
+        <div class="flex items-baseline gap-3 mb-6 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-3">
+            <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide">
+                {{ category.name }}
+            </h2>
+
+            {% for promo in category.promotions %}
+            {% if promo.badge_text %}
+            <span title="{{ promo.name }}"
+                  class="font-sans text-[11px] font-bold uppercase tracking-[0.1em] px-2.5 py-1 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+                {{ promo.badge_text }}
+            </span>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+            {% include 'catalog/_product_card.html' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+
+    {% if coming_soon_categories %}
+    <section class="max-w-6xl mx-auto">
+        <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-6 border-b
+                   {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-3">
+            Próximamente
+        </h2>
+        <div class="flex flex-wrap gap-4">
+            {% for category in coming_soon_categories %}
+            <div class="px-5 py-4 rounded-sm border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                <p class="font-sans text-sm uppercase tracking-[0.1em] mb-2">{{ category.name }}</p>
+                {% if brand_config.whatsapp_number %}
+                <a href="{{ category.whatsapp_interest_url }}" target="_blank" rel="noopener"
+                   class="font-sans text-[11px] uppercase tracking-[0.2em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hover:underline">
+                    Avisame →
+                </a>
+                {% else %}
+                <span class="font-sans text-[11px] uppercase tracking-[0.2em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Muy pronto
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if brand == 'u404' and not search_query %}
+    {% comment %}
+    Cross-sell a Ficctura: antes las básicas de Ficctura aparecían
+    mezcladas acá mismo (ver catalog_list); ahora las vidrieras están
+    separadas y en su lugar invitamos a cruzar de tienda. Se oculta
+    durante una búsqueda para no distraer de los resultados.
+    {% endcomment %}
+    <section class="max-w-6xl mx-auto mt-4 rounded-sm border border-ficctura-border bg-ficctura-bg text-ficctura-ink px-6 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div>
+            <p class="font-ficctura font-bold text-xl md:text-2xl uppercase tracking-wide mb-2">
+                ¿Lo tuyo es lo simple?
+            </p>
+            <p class="font-sans text-sm md:text-base text-ficctura-muted">
+                FICCTURA es la otra mitad de este universo: básicos premium, sin estampas ni vueltas.
+            </p>
+        </div>
+        <a href="{{ brand_urls.ficctura }}"
+           class="shrink-0 font-sans text-sm font-bold uppercase tracking-[0.15em] px-6 py-3 rounded-sm bg-ficctura-accent text-white hover:opacity-90 transition">
+            Conocé FICCTURA →
+        </a>
+    </section>
+    {% endif %}
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

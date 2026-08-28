@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block title %}Reservar {{ product.name }} — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-4xl mx-auto">
+
+        <a href="{% url 'catalog:detail' product.slug %}"
+           class="inline-block mb-8 font-sans text-[11px] uppercase tracking-[0.25em]
+                  {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+            ← Volver a {{ product.name }}
+        </a>
+
+        <div class="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
+
+            {# Acá SÍ se ve la remera bien, sin difuminar #}
+            <div class="aspect-[3/4] rounded-sm border overflow-hidden flex items-center justify-center
+                        {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}">
+                {% with image=product.primary_image %}
+                {% if image %}
+                <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}" class="w-full h-full object-cover">
+                {% else %}
+                <span class="font-sans text-xs uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Sin imagen todavía
+                </span>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            <div>
+                <span class="font-sans text-xs uppercase tracking-[0.3em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                    Agotado
+                </span>
+                <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-4 mt-2">
+                    {{ product.name }}
+                </h1>
+
+                {% if reserved %}
+                <div class="p-5 rounded-sm border {% if brand == 'u404' %}border-u404-accent bg-u404-surface{% else %}border-ficctura-accent bg-ficctura-surface{% endif %}">
+                    <p class="font-sans font-semibold uppercase tracking-[0.1em] text-sm mb-1
+                              {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                        ¡Listo, quedó reservado!
+                    </p>
+                    <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Te vamos a avisar apenas esté disponible en la próxima entrega.
+                    </p>
+                </div>
+                {% else %}
+                <p class="font-sans leading-7 mb-6 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Este modelo está agotado por ahora. Dejanos tus datos y contalo como reserva para la
+                    próxima tanda de producción — nos sirve para saber qué remeras priorizar.
+                </p>
+
+                {% if error %}
+                <p class="font-sans text-sm mb-4 {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                    {{ error }}
+                </p>
+                {% endif %}
+
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+
+                    <div>
+                        <label for="id_name" class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                            Nombre
+                        </label>
+                        <input type="text" name="name" id="id_name" required
+                               class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent
+                                      {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}
+                                      outline-none transition-colors">
+                    </div>
+
+                    <div>
+                        <label for="id_contact" class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                            WhatsApp
+                        </label>
+                        <input type="tel" name="contact" id="id_contact" required placeholder="Ej: +54 9 11 1234-5678"
+                               class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent
+                                      {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}
+                                      outline-none transition-colors">
+                    </div>
+
+                    {% if sizes %}
+                    <div>
+                        <label for="id_size" class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                            Talle que te interesaría
+                        </label>
+                        <select name="size" id="id_size"
+                                class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent
+                                       {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}
+                                       outline-none transition-colors">
+                            <option value="">Cualquiera</option>
+                            {% for size in sizes %}
+                            <option value="{{ size.id }}">{{ size.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    <button type="submit"
+                            class="w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                                   btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                        Reservar para la próxima entrega
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

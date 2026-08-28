@@ -1,0 +1,22 @@
+{
+  "name": "ficctura-u404",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css",
+    "watch:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fontsource/exo-2": "^5.3.0",
+    "@fontsource/orbitron": "^5.3.0",
+    "@fontsource/oxanium": "^5.3.0",
+    "@fontsource/rajdhani": "^5.3.0",
+    "@tailwindcss/cli": "^4.3.3",
+    "lucide": "^1.25.0",
+    "tailwindcss": "^4.3.3"
+  }
+}

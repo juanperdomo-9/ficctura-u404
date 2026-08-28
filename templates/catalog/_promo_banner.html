@@ -1,0 +1,81 @@
+{% load asset_tags %}
+{% comment %}
+Ticker de promos activas — ver core/context_processors.py::brand. Se
+arma solo con TODO lo que esté activo en este momento (Promotion,
+PaymentDiscount, anuncio de BrandPromotion), sin vincular nada a mano.
+Se incluye desde cada navbar solo cuando hay algo activo
+({{ banner_items }} no vacío).
+
+Rediseño "mucho más llamativo, que se sepa que hay una oferta" (pedido
+del usuario, 13/8, segunda vuelta) + contador cíclico: franja de
+"OFERTA FLASH" fija a la izquierda, con fondo que alterna negro/rojo
+sin parar (rojo = "urgente" universal, no compite con los colores de
+marca del resto del sitio) y un contador que cuenta 10 minutos, corta,
+y se reinicia solo a los 5 — ver static/js/promo-countdown-cycle.js.
+Sincronizado por reloj (no por cuándo cada visita cargó la página), así
+todos ven el mismo número.
+{% endcomment %}
+{% if banner_link %}<a href="{{ banner_link }}"{% else %}<div{% endif %}
+     style="--glow-color: {% if brand == 'u404' %}rgba(244,193,15,.6){% else %}rgba(46,109,164,.6){% endif %};
+            --edge-color: {% if brand == 'u404' %}#f4c10f{% else %}#dc2626{% endif %};"
+     class="flex items-stretch relative overflow-hidden promo-glow
+            {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+
+    <div class="promo-stripes absolute inset-0 pointer-events-none"></div>
+    <div class="promo-shine absolute inset-y-0 pointer-events-none"></div>
+
+    {% comment %} Franja fija — no scrollea con el resto, es el "gancho" visual. Negro/rojo pulsante: imposible de no ver de reojo. {% endcomment %}
+    <div style="--flash-bg-a: #0b0b0c; --flash-bg-b: #dc2626;"
+         class="promo-flash-bg promo-badge-pulse relative shrink-0 flex items-center gap-2.5 pl-4 md:pl-6 pr-4 py-3 md:py-3.5 text-white">
+        <span class="promo-bolt text-xl md:text-2xl leading-none">⚡</span>
+        <span class="font-sans font-black text-sm md:text-base uppercase tracking-[0.15em] whitespace-nowrap">
+            Oferta flash
+        </span>
+        <span data-promo-cycle
+              class="hidden items-center justify-center font-sans text-sm md:text-base font-black tabular-nums px-2.5 py-1 rounded-sm promo-countdown-badge whitespace-nowrap bg-white text-red-600">
+            10:00
+        </span>
+    </div>
+
+    <div class="relative overflow-hidden py-3 flex-1">
+        <div class="promo-marquee flex items-center gap-16">
+            {% for i in "12" %}
+            {% for item in banner_items %}
+            <div class="flex items-center gap-4 shrink-0 pl-16">
+                <span class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-base md:text-lg uppercase tracking-widest">
+                    {{ item.text }}
+                </span>
+
+                {% if item.countdown_to %}
+                <span class="promo-badge-pulse inline-flex items-center gap-1.5 font-sans text-xs md:text-sm font-black uppercase tracking-[0.1em] px-2.5 py-1 rounded-sm bg-white text-red-600">
+                    ⏰ Termina en
+                    <span data-countdown-to="{{ item.countdown_to|date:'c' }}" class="tabular-nums">--:--:--</span>
+                </span>
+                {% endif %}
+
+                {% if forloop.last and banner_urgency %}
+                {% if banner_urgency.urgency_type == 'stock' or banner_urgency.urgency_type == 'both' %}
+                {% if banner_urgency.urgency_stock_limit and banner_urgency.urgency_stock_remaining is not None %}
+                <span class="promo-badge-pulse inline-flex items-center gap-1.5 font-sans text-xs md:text-sm font-black uppercase tracking-[0.1em] px-2.5 py-1 rounded-sm bg-white text-red-600">
+                    🔥 {{ banner_urgency.urgency_stock_remaining }} / {{ banner_urgency.urgency_stock_limit }} unidades
+                </span>
+                {% endif %}
+                {% endif %}
+
+                {% if banner_urgency.urgency_type == 'countdown' or banner_urgency.urgency_type == 'both' %}
+                {% if banner_urgency.urgency_countdown_active %}
+                <span class="promo-badge-pulse inline-flex items-center gap-1.5 font-sans text-xs md:text-sm font-black uppercase tracking-[0.1em] px-2.5 py-1 rounded-sm bg-white text-red-600">
+                    ⏰ Termina en
+                    <span data-countdown-to="{{ banner_urgency.urgency_countdown_ends_at|date:'c' }}" class="tabular-nums">--:--:--</span>
+                </span>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+{% if banner_link %}</a>{% else %}</div>{% endif %}
+
+<script src="{% static_v 'js/promo-countdown-cycle.js' %}"></script>

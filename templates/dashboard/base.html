@@ -1,0 +1,71 @@
+<!doctype html>
+{% load static asset_tags %}
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Panel{% endblock %} — {{ brand_config.name }}</title>
+    <link rel="stylesheet" href="{% static_v 'css/output.css' %}">
+</head>
+<body class="bg-[#0f0f12] text-[#e8e8ea] font-sans min-h-screen flex">
+
+    <aside class="w-60 shrink-0 bg-[#141417] border-r border-white/10 min-h-screen p-5 flex flex-col gap-1">
+        <div class="mb-6">
+            <p class="text-[11px] uppercase tracking-[0.25em] text-white/40">Panel</p>
+            <p class="font-bold text-lg">{{ brand_config.name }}</p>
+        </div>
+        <a href="{% url 'dashboard:resumen' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'resumen' %}dash-nav-link--active{% endif %}">Resumen</a>
+        <a href="{% url 'dashboard:category_list' %}" class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Categorías</a>
+        <a href="{% url 'dashboard:product_list' %}" class="dash-nav-link {% if 'product' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Productos</a>
+        <a href="{% url 'dashboard:order_list' %}" class="dash-nav-link {% if 'order' in request.resolver_match.url_name %}dash-nav-link--active{% endif %}">Pedidos</a>
+        {% comment %}
+        Ofertas — pedido del usuario (13/8). No se reconstruyó acá: ya
+        existe una sección de Promociones bien armada en /admin/ (regla
+        en criollo, toggle directo, contador cíclico) hecha esta misma
+        sesión — se linkea en vez de duplicar el trabajo.
+        {% endcomment %}
+        <a href="/admin/" class="dash-nav-link" target="_blank">Ofertas →</a>
+
+        <div class="mt-auto pt-4 border-t border-white/10 space-y-1">
+            <a href="{% url 'catalog:list' %}" class="dash-nav-link">Ver tienda →</a>
+            <form method="post" action="{% url 'dashboard:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="dash-nav-link w-full text-left">Cerrar sesión</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-10">
+        {% if messages %}
+        <div class="mb-6 space-y-2">
+            {% for message in messages %}
+            <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 px-4 py-3 text-sm">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <style>
+        .dash-nav-link { display: block; padding: .6rem .75rem; border-radius: .75rem; font-size: .85rem; color: rgba(255,255,255,.6); transition: background-color .15s, color .15s; }
+        .dash-nav-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+        .dash-nav-link--active { background: rgba(255,255,255,.1); color: #fff; font-weight: 600; }
+        .dash-card { border-radius: 1.25rem; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); }
+        .dash-input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); border-radius: .6rem; padding: .55rem .75rem; color: #fff; font-size: .875rem; }
+        .dash-input:focus { outline: none; border-color: rgba(255,255,255,.4); }
+        .dash-btn { display: inline-block; padding: .6rem 1.25rem; border-radius: .6rem; background: #fff; color: #111; font-weight: 600; font-size: .85rem; }
+        .dash-btn:hover { opacity: .9; }
+        .dash-btn--ghost { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #fff; }
+        /* Filas "crudas" del formset (variant-row / photo-row): son los
+           forms reales de Django, viajan dentro del <form> para que
+           todo se guarde bien, pero el JS del panel arma su propia UI
+           (pills, miniaturas) y solo saca de acá el input puntual que
+           necesita mostrar (ej: el de stock, que sí queda visible
+           adentro del pill al moverse ahí). El resto de cada fila
+           queda siempre oculto, viva donde viva en el DOM. */
+        .variant-row, .photo-row { display: none; }
+    </style>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

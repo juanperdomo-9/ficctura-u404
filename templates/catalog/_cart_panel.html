@@ -1,0 +1,75 @@
+{% comment %}
+Panel de carrito — desliza desde la derecha, HUD como el resto del
+sitio (marcas de esquina, grid, acento). Se incluye desde cada navbar.
+El contenido interno lo pinta static/js/cart.js con fetch a
+catalog:cart_state — este HTML es solo el cascarón + el estado inicial
+server-rendered de {{ cart }} (progressive enhancement: funciona
+aunque el JS tarde en cargar).
+{% endcomment %}
+<div id="cart-scrim" class="cart-scrim fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm"></div>
+
+<aside id="cart-panel"
+       class="cart-panel fixed right-0 top-0 z-[100] h-screen w-full max-w-md flex flex-col overflow-hidden
+              {% if brand == 'u404' %}bg-u404-bg text-u404-ink border-l border-u404-border{% else %}bg-ficctura-bg text-ficctura-ink border-l border-ficctura-border{% endif %}">
+
+    <div class="pointer-events-none absolute inset-0 opacity-[0.05]
+                [background-image:linear-gradient(#808080_1px,transparent_1px),linear-gradient(90deg,#808080_1px,transparent_1px)]
+                [background-size:36px_36px]"></div>
+
+    <span class="absolute top-5 left-5 w-6 h-6 border-t-2 border-l-2 {% if brand == 'u404' %}border-u404-accent/60{% else %}border-ficctura-accent/60{% endif %}"></span>
+    <span class="absolute top-5 right-16 w-6 h-6 border-t-2 border-r-2 {% if brand == 'u404' %}border-u404-accent/60{% else %}border-ficctura-accent/60{% endif %}"></span>
+
+    {# Header #}
+    <div class="relative flex items-center justify-between px-6 py-5 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+        <div>
+            <span class="block font-sans text-[11px] uppercase tracking-[0.35em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                {{ brand_config.name }}
+            </span>
+            <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-2xl uppercase tracking-wide">
+                Tu carrito
+            </h2>
+        </div>
+        <button type="button" id="cart-close" aria-label="Cerrar carrito"
+                class="flex items-center justify-center w-10 h-10 rounded-full border {% if brand == 'u404' %}border-u404-border text-white hover:border-u404-accent hover:text-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent hover:text-ficctura-accent{% endif %} transition-colors">
+            ✕
+        </button>
+    </div>
+
+    {# Items #}
+    <div id="cart-items" class="relative flex-1 overflow-y-auto px-6 py-6 space-y-5">
+        {% if not cart|length %}
+        <p class="text-center {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} font-sans text-sm uppercase tracking-[0.1em] mt-10">
+            Todavía no agregaste nada.
+        </p>
+        {% endif %}
+        {# El resto lo arma cart.js en cuanto carga — ver renderCart(). #}
+    </div>
+
+    {# Promos aplicadas #}
+    <div id="cart-promotions" class="relative px-6 empty:hidden"></div>
+
+    {# Footer #}
+    <div class="relative border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} px-6 py-6">
+        <div id="cart-totals" class="space-y-1.5 mb-5 font-sans text-sm">
+            <div class="flex justify-between {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$ 0</span>
+            </div>
+            <div id="cart-discount-row" class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hidden">
+                <span>Descuento</span>
+                <span id="cart-discount">- $ 0</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg {% if brand == 'u404' %}text-white{% else %}text-ficctura-ink{% endif %} pt-2">
+                <span>Total</span>
+                <span id="cart-total">$ 0</span>
+            </div>
+        </div>
+
+        <a href="{% url 'catalog:checkout' %}"
+           class="block w-full text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+            Finalizar compra
+        </a>
+    </div>
+
+</aside>

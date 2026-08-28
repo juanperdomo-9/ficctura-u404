@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static asset_tags %}
+
+{% block title %}{{ section_title }} — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center pt-[calc(var(--header-h)+2rem)]
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <span class="font-sans text-xs tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+        {{ brand_config.name }}
+    </span>
+
+    <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-5xl uppercase tracking-wide">
+        {{ section_title }}
+    </h1>
+
+    <p class="{% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} max-w-md text-sm md:text-base uppercase tracking-[0.1em]">
+        Esta sección está en construcción.
+    </p>
+
+    <a href="{% url 'core:shop' %}"
+       class="mt-4 text-[11px] uppercase tracking-[0.25em] transition-colors
+              {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %}">
+        ← Volver a la tienda
+    </a>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

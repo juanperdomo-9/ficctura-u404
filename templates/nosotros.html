@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Nosotros — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="{% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    {# ===== Hero: esencia de marca (manual de marca, textual) ===== #}
+    <section class="min-h-[70vh] flex flex-col items-center justify-center gap-5 px-6 text-center pt-[calc(var(--header-h)+2rem)] pb-16">
+        <span class="font-sans font-semibold text-[13px] tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent/80{% else %}text-ficctura-accent{% endif %}">
+            {{ brand_config.name }}
+        </span>
+
+        {% if brand == 'u404' %}
+        <h1 class="font-u404 font-black text-3xl md:text-5xl uppercase tracking-wide max-w-3xl leading-[1.1] [text-shadow:0_0_40px_rgba(244,193,15,0.2)]">
+            Creamos uniformes de trabajo<br>para universos que no existen
+        </h1>
+        {% else %}
+        <h1 class="font-ficctura font-semibold text-3xl md:text-5xl uppercase tracking-wide max-w-3xl leading-[1.15]">
+            Somos una marca obsesionada<br>con crear el calce perfecto
+        </h1>
+        {% endif %}
+    </section>
+
+    {# ===== Historia de origen (brief, guiones de reel — adaptados de video a lectura, mismos hechos y frases) ===== #}
+    <section data-fx-focus class="px-6 py-16 border-t {% if brand == 'u404' %}border-u404-border bg-u404-surface{% else %}border-ficctura-border bg-ficctura-surface{% endif %}">
+        <div class="max-w-lg mx-auto space-y-6 leading-8 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            {% if brand == 'u404' %}
+            <p>
+                Todo arranca con una pregunta: ¿te acordás cuando tenías 18 o 20 años y buscabas tu primer laburo?
+                Nosotros no te podemos dar esos recuerdos — pero sí la remera que te hubiese quedado. Buena calidad,
+                con un calce pensado para quedarte mejor hoy de lo que te habría quedado en ese momento.
+            </p>
+            <p>
+                Son remeras que cuentan la historia que te hubiese encantado vivir. Porque crecer y ser adulto no
+                debería significar vestirse como el contador de la empresa donde arrancaste de cadete.
+            </p>
+            <p>
+                Usamos algodón 20/1, lo mejor para que una remera caiga bien y no se deforme, con costuras
+                reforzadas. Sin importar tu edad ni tu talle, porque la ropa también tiene que acompañar el cuerpo
+                que tenés hoy.
+            </p>
+            {% else %}
+            <p>
+                Antes de presentar una colección, pasan muchas cosas que nadie ve: decenas de decisiones, pruebas,
+                cambios y correcciones que nunca llegan a mostrarse.
+            </p>
+            <p>
+                No todas las remeras que diseñamos llegan a una colección — preferimos empezar de nuevo antes que
+                lanzar algo que no nos represente.
+            </p>
+            <p>
+                Al final, no diseñamos una colección. Diseñamos la sensación de ponerte una remera y pensar:
+                <span class="italic">"Esta sí."</span>
+            </p>
+            {% endif %}
+        </div>
+    </section>
+
+    {# ===== Frase ancla, grande ===== #}
+    <section data-fx-focus class="px-6 py-20 text-center">
+        {% if brand == 'u404' %}
+        <p class="font-u404 font-bold text-2xl md:text-4xl uppercase tracking-wide max-w-3xl mx-auto leading-tight">
+            "Somos habitantes del Universo 404 y tenemos ropa de mundos que no existen... pero deberían."
+        </p>
+        {% else %}
+        <p class="font-ficctura font-semibold text-2xl md:text-4xl uppercase tracking-wide max-w-3xl mx-auto leading-tight">
+            "Vestirse bien debería ser una experiencia simple. No una búsqueda interminable."
+        </p>
+        {% endif %}
+    </section>
+
+    {# ===== Banco de frases (manual de marca, textuales) ===== #}
+    <section data-fx-focus class="px-6 md:px-10 py-16 border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+        <div class="max-w-4xl mx-auto grid sm:grid-cols-2 gap-6 md:gap-8">
+            {% if brand == 'u404' %}
+            <p class="sm:col-span-2 text-center font-sans text-lg md:text-xl font-semibold uppercase tracking-[0.05em] text-u404-muted">
+                No es una estampa. Es una referencia.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-u404-muted">
+                Si entendés el diseño, ya sos parte.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-u404-muted">
+                Hay historias que nunca dejamos atrás.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-u404-muted">
+                No hacemos merchandising. Diseñamos universos.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-u404-muted">
+                Las mejores referencias son las que no necesitan explicación.
+            </p>
+            {% else %}
+            <p class="sm:col-span-2 text-center font-sans text-lg md:text-xl font-semibold uppercase tracking-[0.05em] text-ficctura-muted">
+                Por fin encontré una marca que pensó en mí.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-ficctura-muted">
+                Por fin una marca que entendió lo que necesito.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-ficctura-muted">
+                Encontrar una remera que realmente te quede bien cambia todo.
+            </p>
+            <p class="font-sans text-sm md:text-base uppercase tracking-[0.05em] text-ficctura-muted sm:col-span-2">
+                Crecer no debería significar empezar a vestirse de contador — ahora tengo la ropa que me hace
+                sentir de la edad que siento, no de la que tengo.
+            </p>
+            {% endif %}
+        </div>
+    </section>
+
+    {# ===== Cross-sell a la otra marca ===== #}
+    <section data-fx-focus class="px-6 py-16 border-t {% if brand == 'u404' %}border-u404-border bg-u404-surface{% else %}border-ficctura-border bg-ficctura-surface{% endif %} text-center">
+        {% if brand == 'u404' %}
+        <p class="max-w-md mx-auto text-sm md:text-base text-u404-muted mb-6">
+            "El corte perfecto de FICCTURA, pero con una historia con onda."
+        </p>
+        <a href="{{ brand_urls.ficctura }}"
+           class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.25em] px-8 py-4 rounded-sm btn-lift bg-u404-accent text-u404-bg hover:bg-u404-accent-hover transition-colors">
+            Conocé FICCTURA →
+        </a>
+        {% else %}
+        <p class="max-w-md mx-auto text-sm md:text-base text-ficctura-muted mb-6">
+            ¿Buscás las gráficas con historia?
+        </p>
+        <a href="{{ brand_urls.u404 }}"
+           class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.25em] px-8 py-4 rounded-sm btn-lift bg-ficctura-accent text-white hover:bg-ficctura-accent-hover transition-colors">
+            Conocé UNIVERSO 404 →
+        </a>
+        {% endif %}
+    </section>
+
+    <div class="text-center py-14">
+        <a href="{% url 'catalog:list' %}"
+           class="font-sans text-sm font-semibold uppercase tracking-[0.25em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hover:underline">
+            Ver catálogo →
+        </a>
+    </div>
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

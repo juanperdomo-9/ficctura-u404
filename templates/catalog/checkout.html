@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% load catalog_extras static asset_tags %}
+
+{% block title %}Checkout — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-white{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-5xl mx-auto">
+        <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-10 text-center">
+            Checkout
+        </h1>
+
+        <div class="grid md:grid-cols-2 gap-10 md:gap-14">
+
+            {# ===== Resumen del pedido ===== #}
+            <div>
+                <h2 class="font-sans text-xs uppercase tracking-[0.2em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Tu pedido
+                </h2>
+
+                <div class="space-y-4 mb-6">
+                    {% for item in items %}
+                    <div class="flex gap-3 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-4">
+                        <div class="w-14 h-16 rounded-sm overflow-hidden flex-shrink-0
+                                    {% if brand == 'u404' %}bg-u404-surface{% else %}bg-ficctura-surface{% endif %} flex items-center justify-center">
+                            {% with image=item.variant.product.primary_image %}
+                            {% if image %}
+                            <img src="{{ image.image.url }}" alt="" class="w-full h-full object-cover">
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-sans text-sm font-semibold uppercase">{{ item.variant.product.name }}</p>
+                            <p class="font-sans text-xs uppercase {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                                {{ item.variant.size.name }} · {{ item.variant.color }} · x{{ item.quantity }}
+                            </p>
+                        </div>
+                        <div class="font-sans text-sm font-semibold">{{ item.subtotal|pesos }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if promotions %}
+                <div class="mb-6 space-y-2">
+                    {% for d in promotions %}
+                    <div class="px-4 py-3 rounded-sm border {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %} font-sans text-sm">
+                        🎁 <strong>{{ d.promotion.badge_text|default:d.promotion.name }}</strong> aplicado — {{ d.free_units }} unidad(es) con descuento
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="space-y-1.5 font-sans text-sm">
+                    <div class="flex justify-between {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        <span>Subtotal</span><span>{{ subtotal|pesos }}</span>
+                    </div>
+                    {% if discount %}
+                    <div class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                        <span>Descuento</span><span>− {{ discount|pesos }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex justify-between font-bold text-lg pt-2">
+                        <span>Total</span>
+                        <span id="checkout-total"
+                              data-base-total="{{ total_after_promo }}"
+                              data-currency-total="{{ total }}">{{ total|pesos }}</span>
+                    </div>
+                    <p id="checkout-payment-discount-note" class="hidden text-right {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}"></p>
+                </div>
+            </div>
+
+            {# ===== Formulario ===== #}
+            <div>
+                {% if error %}
+                <p class="mb-4 px-4 py-3 rounded-sm border font-sans text-sm
+                          {% if brand == 'u404' %}border-u404-accent text-u404-accent{% else %}border-ficctura-accent text-ficctura-accent{% endif %}">
+                    {{ error }}
+                </p>
+                {% endif %}
+
+                <form method="post" id="checkout-form"
+                      data-payway-configured="{{ payway_configured|yesno:'true,false' }}"
+                      data-payway-public-key="{{ payway_public_key }}"
+                      data-payway-api-base-url="{{ payway_api_base_url }}"
+                      class="space-y-5">
+                    {% csrf_token %}
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Nombre</label>
+                            <input type="text" name="name" required
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %} outline-none transition-colors">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">WhatsApp</label>
+                            <input type="tel" name="contact" required placeholder="Ej: +54 9 11 1234-5678"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %} outline-none transition-colors">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Dirección (si es correo/mensajería)</label>
+                            <input type="text" name="address"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %} outline-none transition-colors">
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="font-sans text-xs uppercase tracking-[0.2em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Entrega</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for value, label in delivery_choices %}
+                            <label class="cursor-pointer">
+                                <input type="radio" name="delivery_method" value="{{ value }}" class="sr-only peer" required>
+                                <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                             {% if brand == 'u404' %}
+                                             border-u404-border text-white
+                                             peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent
+                                             {% else %}
+                                             border-ficctura-border text-ficctura-ink
+                                             peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent
+                                             {% endif %}">
+                                    {{ label }}
+                                </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="font-sans text-xs uppercase tracking-[0.2em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Pago</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for value, label in payment_choices %}
+                            <label class="cursor-pointer {% if value == 'tarjeta' and not payway_configured %}opacity-40{% endif %}">
+                                <input type="radio" name="payment_preference" value="{{ value }}" class="sr-only peer" required
+                                       data-payment-option
+                                       data-discount-percent="{{ payment_discount_percents|dict_get:value|default:0 }}"
+                                       {% if value == 'tarjeta' and not payway_configured %}disabled{% endif %}>
+                                <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                             {% if brand == 'u404' %}
+                                             border-u404-border text-white
+                                             peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent
+                                             {% else %}
+                                             border-ficctura-border text-ficctura-ink
+                                             peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent
+                                             {% endif %}">
+                                    {{ label }}{% if value == 'tarjeta' and not payway_configured %} (Próximamente){% endif %}
+                                    {% with pct=payment_discount_percents|dict_get:value %}
+                                    {% if pct %}<strong>· {{ pct }}% off</strong>{% endif %}
+                                    {% endwith %}
+                                </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% comment %}
+                    Campos de tarjeta — solo visibles/requeridos si eligen
+                    "tarjeta". static/js/checkout.js los muestra/oculta y
+                    tokeniza con el SDK de Payway/Decidir antes de mandar
+                    el form (nunca viaja el número de tarjeta a nuestro
+                    servidor, solo el token).
+                    {% endcomment %}
+                    {% if payway_configured %}
+                    <div id="card-fields" class="hidden space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="col-span-2">
+                                <input type="text" data-decidir="card_number" placeholder="Número de tarjeta"
+                                       class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            </div>
+                            <input type="text" data-decidir="card_expiration_month" placeholder="MM"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            <input type="text" data-decidir="card_expiration_year" placeholder="AA"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            <input type="text" data-decidir="security_code" placeholder="CVV"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            <input type="text" data-decidir="card_holder_doc_number" placeholder="DNI del titular"
+                                   class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            <div class="col-span-2">
+                                <input type="text" data-decidir="card_holder_name" placeholder="Nombre del titular (como figura en la tarjeta)"
+                                       class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %} outline-none">
+                            </div>
+                            <select data-decidir="card_holder_doc_type"
+                                    class="hidden w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
+                                <option value="dni" selected>DNI</option>
+                            </select>
+                            <select name="installments"
+                                    class="col-span-2 w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
+                                <option value="1">1 pago</option>
+                                <option value="3">3 cuotas</option>
+                            </select>
+                        </div>
+                        <p data-payway-error class="hidden font-sans text-xs {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}"></p>
+                    </div>
+                    <input type="hidden" name="payway_token">
+                    {% endif %}
+
+                    <div>
+                        <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Notas (opcional)</label>
+                        <textarea name="notes" rows="2"
+                                  class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent {% if brand == 'u404' %}border-u404-border text-white focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %} outline-none transition-colors"></textarea>
+                    </div>
+
+                    <button type="submit" id="checkout-submit"
+                            class="w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                                   btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                        Confirmar pedido
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+
+{% if payway_configured %}
+<script src="{{ payway_js_sdk_url }}"></script>
+{% endif %}
+<script src="{% static_v 'js/checkout.js' %}"></script>
+{% endblock %}

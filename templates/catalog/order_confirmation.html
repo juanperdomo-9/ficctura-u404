@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block title %}Pedido #{{ order.id }} — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10 text-center
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-xl mx-auto">
+        <span class="font-sans text-xs uppercase tracking-[0.3em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+            Pedido #{{ order.id }}
+        </span>
+
+        {% if order.status == 'confirmed' %}
+        <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mt-2 mb-4">
+            ¡Pago confirmado!
+        </h1>
+        <p class="{% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} mb-8">
+            Gracias {{ order.name }}, tu pago con tarjeta se procesó bien. Te vamos a escribir para coordinar la entrega.
+        </p>
+        {% else %}
+        <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mt-2 mb-4">
+            ¡Pedido registrado!
+        </h1>
+        <p class="{% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} mb-8">
+            Gracias {{ order.name }}. Todavía falta coordinar el pago
+            ({{ order.get_payment_preference_display }}) — te contactamos para eso.
+        </p>
+        {% endif %}
+
+        <div class="text-left mb-8 border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} rounded-sm p-5 space-y-3">
+            {% for item in order.items.all %}
+            <div class="flex justify-between font-sans text-sm">
+                <span>{{ item.product_name }} — {{ item.size }} · {{ item.color }} × {{ item.quantity }}</span>
+                <span>{{ item.subtotal|pesos }}</span>
+            </div>
+            {% endfor %}
+            <div class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pt-3 flex justify-between font-bold">
+                <span>Total</span><span>{{ order.total|pesos }}</span>
+            </div>
+            <p class="font-sans text-xs uppercase tracking-[0.1em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} pt-2">
+                Entrega: {{ order.get_delivery_method_display }}
+            </p>
+        </div>
+
+        {% with wa_url=order.whatsapp_url %}
+        {% if wa_url %}
+        <a href="{{ wa_url }}" target="_blank" rel="noopener"
+           class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm transition-colors
+                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+            Coordinemos por WhatsApp →
+        </a>
+        {% endif %}
+        {% endwith %}
+
+        <div class="mt-6">
+            <a href="{% url 'catalog:list' %}" class="font-sans text-[11px] uppercase tracking-[0.25em] {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+                ← Seguir viendo el catálogo
+            </a>
+        </div>
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

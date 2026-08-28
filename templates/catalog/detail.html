@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% load catalog_extras static asset_tags %}
+
+{% block title %}{{ product.name }} — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-5xl mx-auto">
+
+        <a href="{% url 'catalog:list' %}"
+           class="inline-block mb-8 font-sans text-[11px] uppercase tracking-[0.25em]
+                  {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+            ← Volver al catálogo
+        </a>
+
+        <div class="grid md:grid-cols-2 gap-10 md:gap-14">
+
+            {# ===== Galería ===== #}
+            <div>
+                {% with images=product.images.all %}
+                <div id="gallery-main" class="aspect-[3/4] rounded-sm border overflow-hidden flex items-center justify-center mb-3
+                            {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}">
+                    {% if images %}
+                    <img id="gallery-main-img" src="{{ product.primary_image.image.url }}" alt="{{ product.primary_image.alt_text|default:product.name }}"
+                         class="w-full h-full object-cover">
+                    {% else %}
+                    <span class="font-sans text-xs uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Sin imagen todavía
+                    </span>
+                    {% endif %}
+                </div>
+
+                {% if images|length > 1 %}
+                <div class="grid grid-cols-5 gap-2">
+                    {% for image in images %}
+                    <button type="button" data-gallery-thumb data-src="{{ image.image.url }}"
+                            class="aspect-square rounded-sm border overflow-hidden
+                                   {% if brand == 'u404' %}border-u404-border hover:border-u404-accent{% else %}border-ficctura-border hover:border-ficctura-accent{% endif %} transition-colors">
+                        <img src="{{ image.image.url }}" alt="" class="w-full h-full object-cover">
+                    </button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            {# ===== Info ===== #}
+            <div>
+                {% if product.brand != brand %}
+                <span class="inline-block mb-3 font-sans text-[11px] uppercase tracking-[0.2em] px-3 py-1 rounded-full border
+                             {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %}">
+                    Básica {{ product.get_brand_display }}
+                </span>
+                {% endif %}
+
+                <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-2">
+                    {{ product.name }}
+                </h1>
+
+                <div class="flex items-center justify-between gap-4 mb-6">
+                    <p class="font-sans text-xl {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                        {{ product.price|pesos }}
+                    </p>
+                    {% comment %}
+                    Compartir por WhatsApp — pedido del usuario (13/8). No
+                    depende del WhatsApp de la marca (eso es para que TE
+                    escriban); esto abre WhatsApp del lado del visitante
+                    para que reenvíe el link a quien quiera.
+                    {% endcomment %}
+                    <a href="https://wa.me/?text={{ share_text|urlencode }}" target="_blank" rel="noopener"
+                       aria-label="Compartir por WhatsApp"
+                       class="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.15em] shrink-0
+                              {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 11.5a8.5 8.5 0 0 1-12.36 7.56L4 20l1.02-4.5A8.5 8.5 0 1 1 21 11.5Z" stroke-linejoin="round"/>
+                            <path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5" stroke-linecap="round"/>
+                        </svg>
+                        Compartir
+                    </a>
+                </div>
+
+                {% comment %}
+                Widget de urgencia opcional (10/8) — inspirado en preventas
+                tipo Elemental Outfit. Contador de stock y/o cuenta
+                regresiva, elegido por producto desde el admin.
+                {% endcomment %}
+                {% comment %}
+                Widget de urgencia — "subile el volumen" (pedido del
+                usuario, 13/8): mismo lenguaje visual llamativo que el
+                banner (badge negro/rojo con pulso), no la versión
+                sutil de antes.
+                {% endcomment %}
+                {% if product.urgency_type == 'stock' or product.urgency_type == 'both' %}
+                {% if product.urgency_stock_limit and product.urgency_stock_remaining is not None %}
+                <div class="promo-badge-pulse inline-block mb-5 px-4 py-3 rounded-sm bg-[#0b0b0c]">
+                    <p class="font-sans text-sm font-black uppercase tracking-[0.1em] mb-2 text-white">
+                        🔥 ¡Últimas unidades! {{ product.urgency_stock_remaining }} / {{ product.urgency_stock_limit }}
+                    </p>
+                    <div class="h-2 w-48 max-w-full rounded-full overflow-hidden bg-white/20">
+                        <div class="h-full bg-red-600" style="width: {{ product.urgency_stock_percent }}%;"></div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                {% if product.urgency_type == 'countdown' or product.urgency_type == 'both' %}
+                {% if product.urgency_countdown_active %}
+                <div class="promo-badge-pulse inline-flex items-center gap-3 mb-5 px-4 py-3 rounded-sm bg-[#0b0b0c]">
+                    <p class="font-sans text-sm font-black uppercase tracking-[0.1em] text-white whitespace-nowrap">
+                        ⏰ Termina en
+                    </p>
+                    <p data-countdown-to="{{ product.urgency_countdown_ends_at|date:'c' }}"
+                       class="font-black text-2xl tabular-nums text-red-500">
+                        --:--:--
+                    </p>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                {% if product.description %}
+                <p class="font-sans leading-7 mb-6 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    {{ product.description|linebreaksbr }}
+                </p>
+                {% endif %}
+
+                {% if product.material or product.fit_notes %}
+                <div class="space-y-2 mb-6 font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    {% if product.material %}<p><strong class="{% if brand == 'u404' %}text-u404-ink{% else %}text-ficctura-ink{% endif %}">Material:</strong> {{ product.material }}</p>{% endif %}
+                    {% if product.fit_notes %}<p><strong class="{% if brand == 'u404' %}text-u404-ink{% else %}text-ficctura-ink{% endif %}">Calce:</strong> {{ product.fit_notes }}</p>{% endif %}
+                </div>
+                {% endif %}
+
+                {# ===== Talle + color (por separado) y agregar al carrito ===== #}
+                {% with variants=product.variants.all %}
+                {% if variants %}
+                <div class="mb-6">
+                    {% if in_stock %}
+                    {% comment %}
+                    Pedido del usuario (10/8): talle y color se eligen por
+                    separado (no un combo único en un <select>), y si esa
+                    combinación puntual no existe/no tiene stock, se avisa
+                    "no disponible" en vez de ocultarla sin más. Nunca se
+                    muestra el número de stock al cliente — variants_json
+                    solo manda un booleano `available`.
+                    {% endcomment %}
+                    {% comment %}
+                    Copy real del cliente (13/8) — "versión ultra breve
+                    para poner junto al selector de talle", pegado tal
+                    cual, solo se le agregó el link a la calculadora.
+                    {% endcomment %}
+                    <div class="mb-5 p-4 rounded-sm border {% if brand == 'u404' %}border-u404-accent/40 bg-u404-accent/5{% else %}border-ficctura-accent/40 bg-ficctura-accent/5{% endif %}">
+                        <p class="font-sans text-xs leading-6 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                            {% if brand == 'u404' %}
+                            <strong class="text-u404-ink">No adivines el talle.</strong>
+                            Nuestras remeras ajustan brazos, hombros y pecho, y dejan más aire donde importa: el abdomen.
+                            Medite a la altura del ombligo y usá la
+                            <a href="{% url 'core:coming_soon' 'talles' %}#calculadora" class="underline text-u404-accent hover:no-underline">calculadora</a>.
+                            Si querés más comodidad, pedí un talle más. Va a quedar más suelta, pero nunca como una carpa.
+                            {% else %}
+                            <strong class="text-ficctura-ink">Te recomendamos usar la
+                            <a href="{% url 'core:coming_soon' 'talles' %}#calculadora" class="underline hover:no-underline">calculadora de talles</a>.</strong>
+                            El calce FICCTURA está diseñado para ajustar mejor en brazos, hombros y pecho, con mayor comodidad en abdomen.
+                            Medí tu cintura a la altura del ombligo: esa es la clave para elegir bien.
+                            Si preferís un calce más relajado, elegí un talle más.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <form data-add-to-cart-form data-variants='{{ variants_json }}' class="space-y-4">
+
+                        <div>
+                            <p class="font-sans text-xs uppercase tracking-[0.2em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                                Talle
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                {% for size in sizes %}
+                                <button type="button" data-variant-option data-group="size" data-value="{{ size.id }}"
+                                        data-selected-class="{% if brand == 'u404' %}bg-u404-accent text-u404-bg border-u404-accent{% else %}bg-ficctura-accent text-white border-ficctura-accent{% endif %}"
+                                        class="font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                               {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %}">
+                                    {{ size.name }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="font-sans text-xs uppercase tracking-[0.2em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                                Color
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                {% for color in colors %}
+                                <button type="button" data-variant-option data-group="color" data-value="{{ color }}"
+                                        data-selected-class="{% if brand == 'u404' %}bg-u404-accent text-u404-bg border-u404-accent{% else %}bg-ficctura-accent text-white border-ficctura-accent{% endif %}"
+                                        class="flex items-center gap-2 font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                               {% if brand == 'u404' %}border-u404-border text-u404-ink hover:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink hover:border-ficctura-accent{% endif %}">
+                                    {% with hex=color_hex|dict_get:color %}
+                                    {% if hex %}
+                                    <span class="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0" style="background-color: {{ hex }};"></span>
+                                    {% endif %}
+                                    {% endwith %}
+                                    {{ color }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <p data-variant-unavailable class="hidden font-sans text-xs {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                            No disponible en esa combinación.
+                        </p>
+                        <p data-variant-error class="hidden font-sans text-xs {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                            Elegí talle y color.
+                        </p>
+
+                        <button type="submit" data-add-button disabled
+                                class="w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                                       disabled:opacity-40 disabled:cursor-not-allowed
+                                       btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                            Agregar al carrito
+                        </button>
+                    </form>
+                    {% else %}
+                    <div class="flex flex-wrap gap-2">
+                        {% for variant in variants %}
+                        <span class="font-sans text-sm px-4 py-2 rounded-sm border
+                                     {% if brand == 'u404' %}border-u404-border/40 text-u404-muted line-through{% else %}border-ficctura-border/40 text-ficctura-muted line-through{% endif %}">
+                            {{ variant.size.name }} · {{ variant.color }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                {# ===== Si está agotado: reservar ===== #}
+                {% if not in_stock %}
+                <p class="font-sans text-sm uppercase tracking-[0.1em] mb-3 {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                    Agotado
+                </p>
+                {% comment %}
+                Pedido del usuario (10/8): en vez del link directo a
+                WhatsApp, lleva a una ficha de reserva propia — así se
+                puede contar cuántas reservas tiene cada modelo y decidir
+                qué priorizar en la próxima producción (ver
+                ProductReservation en catalog/models.py).
+                {% endcomment %}
+                <a href="{% url 'catalog:reserve' product.slug %}"
+                   class="inline-block w-full text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm border transition-colors
+                          {% if brand == 'u404' %}border-u404-accent text-u404-accent hover:bg-u404-accent hover:text-u404-bg{% else %}border-ficctura-accent text-ficctura-accent hover:bg-ficctura-accent hover:text-white{% endif %}">
+                    Reservar próxima entrega →
+                </a>
+                {% endif %}
+
+                {# ===== Medidas ===== #}
+                {% with measurements=product.measurements.all %}
+                {% if measurements %}
+                <div class="mt-10 overflow-x-auto">
+                    <p class="font-sans text-xs uppercase tracking-[0.2em] mb-3 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Medidas (cm)
+                    </p>
+                    <table class="w-full text-sm font-sans border-collapse">
+                        <thead>
+                            <tr class="{% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} text-left">
+                                <th class="py-2 pr-4">Talle</th>
+                                <th class="py-2 pr-4">Pecho</th>
+                                <th class="py-2 pr-4">Largo</th>
+                                <th class="py-2 pr-4">Ombligo</th>
+                                <th class="py-2">Manga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in measurements %}
+                            <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                                <td class="py-2 pr-4 font-medium">{{ m.size.name }}</td>
+                                <td class="py-2 pr-4">{{ m.chest_cm|default:"—" }}</td>
+                                <td class="py-2 pr-4">{{ m.length_cm|default:"—" }}</td>
+                                <td class="py-2 pr-4">{{ m.waist_cm|default:"—" }}</td>
+                                <td class="py-2">{{ m.sleeve_cm|default:"—" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+
+<script src="{% static_v 'js/gallery.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Bug real (13/8): con el navegador en modo oscuro, el admin
+       default de Django pinta los <select> con texto gris claro — el
+       popup nativo del dropdown (Windows/Chrome) lo muestra sobre
+       fondo BLANCO igual, así que el texto casi no se lee. Se fuerza
+       siempre oscuro sobre claro en los selects, sin importar el tema
+       del sistema — más simple y consistente que perseguir la
+       cascada de dark_mode.css de Django. */
+    select, select option {
+        color: #111 !important;
+        background-color: #fff !important;
+    }
+</style>
+{% endblock %}

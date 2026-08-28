@@ -1,0 +1,23 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Pedidos{% endblock %}
+{% block content %}
+<h1 class="font-bold text-2xl mb-6">Pedidos</h1>
+
+<div class="flex gap-2 mb-5 text-sm">
+    <a href="{% url 'dashboard:order_list' %}" class="dash-btn {% if not active_status %}{% else %}dash-btn--ghost{% endif %}">Todos</a>
+    {% for value, label in status_choices %}
+    <a href="?status={{ value }}" class="dash-btn {% if active_status == value %}{% else %}dash-btn--ghost{% endif %}">{{ label }}</a>
+    {% endfor %}
+</div>
+
+<div class="dash-card divide-y divide-white/10">
+    {% for order in orders %}
+    <a href="{% url 'dashboard:order_detail' order.pk %}" class="flex items-center justify-between px-5 py-3.5 hover:bg-white/[.03]">
+        <span>#{{ order.id }} — {{ order.name }} <span class="text-white/40 text-sm">({{ order.contact }})</span></span>
+        <span class="text-sm text-white/50">{{ order.get_status_display }} · $ {{ order.total }}</span>
+    </a>
+    {% empty %}
+    <p class="px-5 py-4 text-sm text-white/40">No hay pedidos con ese filtro.</p>
+    {% endfor %}
+</div>
+{% endblock %}

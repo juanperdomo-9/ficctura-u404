@@ -1,0 +1,73 @@
+{% load static %}
+<footer class="bg-ficctura-surface border-t border-ficctura-border">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="flex flex-col gap-12 py-14 text-center lg:gap-16 lg:py-20 lg:flex-row lg:justify-between lg:text-left">
+
+            {# Marca #}
+            <div class="max-w-sm mx-auto lg:mx-0">
+                <a href="{% url 'core:shop' %}" class="inline-flex">
+                    <img src="{% static 'img/ficctura-logo.png' %}" alt="Ficctura" class="h-6 w-auto">
+                </a>
+                <p class="mt-5 leading-7 text-ficctura-muted text-sm">
+                    Somos una marca obsesionada con crear el calce perfecto.
+                </p>
+            </div>
+
+            {# Navegación #}
+            <div>
+                <h4 class="mb-6 font-sans text-xs font-semibold uppercase tracking-[0.3em] text-ficctura-accent">
+                    Navegación
+                </h4>
+                <nav class="space-y-3 font-sans text-sm">
+                    <a href="{% url 'core:shop' %}" class="block text-ficctura-muted hover:text-ficctura-accent transition-colors">Inicio</a>
+                    <a href="{% url 'catalog:list' %}" class="block text-ficctura-muted hover:text-ficctura-accent transition-colors">Catálogo</a>
+                    <a href="{% url 'core:coming_soon' 'talles' %}" class="block text-ficctura-muted hover:text-ficctura-accent transition-colors">Calce &amp; talles</a>
+                    <a href="{% url 'core:coming_soon' 'nosotros' %}" class="block text-ficctura-muted hover:text-ficctura-accent transition-colors">Nosotros</a>
+                    <a href="{% url 'core:coming_soon' 'contacto' %}" class="block text-ficctura-muted hover:text-ficctura-accent transition-colors">Contacto</a>
+                </nav>
+            </div>
+
+            {# Seguinos #}
+            <div>
+                <h4 class="mb-6 font-sans text-xs font-semibold uppercase tracking-[0.3em] text-ficctura-accent">
+                    Seguinos
+                </h4>
+                <div class="flex gap-3 justify-center lg:justify-start flex-wrap">
+                    {% if brand_config.instagram %}
+                    <a href="https://instagram.com/{{ brand_config.instagram }}" target="_blank" rel="noopener"
+                       class="rounded-full border border-ficctura-border px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-ficctura-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-ficctura-accent hover:text-ficctura-accent">
+                        Instagram
+                    </a>
+                    {% endif %}
+                    {% if brand_config.whatsapp_number %}
+                    <a href="https://wa.me/{{ brand_config.whatsapp_number }}" target="_blank" rel="noopener"
+                       class="rounded-full border border-ficctura-border px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-ficctura-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-ficctura-accent hover:text-ficctura-accent">
+                        WhatsApp
+                    </a>
+                    {% endif %}
+                    <a href="{{ brand_urls.u404 }}"
+                       class="rounded-full border border-ficctura-ink bg-ficctura-ink px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-ficctura-bg transition-all duration-300 hover:-translate-y-0.5 hover:bg-ficctura-accent hover:border-ficctura-accent">
+                        Universo 404 →
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex flex-col gap-4 border-t border-ficctura-border py-8 font-sans text-xs uppercase tracking-[0.1em] text-ficctura-muted md:flex-row md:justify-between md:items-center">
+            <div class="flex flex-col gap-2 md:flex-row md:gap-6 md:items-center">
+                <p>© {% now "Y" %} Ficctura · Todos los derechos reservados.</p>
+                <a href="{% url 'core:coming_soon' 'cambios-y-devoluciones' %}" class="hover:text-ficctura-accent transition-colors">Cambios y devoluciones</a>
+            </div>
+            <p>
+                Desarrollo y diseño web realizado por
+                <a href="https://impulsastudiodigital.com.ar" target="_blank" rel="noopener noreferrer"
+                   class="font-medium text-ficctura-ink hover:text-ficctura-accent transition-colors">
+                    Impulsa Studio Digital
+                </a>
+            </p>
+        </div>
+
+    </div>
+</footer>

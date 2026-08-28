@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Resumen{% endblock %}
+{% block content %}
+<h1 class="font-bold text-2xl mb-6">Resumen</h1>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+    <div class="dash-card p-5">
+        <p class="text-xs uppercase tracking-wide text-white/40 mb-1">Productos</p>
+        <p class="text-3xl font-bold">{{ total_productos }}</p>
+    </div>
+    <div class="dash-card p-5">
+        <p class="text-xs uppercase tracking-wide text-white/40 mb-1">Categorías</p>
+        <p class="text-3xl font-bold">{{ total_categorias }}</p>
+    </div>
+    <div class="dash-card p-5 border-amber-500/30">
+        <p class="text-xs uppercase tracking-wide text-white/40 mb-1">Pedidos pendientes</p>
+        <p class="text-3xl font-bold text-amber-400">{{ pedidos_pendientes }}</p>
+    </div>
+</div>
+
+<h2 class="font-semibold text-lg mb-4">Últimos pedidos</h2>
+<div class="dash-card divide-y divide-white/10">
+    {% for order in pedidos_recientes %}
+    <a href="{% url 'dashboard:order_detail' order.pk %}" class="flex items-center justify-between px-5 py-3.5 hover:bg-white/[.03]">
+        <span>#{{ order.id }} — {{ order.name }}</span>
+        <span class="text-sm text-white/50">{{ order.get_status_display }}</span>
+    </a>
+    {% empty %}
+    <p class="px-5 py-4 text-sm text-white/40">Todavía no hay pedidos.</p>
+    {% endfor %}
+</div>
+{% endblock %}

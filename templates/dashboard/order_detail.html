@@ -1,0 +1,64 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Pedido #{{ order.id }}{% endblock %}
+{% block content %}
+<a href="{% url 'dashboard:order_list' %}" class="text-sm text-white/50 hover:underline">← Pedidos</a>
+<h1 class="font-bold text-2xl mt-2 mb-6">Pedido #{{ order.id }}</h1>
+
+<div class="grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 dash-card p-6">
+        <h2 class="font-semibold mb-4">Ítems</h2>
+        <div class="divide-y divide-white/10">
+            {% for item in order.items.all %}
+            <div class="flex justify-between py-2.5 text-sm">
+                <span>{{ item.product_name }} — {{ item.size }} / {{ item.color }} x{{ item.quantity }}</span>
+                <span>$ {{ item.subtotal }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="border-t border-white/10 mt-4 pt-4 text-sm space-y-1">
+            <div class="flex justify-between text-white/60"><span>Subtotal</span><span>$ {{ order.subtotal }}</span></div>
+            {% if order.discount %}<div class="flex justify-between text-white/60"><span>Descuento promo</span><span>- $ {{ order.discount }}</span></div>{% endif %}
+            {% if order.payment_discount %}<div class="flex justify-between text-white/60"><span>Descuento por pago</span><span>- $ {{ order.payment_discount }}</span></div>{% endif %}
+            <div class="flex justify-between font-bold text-base pt-1"><span>Total</span><span>$ {{ order.total }}</span></div>
+        </div>
+    </div>
+
+    <div class="dash-card p-6 space-y-4">
+        <div>
+            <p class="text-xs uppercase tracking-wide text-white/40">Cliente</p>
+            <p>{{ order.name }}</p>
+            <a href="https://wa.me/{{ order.contact }}" target="_blank" class="text-sm text-emerald-400 hover:underline">{{ order.contact }} (WhatsApp)</a>
+        </div>
+        {% if order.address %}
+        <div>
+            <p class="text-xs uppercase tracking-wide text-white/40">Dirección</p>
+            <p class="text-sm">{{ order.address }}</p>
+        </div>
+        {% endif %}
+        <div>
+            <p class="text-xs uppercase tracking-wide text-white/40">Entrega</p>
+            <p class="text-sm">{{ order.get_delivery_method_display }}</p>
+        </div>
+        <div>
+            <p class="text-xs uppercase tracking-wide text-white/40">Pago</p>
+            <p class="text-sm">{{ order.get_payment_preference_display }}</p>
+        </div>
+        {% if order.notes %}
+        <div>
+            <p class="text-xs uppercase tracking-wide text-white/40">Notas</p>
+            <p class="text-sm">{{ order.notes }}</p>
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'dashboard:order_set_status' order.pk %}" class="pt-2 border-t border-white/10 flex flex-wrap gap-2">
+            {% csrf_token %}
+            {% for value, label in status_choices %}
+            <button type="submit" name="status" value="{{ value }}"
+                    class="dash-btn text-xs {% if order.status == value %}{% else %}dash-btn--ghost{% endif %}">
+                {{ label }}
+            </button>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+{% endblock %}

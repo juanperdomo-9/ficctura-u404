@@ -1,0 +1,80 @@
+{% load static asset_tags %}
+<div id="site-header" class="fixed top-0 inset-x-0 z-40">
+
+    {% if banner_items %}
+    {% include 'catalog/_promo_banner.html' %}
+    {% endif %}
+
+    {% comment %}
+    Banner hacia Ficctura — mismo patrón que ficctura/_navbar.html (que
+    lleva a U404), para que las dos marcas se referencien igual y el
+    navbar quede con los mismos apartados en las dos tiendas.
+    {% endcomment %}
+    <a href="{{ brand_urls.ficctura }}"
+       class="block bg-u404-accent text-u404-bg text-center text-xs md:text-sm font-sans font-semibold tracking-[0.3em] uppercase py-2.5 px-4
+              hover:bg-u404-accent-hover transition-colors duration-300">
+        ¿Buscás lo simple? Conocé FICCTURA →
+    </a>
+
+    <header data-navbar class="border-b border-u404-border/80 bg-u404-bg/85 backdrop-blur-md transition-shadow duration-300">
+        <div class="flex items-center justify-between gap-4 px-5 md:px-10 h-16">
+
+            <a href="{% url 'core:shop' %}" class="flex items-center gap-2.5">
+                <img src="{% static 'img/u404-icon.png' %}" alt="" aria-hidden="true" class="h-7 w-auto invert">
+                <span class="font-u404 font-bold text-base md:text-lg tracking-widest uppercase text-u404-ink">
+                    Universo<span class="text-u404-accent">_</span>404
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-sans text-[13px] tracking-[0.2em] uppercase text-u404-muted">
+                <a href="{% url 'catalog:list' %}" class="nav-underline hover:text-u404-accent transition-colors">Catálogo</a>
+                <a href="{% url 'core:coming_soon' 'talles' %}" class="nav-underline hover:text-u404-accent transition-colors">Calce &amp; talles</a>
+                <a href="{% url 'core:coming_soon' 'nosotros' %}" class="nav-underline hover:text-u404-accent transition-colors">Nosotros</a>
+                <a href="{% url 'core:coming_soon' 'contacto' %}" class="nav-underline hover:text-u404-accent transition-colors">Contacto</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                {% if brand_config.whatsapp_number %}
+                <a href="https://wa.me/{{ brand_config.whatsapp_number }}" target="_blank" rel="noopener"
+                   aria-label="Escribinos por WhatsApp"
+                   class="hidden sm:flex items-center justify-center w-9 h-9 rounded-full border border-u404-border text-u404-muted hover:text-u404-accent hover:border-u404-accent transition-colors">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 11.5a8.5 8.5 0 0 1-12.36 7.56L4 20l1.02-4.5A8.5 8.5 0 1 1 21 11.5Z" stroke-linejoin="round"/>
+                        <path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                {% endif %}
+
+                <button type="button" data-cart-open aria-label="Carrito"
+                        class="relative flex items-center justify-center w-9 h-9 rounded-full border border-u404-border text-u404-ink hover:text-u404-accent hover:border-u404-accent transition-colors">
+                    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 8h12l-1 12H7L6 8Z" stroke-linejoin="round"/>
+                        <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+                    </svg>
+                    <span data-cart-count class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-u404-accent text-u404-bg text-[10px] font-sans font-bold flex items-center justify-center">{{ cart|length }}</span>
+                </button>
+
+                <button type="button" data-menu-toggle="u404-mobile-menu" aria-expanded="false" aria-controls="u404-mobile-menu" aria-label="Abrir menú"
+                        class="md:hidden flex items-center justify-center w-9 h-9 text-u404-ink">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <nav id="u404-mobile-menu" class="mobile-menu md:hidden flex flex-col gap-1 px-5 pb-5 border-t border-u404-border/80 font-sans text-sm tracking-[0.15em] uppercase text-u404-muted bg-u404-bg">
+            <a href="{% url 'catalog:list' %}" class="py-3 border-b border-u404-border/60 hover:text-u404-accent transition-colors">Catálogo</a>
+            <a href="{% url 'core:coming_soon' 'talles' %}" class="py-3 border-b border-u404-border/60 hover:text-u404-accent transition-colors">Calce &amp; talles</a>
+            <a href="{% url 'core:coming_soon' 'nosotros' %}" class="py-3 border-b border-u404-border/60 hover:text-u404-accent transition-colors">Nosotros</a>
+            <a href="{% url 'core:coming_soon' 'contacto' %}" class="py-3 hover:text-u404-accent transition-colors">Contacto</a>
+        </nav>
+    </header>
+
+</div>
+
+{% include 'catalog/_cart_panel.html' %}
+
+<script src="{% static_v 'js/navbar.js' %}"></script>
+<script src="{% static_v 'js/header.js' %}"></script>
+<script src="{% static_v 'js/cart.js' %}"></script>

@@ -1,0 +1,34 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module" style="padding: 14px 20px; margin-bottom: 20px; border-left: 4px solid #447e9b;">
+        <h2 style="margin-top: 0;">Cómo hacer una promoción</h2>
+        <p style="margin: 6px 0;">
+            Hay <strong>3 formas</strong> de ofrecer un descuento, todas en la sección
+            <strong>Promociones</strong> de abajo. Elegí según lo que quieras hacer:
+        </p>
+        <ul style="margin: 6px 0 6px 20px; line-height: 1.6;">
+            <li>
+                <strong>"Promociones (llevá X, llevate Y)"</strong> — un 3x2 o "comprá 2, llevate 1 gratis"
+                sobre categorías del catálogo. Se ve como cartelito en los productos.
+            </li>
+            <li>
+                <strong>"Promociones de marca"</strong> — el cartel fijo que aparece arriba de toda la
+                página (ej. "3X2 en remeras básicas", con o sin contador de stock/tiempo).
+            </li>
+            <li>
+                <strong>"Descuentos por forma de pago"</strong> — % de descuento automático al elegir
+                transferencia o efectivo en el checkout (en vez de tarjeta).
+            </li>
+        </ul>
+        <p style="margin: 6px 0 0;">
+            En cualquiera de las tres, tildá <strong>"activo"/"activa"</strong> para que se vea en la
+            tienda — si no está tildado, no aparece aunque esté cargada.
+        </p>
+    </div>
+
+    {{ block.super }}
+</div>
+{% endblock %}

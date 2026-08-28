@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Cambios y devoluciones — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen flex flex-col items-center justify-center gap-6 px-6 text-center pt-[calc(var(--header-h)+2rem)] pb-16
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <span class="font-sans font-semibold text-[13px] tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent/80{% else %}text-ficctura-accent{% endif %}">
+        {{ brand_config.name }}
+    </span>
+
+    <h1 class="{% if brand == 'u404' %}font-u404 font-black{% else %}font-ficctura font-semibold{% endif %} text-3xl md:text-5xl uppercase tracking-wide max-w-xl leading-[1.15]">
+        Cambios y devoluciones
+    </h1>
+
+    {% comment %} Pedido explícito del cliente (13/8): únicamente por WhatsApp, sin política escrita. {% endcomment %}
+    <p class="max-w-md text-sm md:text-base {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        Los cambios y devoluciones se coordinan <strong>únicamente hablando por WhatsApp</strong>.
+        Escribinos con tu número de pedido y lo resolvemos ahí.
+    </p>
+
+    {% if brand_config.whatsapp_number %}
+    <a href="https://wa.me/{{ brand_config.whatsapp_number }}" target="_blank" rel="noopener"
+       class="btn-lift mt-2 inline-block font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm
+              {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %} transition-colors">
+        Hablar por WhatsApp →
+    </a>
+    {% endif %}
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

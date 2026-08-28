@@ -1,0 +1,133 @@
+{% extends "dashboard/base.html" %}
+{% load asset_tags %}
+{% block title %}Producto{% endblock %}
+{% block content %}
+<div class="flex items-start justify-between gap-4 mb-6">
+    <div>
+        <a href="{% url 'dashboard:product_list' %}" class="text-sm text-white/50 hover:underline">← Productos</a>
+        <h1 class="font-bold text-2xl mt-2">{% if instance %}Editar "{{ instance.name }}"{% else %}Nuevo producto{% endif %}</h1>
+    </div>
+    {% if instance %}
+    <a href="{% url 'catalog:detail' instance.slug %}" target="_blank" class="dash-btn dash-btn--ghost text-xs shrink-0">Ver en el sitio ↗</a>
+    {% endif %}
+</div>
+
+<form method="post" enctype="multipart/form-data" class="space-y-6">
+    {% csrf_token %}
+
+    <div class="dash-card p-6 grid md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Nombre</label>
+            {{ form.name }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Categoría</label>
+            {{ form.category }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Precio</label>
+            {{ form.price }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Estado</label>
+            {{ form.status }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Licencia</label>
+            {{ form.license_status }}
+        </div>
+        <div class="md:col-span-2">
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Descripción</label>
+            {{ form.description }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Material</label>
+            {{ form.material }}
+        </div>
+        <div>
+            <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Notas de calce</label>
+            {{ form.fit_notes }}
+        </div>
+        <label class="flex items-center gap-2 text-sm md:col-span-2">
+            {{ form.is_limited_edition }} Edición limitada
+        </label>
+    </div>
+
+    {% comment %}
+    Colores, talles y fotos — pedido del cliente (13/8): color como
+    selector visual (hex) junto al talle, y fotos que se pueden
+    asociar a un color puntual. Cada fila = una variante real
+    (talle+color+stock); para sumar un color nuevo simplemente se
+    completa una fila vacía de las de abajo con el mismo texto de
+    color en varias filas (una por talle).
+    {% endcomment %}
+    <div class="dash-card p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="font-semibold text-fuchsia-400 text-xs uppercase tracking-wide">Colores, talles y fotos</h2>
+                <p class="text-xs text-white/40 mt-1">Por cada color: qué talles vienen, con cuánto stock, y sus fotos. "General" es para lo que no depende del color.</p>
+            </div>
+            <button type="button" id="add-color-btn" class="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white text-xs font-semibold px-4 py-2 hover:opacity-90 transition shrink-0 whitespace-nowrap">+ Agregar color</button>
+        </div>
+        {% if variant_formset.non_form_errors %}
+        <p class="text-xs text-red-400 mb-3">{{ variant_formset.non_form_errors }}</p>
+        {% endif %}
+        {% if image_formset.non_form_errors %}
+        <p class="text-xs text-red-400 mb-3">{{ image_formset.non_form_errors }}</p>
+        {% endif %}
+        {% for vform in variant_formset %}
+        {% if vform.errors %}
+        <p class="text-xs text-red-400 mb-1">Fila {{ forloop.counter }}: {{ vform.errors }}</p>
+        {% endif %}
+        {% endfor %}
+        {{ variant_formset.management_form }}
+        {{ image_formset.management_form }}
+        <div id="color-groups" class="grid sm:grid-cols-2 gap-4 mb-4"></div>
+        <div id="general-photos-slot"></div>
+        {% comment %}
+        Pool real de Django: cada fila de acá ES el form real (nombres/
+        índices que Django ya generó bien) — el JS solo las MUEVE dentro
+        de las tarjetas de arriba, nunca crea inputs nuevos. Así se evita
+        el bug de TOTAL_FORMS de la referencia de Las Manolas.
+        {% endcomment %}
+        <div id="variant-pool" class="hidden">
+            {% for vform in variant_formset %}
+            <div class="variant-row" data-has-pk="{% if vform.instance.pk %}1{% else %}0{% endif %}">
+                {% for hidden in vform.hidden_fields %}{{ hidden }}{% endfor %}
+                <span data-role="size-wrap">{{ vform.size }}</span>
+                <span data-role="color-wrap">{{ vform.color }}</span>
+                <span data-role="hex-wrap">{{ vform.hex_color }}</span>
+                <span data-role="stock-wrap">{{ vform.stock }}</span>
+                <span data-role="sku-wrap">{{ vform.sku }}</span>
+                <span data-role="delete-wrap">{{ vform.DELETE }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="photo-pool" class="hidden">
+            {% for iform in image_formset %}
+            <div class="photo-row" data-has-pk="{% if iform.instance.pk %}1{% else %}0{% endif %}">
+                {% for hidden in iform.hidden_fields %}{{ hidden }}{% endfor %}
+                {% if iform.instance.pk and iform.instance.image %}
+                <img src="{{ iform.instance.image.url }}" data-role="preview">
+                {% endif %}
+                <span data-role="image-wrap">{{ iform.image }}</span>
+                <span data-role="color-wrap">{{ iform.color }}</span>
+                <span data-role="alt-wrap">{{ iform.alt_text }}</span>
+                <span data-role="primary-wrap">{{ iform.is_primary }}</span>
+                <span data-role="order-wrap">{{ iform.order }}</span>
+                <span data-role="delete-wrap">{{ iform.DELETE }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="flex gap-3">
+        <button type="submit" class="dash-btn">Guardar</button>
+        <a href="{% url 'dashboard:product_list' %}" class="dash-btn dash-btn--ghost">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static_v 'js/product-panel.js' %}"></script>
+{% endblock %}

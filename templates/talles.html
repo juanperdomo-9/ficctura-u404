@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% load asset_tags %}
+
+{% block title %}Calce & talles — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="{% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    {# ===== Hero ===== #}
+    <section class="min-h-[50vh] flex flex-col items-center justify-center gap-5 px-6 text-center pt-[calc(var(--header-h)+2rem)] pb-16">
+        <span class="font-sans font-semibold text-[13px] tracking-[0.4em] uppercase {% if brand == 'u404' %}text-u404-accent/80{% else %}text-ficctura-accent{% endif %}">
+            {{ brand_config.name }}
+        </span>
+        <h1 class="{% if brand == 'u404' %}font-u404 font-black{% else %}font-ficctura font-semibold{% endif %} text-3xl md:text-5xl uppercase tracking-wide max-w-2xl leading-[1.15]">
+            Calce &amp; talles
+        </h1>
+    </section>
+
+    {# ===== Filosofía de calce — copy real del cliente (13/8), pegado tal cual ===== #}
+    <section data-fx-focus class="px-6 py-16 border-t {% if brand == 'u404' %}border-u404-border bg-u404-surface{% else %}border-ficctura-border bg-ficctura-surface{% endif %}">
+        <div class="max-w-lg mx-auto space-y-10">
+
+            {% if brand == 'u404' %}
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    Aviso de staff: esta remera no está hecha para quedar como una bolsa.
+                </p>
+                <p class="leading-7 text-u404-muted">
+                    Está pensada para ajustar mejor en brazos, hombros y pecho, y caer más suelta en el abdomen.
+                    Si preferís usarla más relajada, podés pedir un talle más: va a quedar un poco más suelta, pero
+                    igual mucho mejor que una remera tradicional.
+                </p>
+            </div>
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    La medida que manda: cintura a la altura del ombligo.
+                </p>
+                <p class="leading-7 text-u404-muted">
+                    Sí, aunque normalmente el talle lo definas por pecho u hombros. En nuestras remeras, esa medida
+                    es clave para que no marque el abdomen. Si la calculadora te recomienda un talle más grande que
+                    el habitual, hacé caso: es para que puedas pedirte un segundo plato, el postre o la vida misma
+                    sin terminar usando una carpa en pecho y hombros.
+                </p>
+            </div>
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    El objetivo es simple: que te quede bien donde querés que ajuste y cómoda donde necesitás que acompañe.
+                </p>
+                <p class="leading-7 text-u404-muted">
+                    Porque crecer no significa resignarse a las remeras cuadradas. En Universo 404, el calce también
+                    tiene historia.
+                </p>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    Calce pensado para cuerpo real.
+                </p>
+                <p class="leading-7 text-ficctura-muted">
+                    Las remeras FICCTURA ajustan mejor en brazos, hombros y pecho, con una caída más cómoda en la
+                    zona del abdomen. Si preferís un uso más suelto, podés elegir un talle más: la prenda quedará
+                    más relajada, pero conservará una mejor forma que una remera de corte tradicional.
+                </p>
+            </div>
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    La medida más importante: cintura a la altura del ombligo.
+                </p>
+                <p class="leading-7 text-ficctura-muted">
+                    Esa medida nos permite recomendar el talle adecuado para que la remera no marque el abdomen.
+                    Puede ocurrir que la calculadora sugiera un talle superior al que usarías según tablas
+                    tradicionales, pero eso ayuda a lograr comodidad real sin que la prenda quede excesivamente
+                    amplia en pecho y hombros.
+                </p>
+            </div>
+            <div class="text-center">
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-3">
+                    Nuestro calce busca equilibrio: forma en la parte superior, comodidad en el abdomen y una caída más favorecedora.
+                </p>
+                <p class="leading-7 text-ficctura-muted">
+                    Por eso, aun eligiendo un talle más relajado, una FICCTURA siempre va a quedar mejor que una
+                    remera tradicional.
+                </p>
+            </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+    {# ===== Calculadora de talle ===== #}
+    {% comment %}
+    Pedido del usuario (13/8): "calculadora de talles con IA". Se
+    resolvió como cuestionario inteligente (altura + peso + contextura →
+    lógica de recomendación), no una IA de verdad conectada a una API —
+    así funciona hoy mismo, gratis, sin depender de ninguna cuenta
+    externa (ver static/js/size-calculator.js para la lógica). Como la
+    tabla de medidas real todavía no está (arriba), el resultado se
+    muestra como referencia, no como dato exacto.
+    {% endcomment %}
+    <section id="calculadora" data-fx-focus class="px-6 py-16 scroll-mt-28">
+        <div class="max-w-md mx-auto">
+            {% comment %} Bloque 1 del cliente (13/8) — "Invitación a usar la calculadora", pegado tal cual. {% endcomment %}
+            {% if brand == 'u404' %}
+            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-2 text-center">
+                Antes de elegir talle, pasá por la calculadora.
+            </p>
+            <p class="text-center font-sans text-sm mb-8 text-u404-muted">
+                Aunque sepas cuál usás siempre, nuestras remeras tienen un calce pensado: brazos y pecho con forma,
+                abdomen más cómodo. Medite y asegurate de pedir la que realmente te va a quedar bien.
+            </p>
+            {% else %}
+            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-2 text-center">
+                Usá nuestra calculadora de talles antes de comprar.
+            </p>
+            <p class="text-center font-sans text-sm mb-8 text-ficctura-muted">
+                Aunque conozcas tu talle habitual, te recomendamos cargar tus medidas para elegir con mayor
+                precisión. Nuestras remeras tienen un calce específico, diseñado para favorecer la silueta
+                masculina sin perder comodidad.
+            </p>
+            {% endif %}
+
+            <form id="size-calc-form" class="space-y-4">
+                <div>
+                    <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Altura (cm)
+                    </label>
+                    <input type="number" id="size-calc-height" min="120" max="230" required placeholder="Ej: 175"
+                           class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
+                                  {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
+                </div>
+                <div>
+                    <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Peso (kg)
+                    </label>
+                    <input type="number" id="size-calc-weight" min="30" max="250" required placeholder="Ej: 72"
+                           class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
+                                  {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
+                </div>
+                <div>
+                    <p class="font-sans text-xs uppercase tracking-[0.15em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        Contextura
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="size-calc-build" value="delgada" class="sr-only peer" checked>
+                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
+                                Delgada
+                            </span>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="size-calc-build" value="mediana" class="sr-only peer">
+                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
+                                Mediana
+                            </span>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="size-calc-build" value="robusta" class="sr-only peer">
+                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
+                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
+                                Robusta
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="btn-lift w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                               {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                    Calcular mi talle
+                </button>
+            </form>
+
+            <div id="size-calc-result" class="hidden mt-6 text-center rounded-sm border px-6 py-6
+                        {% if brand == 'u404' %}border-u404-accent bg-u404-accent/10{% else %}border-ficctura-accent bg-ficctura-accent/10{% endif %}">
+                <p class="font-sans text-xs uppercase tracking-[0.2em] mb-1 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Te recomendamos
+                </p>
+                <p id="size-calc-result-value" class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-4xl uppercase tracking-wide {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                    —
+                </p>
+                <p class="font-sans text-xs mt-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    Es una referencia general — todavía no tenemos la tabla de medidas exacta del taller.
+                    Si estás entre dos talles, escribinos y te ayudamos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {# ===== Talles disponibles (reales, sin medidas todavía) ===== #}
+    <section data-fx-focus class="px-6 py-16">
+        <div class="max-w-lg mx-auto text-center">
+            <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-6">
+                Talles disponibles
+            </h2>
+
+            {% if sizes %}
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                {% for size in sizes %}
+                <span class="flex items-center justify-center w-12 h-12 rounded-sm border font-sans text-sm font-semibold
+                             {% if brand == 'u404' %}border-u404-border text-u404-ink{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
+                    {{ size.name }}
+                </span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% comment %}
+            Tabla real del taller (13/8) — dato dado: XL = pecho 59cm
+            (113cm de contorno corporal máximo sin quedar apretada),
+            cintura/ombligo 60cm (115cm de contorno máximo para que no
+            marque), largo 77cm. El cliente aclaró "dif en todos los
+            talles, medidas 2cm +/-" — se interpreta como -2cm por
+            talle bajando desde XL (L/M/S). Si el paso real es otro,
+            avisar para ajustar (son 3 números por fila, fácil de
+            corregir).
+            {% endcomment %}
+            <div class="overflow-x-auto">
+                <table class="w-full max-w-md mx-auto text-sm font-sans border-collapse mb-4">
+                    <thead>
+                        <tr class="{% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} uppercase text-xs tracking-[0.1em]">
+                            <th class="py-2 pr-3 text-left">Talle</th>
+                            <th class="py-2 pr-3">Pecho</th>
+                            <th class="py-2 pr-3">Cintura (alt. ombligo)</th>
+                            <th class="py-2">Largo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                            <td class="py-2 pr-3 font-semibold text-left">S</td>
+                            <td class="py-2 pr-3">53 cm</td>
+                            <td class="py-2 pr-3">54 cm</td>
+                            <td class="py-2">71 cm</td>
+                        </tr>
+                        <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                            <td class="py-2 pr-3 font-semibold text-left">M</td>
+                            <td class="py-2 pr-3">55 cm</td>
+                            <td class="py-2 pr-3">56 cm</td>
+                            <td class="py-2">73 cm</td>
+                        </tr>
+                        <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                            <td class="py-2 pr-3 font-semibold text-left">L</td>
+                            <td class="py-2 pr-3">57 cm</td>
+                            <td class="py-2 pr-3">58 cm</td>
+                            <td class="py-2">75 cm</td>
+                        </tr>
+                        <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                            <td class="py-2 pr-3 font-semibold text-left">XL</td>
+                            <td class="py-2 pr-3">59 cm</td>
+                            <td class="py-2 pr-3">60 cm</td>
+                            <td class="py-2">77 cm</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="font-sans text-xs {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    En talle XL: pecho hasta 113cm de contorno corporal sin quedar apretada, cintura/ombligo hasta 115cm para que no marque.
+                    Medidas tomadas sobre la prenda.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center pb-16">
+        <a href="{% url 'catalog:list' %}"
+           class="font-sans text-sm font-semibold uppercase tracking-[0.25em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hover:underline">
+            Ver catálogo →
+        </a>
+    </div>
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+
+<script src="{% static_v 'js/size-calculator.js' %}"></script>
+{% endblock %}

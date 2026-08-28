@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load static asset_tags %}
+<html lang="es-AR" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ brand_config.name }}{% endblock %}</title>
+
+    {% comment %}
+    Descripción/tagline real ya usada en cada home (no inventada acá) —
+    sirve de default para SEO y para la vista previa al compartir el
+    link (WhatsApp/redes). Cada página puede pisar meta_description si
+    hace falta algo más específico (ej. una ficha de producto).
+    {% endcomment %}
+    <meta name="description" content="{% block meta_description %}{% if brand == 'u404' %}Remeras con historia, referencias y sentido del humor.{% else %}Básicos premium. Calce, calidad y nada más.{% endif %}{% endblock %}">
+    {% if brand == 'u404' %}
+    <meta name="theme-color" content="#0b0b0c">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-u404-32.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/favicon-u404-180.png' %}">
+    {% else %}
+    <meta name="theme-color" content="#2e6da4">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-ficctura-32.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/favicon-ficctura-180.png' %}">
+    {% endif %}
+
+    {% comment %}
+    Open Graph / Twitter — para que compartir un link (WhatsApp, IG,
+    etc.) muestre título + imagen en vez de un link pelado. og:image
+    usa el mismo ícono del favicon (no hay foto de producto propia
+    todavía para usar de default general).
+    {% endcomment %}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ brand_config.name }}">
+    <meta property="og:title" content="{% block og_title %}{{ brand_config.name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% if brand == 'u404' %}Remeras con historia, referencias y sentido del humor.{% else %}Básicos premium. Calce, calidad y nada más.{% endif %}{% endblock %}">
+    <meta property="og:url" content="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:image" content="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{% if brand == 'u404' %}{% static 'img/favicon-u404.png' %}{% else %}{% static 'img/favicon-ficctura.png' %}{% endif %}">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="stylesheet" href="{% static_v 'css/output.css' %}">
+    <script>document.documentElement.classList.replace('no-js', 'js');</script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body data-brand="{{ brand }}">
+    {% comment %}
+    CSRF global, invisible — así cualquier fetch de JS (carrito, etc.)
+    tiene de dónde leer el token sin depender de que la página actual
+    tenga su propio <form>.
+    {% endcomment %}
+    <form hidden>{% csrf_token %}</form>
+
+    {% block content %}{% endblock %}
+
+    {% comment %}
+    Volver arriba — sitewide, aparece después de bajar un poco (ver
+    static/js/scroll-top.js). Arranca invisible por inline style, no por
+    clase, para no depender de que gane la cascada.
+    {% endcomment %}
+    <button type="button" id="scroll-top-btn" aria-label="Volver arriba"
+            style="opacity:0; pointer-events:none; transform:translateY(8px);"
+            class="fixed bottom-6 right-6 z-[80] w-11 h-11 rounded-full flex items-center justify-center shadow-lg transition-all duration-300
+                   {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    {% comment %}
+    Global: cualquier página puede tener un [data-countdown-to] — el
+    widget de urgencia por producto o el banner de promo general.
+    {% endcomment %}
+    <script src="{% static_v 'js/countdown.js' %}"></script>
+    <script src="{% static_v 'js/scroll-top.js' %}"></script>
+    <script src="{% static_v 'js/scroll-fx.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ficctura-u404-dev",
+      "runtimeExecutable": "venv/Scripts/python.exe",
+      "runtimeArgs": ["manage.py", "runserver", "8020"],
+      "port": 8020,
+      "url": "http://u404.localhost:8020"
+    }
+  ]
+}

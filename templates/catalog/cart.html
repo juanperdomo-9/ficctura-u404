@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block title %}Carrito — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-white{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-3xl mx-auto">
+        <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-10 text-center">
+            Tu carrito
+        </h1>
+
+        {% if not items %}
+        <p class="text-center {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} font-sans uppercase tracking-[0.1em] text-sm mb-8">
+            Todavía no agregaste nada.
+        </p>
+        <div class="text-center">
+            <a href="{% url 'catalog:list' %}"
+               class="inline-block font-sans text-sm font-semibold uppercase tracking-[0.2em] px-8 py-4 rounded-sm
+                      btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %} transition-colors">
+                Ver catálogo →
+            </a>
+        </div>
+        {% else %}
+
+        <div class="space-y-5 mb-8">
+            {% for item in items %}
+            <div class="flex gap-4 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-5">
+                <div class="w-20 h-24 rounded-sm overflow-hidden flex-shrink-0
+                            {% if brand == 'u404' %}bg-u404-surface{% else %}bg-ficctura-surface{% endif %} flex items-center justify-center">
+                    {% with image=item.variant.product.primary_image %}
+                    {% if image %}
+                    <img src="{{ image.image.url }}" alt="" class="w-full h-full object-cover">
+                    {% else %}
+                    <span class="font-sans text-[9px] uppercase text-center px-1 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">Sin imagen</span>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="flex-1">
+                    <p class="font-sans font-semibold uppercase text-sm">{{ item.variant.product.name }}</p>
+                    <p class="font-sans text-xs uppercase {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        {{ item.variant.size.name }} · {{ item.variant.color }} · x{{ item.quantity }}
+                    </p>
+                </div>
+                <div class="font-sans font-semibold text-sm">{{ item.subtotal|pesos }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if promotions %}
+        <div class="mb-8 space-y-2">
+            {% for d in promotions %}
+            <div class="px-4 py-3 rounded-sm border {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %} font-sans text-sm">
+                🎁 <strong>{{ d.promotion.badge_text|default:d.promotion.name }}</strong> aplicado — {{ d.free_units }} unidad(es) con descuento
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="space-y-1.5 mb-8 font-sans text-sm max-w-sm ml-auto">
+            <div class="flex justify-between {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                <span>Subtotal</span><span>{{ subtotal|pesos }}</span>
+            </div>
+            {% if discount %}
+            <div class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                <span>Descuento</span><span>− {{ discount|pesos }}</span>
+            </div>
+            {% endif %}
+            <div class="flex justify-between font-bold text-lg pt-2">
+                <span>Total</span><span>{{ total|pesos }}</span>
+            </div>
+        </div>
+
+        <a href="{% url 'catalog:checkout' %}"
+           class="block w-full text-center font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                  btn-lift {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+            Finalizar compra
+        </a>
+        {% endif %}
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}
