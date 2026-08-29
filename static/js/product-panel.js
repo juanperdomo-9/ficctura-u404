@@ -152,6 +152,7 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
     addTalleSelect.className = "dash-input !w-24 !rounded-full !text-xs !py-1.5 !bg-white/5 mb-3";
 
     const cardRows = []; // filas de variante ya asignadas a esta tarjeta
+    const removedRows = new Map(); // talle -> fila sacada de ESTA tarjeta, por si se vuelve a agregar (ver removePillBtn/addTalleSelect)
     const cardPhotoRows = []; // filas de foto ya asignadas a esta tarjeta
 
     const syncColorInto = (row) => {
@@ -183,6 +184,12 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
         const sizeSelect = row.querySelector('[data-role="size-wrap"] select');
         const stockInput = row.querySelector('[data-role="stock-wrap"] input');
+        // Referencia directa guardada en la fila — stockInput se mueve
+        // DENTRO del pill unas líneas más abajo, así que después de eso
+        // ya no se lo puede encontrar buscando adentro de `row`. Se usa
+        // para devolverlo a su lugar antes de sacar el pill (remover un
+        // talle) o la tarjeta entera (quitar color) — ver esos handlers.
+        row._stockInput = stockInput;
 
         const pill = document.createElement("span");
         pill.className = "inline-flex items-center gap-1 bg-white/8 rounded-full pl-1 pr-1.5 py-1 text-sm";
@@ -205,6 +212,16 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
         removePillBtn.addEventListener("click", () => {
 
+            // OJO (bug real, reportado por el cliente 29/8): stockInput
+            // vive DENTRO del pill (se movió ahí en el append de arriba)
+            // — si acá se hace pill.remove() se lo lleva puesto, y esa
+            // fila queda sin campo stock en el DOM. Django la sigue
+            // validando igual (el DELETE no salta validación de campos)
+            // y tira "este campo es obligatorio" aunque la fila se vaya
+            // a borrar. Por eso primero se devuelve stockInput a su
+            // wrapper original en `row` (que nunca se saca del DOM para
+            // las filas con pk) antes de tirar el pill.
+            row.querySelector('[data-role="stock-wrap"]').appendChild(row._stockInput);
             pill.remove();
             cardRows.splice(cardRows.indexOf(row), 1);
 
@@ -212,6 +229,16 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
                 const del = row.querySelector('[data-role="delete-wrap"] input');
                 if (del) del.checked = true;
+
+                // Se guarda para poder "deshacer" (ver addTalleSelect
+                // más abajo): si el mismo talle se vuelve a agregar en
+                // esta misma tarjeta, hay que REUSAR esta fila en vez de
+                // sacar una nueva del pool — dos filas con el mismo
+                // Producto+Talle+Color (la vieja yéndose, la nueva
+                // entrando) chocan contra la restricción de unicidad del
+                // modelo (bug real, mismo reporte).
+                const sizeId = row.querySelector('[data-role="size-wrap"] select').value;
+                removedRows.set(sizeId, row);
 
             } else {
 
@@ -236,6 +263,26 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
         const sizeId = addTalleSelect.value;
         if (!sizeId) return;
+
+        // Si este talle se acaba de sacar de ESTA tarjeta, reusar esa
+        // misma fila (deshacer el DELETE) en vez de sacar una fila
+        // nueva del pool — dos filas con el mismo Producto+Talle+Color
+        // (la vieja con DELETE, la nueva sin guardar todavía) chocan
+        // contra la restricción de unicidad del modelo (bug real,
+        // reportado por el cliente 29/8).
+        if (removedRows.has(sizeId)) {
+
+            const row = removedRows.get(sizeId);
+            removedRows.delete(sizeId);
+
+            const del = row.querySelector('[data-role="delete-wrap"] input');
+            if (del) del.checked = false;
+
+            addPill(row);
+            refreshTalleOptions();
+            return;
+
+        }
 
         const row = unused.shift();
         if (!row) {
@@ -262,13 +309,30 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
     removeBtn.addEventListener("click", () => {
 
+        // Mismo bug que el de un pill suelto (ver removePillBtn más
+        // arriba), pero acá se lleva puesta la tarjeta ENTERA: card.
+        // remove() de más abajo saca del DOM todo lo que esté adentro
+        // de `card`, incluidas las filas con pk que addPill() metió ahí
+        // — sin esto, esas filas (con su DELETE tildado) nunca llegan al
+        // servidor, así que ni se borran ni se validan bien. Por eso acá
+        // se las saca de la tarjeta ANTES de tirar la tarjeta, hacia el
+        // pool (que sí sigue viviendo dentro del <form>).
+        const pool = document.getElementById("variant-pool");
+
         cardRows.forEach(row => {
 
             if (row.dataset.hasPk === "1") {
 
+                // El input de stock de esta fila vive DENTRO de su pill
+                // (se movió ahí en addPill) — hay que devolverlo a su
+                // wrapper en `row` antes de mover/tirar nada, mismo
+                // motivo que en removePillBtn.
+                if (row._stockInput) row.querySelector('[data-role="stock-wrap"]').appendChild(row._stockInput);
+
                 const del = row.querySelector('[data-role="delete-wrap"] input');
                 if (del) del.checked = true;
                 row.classList.add("hidden");
+                if (pool) pool.appendChild(row);
 
             } else {
 
