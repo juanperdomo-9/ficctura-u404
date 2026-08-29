@@ -5,17 +5,23 @@
 
 <form method="post" class="dash-card p-6 max-w-md space-y-4">
     {% csrf_token %}
+    {% if form.non_field_errors %}
+    <p class="text-xs text-red-400">{{ form.non_field_errors }}</p>
+    {% endif %}
     <div>
         <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Nombre</label>
         {{ form.name }}
+        {% if form.name.errors %}<p class="text-xs text-red-400 mt-1">{{ form.name.errors }}</p>{% endif %}
     </div>
     <div>
         <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Marca</label>
         {{ form.brand }}
+        {% if form.brand.errors %}<p class="text-xs text-red-400 mt-1">{{ form.brand.errors }}</p>{% endif %}
     </div>
     <div>
         <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Orden</label>
         {{ form.order }}
+        {% if form.order.errors %}<p class="text-xs text-red-400 mt-1">{{ form.order.errors }}</p>{% endif %}
     </div>
     <label class="flex items-center gap-2 text-sm">
         {{ form.is_coming_soon }} Es "Próximamente" (sin productos reales todavía)
