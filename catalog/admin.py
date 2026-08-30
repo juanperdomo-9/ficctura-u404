@@ -4,7 +4,7 @@ from django.contrib import admin
 from core.admin import admin_site
 
 from .models import (
-    BrandPromotion, Category, Order, OrderItem, PaymentDiscount, Product, ProductImage,
+    BrandPromotion, Category, Order, OrderItem, Pack, PaymentDiscount, Product, ProductImage,
     ProductReservation, ProductVariant, Promotion, Size, SizeMeasurement,
 )
 
@@ -14,6 +14,16 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'brand', 'is_coming_soon', 'order']
     list_filter = ['brand', 'is_coming_soon']
     prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Pack, site=admin_site)
+class PackAdmin(admin.ModelAdmin):
+    # Se administra acá (no en /panel/) a propósito, para no duplicar
+    # una pantalla nueva por una tabla que el cliente pidió con 4 filas
+    # fijas — cuidar el uso (pedido explícito del usuario).
+    list_display = ['name', 'tagline', 'ficctura_negro_qty', 'ficctura_blanco_qty', 'u404_qty', 'bonus_basica_qty', 'discount_percent', 'free_shipping', 'is_active', 'order']
+    prepopulated_fields = {'slug': ('name',)}
+    ordering = ['order']
 
 
 @admin.register(Size, site=admin_site)

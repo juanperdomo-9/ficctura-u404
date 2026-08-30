@@ -1,0 +1,37 @@
+{% load catalog_extras %}
+<a href="{% url 'catalog:pack_detail' pack.slug %}" class="group block product-card-lift" data-fx-focus>
+    <div class="aspect-[3/4] mb-3 rounded-sm border flex flex-col items-center justify-center text-center px-4 relative overflow-hidden
+                {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}">
+
+        <div class="pointer-events-none absolute inset-0 opacity-[0.06]
+                    [background-image:linear-gradient(#808080_1px,transparent_1px),linear-gradient(90deg,#808080_1px,transparent_1px)]
+                    [background-size:30px_30px]"></div>
+
+        {% if pack.discount_percent %}
+        <span class="absolute top-2 left-2 font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+                     {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+            {{ pack.discount_percent }}% OFF
+        </span>
+        {% endif %}
+
+        <p class="relative {% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-3xl uppercase tracking-wide mb-2">
+            {{ pack.name }}
+        </p>
+        <p class="relative font-sans text-xs uppercase tracking-[0.1em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            {{ pack.tagline }}
+        </p>
+        <div class="relative flex flex-wrap justify-center gap-1.5">
+            {% for part in pack.summary_parts %}
+            <span class="font-sans text-[10px] uppercase tracking-[0.1em] px-2 py-1 rounded-sm border
+                         {% if brand == 'u404' %}border-u404-border text-u404-ink{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
+                {{ part }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">Pack {{ pack.name }}</p>
+    <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        {% if pack.free_shipping %}Envío gratis{% endif %}{% if pack.discount_percent %} · {{ pack.discount_percent }}% off{% endif %}
+    </p>
+</a>

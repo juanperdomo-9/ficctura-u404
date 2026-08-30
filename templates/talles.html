@@ -235,6 +235,10 @@
             talle bajando desde XL (L/M/S). Si el paso real es otro,
             avisar para ajustar (son 3 números por fila, fácil de
             corregir).
+            XXL (29/8, pedido del usuario) — mismo paso de 2cm pero
+            subiendo desde XL, misma lógica que el resto de la tabla:
+            pecho 61cm, cintura/ombligo 62cm, largo 79cm. Ajustar si el
+            taller manda la medida real.
             {% endcomment %}
             <div class="overflow-x-auto">
                 <table class="w-full max-w-md mx-auto text-sm font-sans border-collapse mb-4">
@@ -271,10 +275,17 @@
                             <td class="py-2 pr-3">60 cm</td>
                             <td class="py-2">77 cm</td>
                         </tr>
+                        <tr class="border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                            <td class="py-2 pr-3 font-semibold text-left">XXL</td>
+                            <td class="py-2 pr-3">61 cm</td>
+                            <td class="py-2 pr-3">62 cm</td>
+                            <td class="py-2">79 cm</td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="font-sans text-xs {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                     En talle XL: pecho hasta 113cm de contorno corporal sin quedar apretada, cintura/ombligo hasta 115cm para que no marque.
+                    En talle XXL: pecho hasta 117cm, cintura/ombligo hasta 119cm.
                     Medidas tomadas sobre la prenda.
                 </p>
             </div>

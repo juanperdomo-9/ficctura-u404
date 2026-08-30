@@ -48,6 +48,12 @@ aunque el JS tarde en cargar).
     {# Promos aplicadas #}
     <div id="cart-promotions" class="relative px-6 empty:hidden"></div>
 
+    {# Pack aplicado — ver static/js/cart.js::renderCart() #}
+    <div id="cart-pack-banner" class="relative mx-6 mb-4 px-4 py-3 rounded-sm border hidden font-sans text-sm
+                {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %}">
+        📦 <strong id="cart-pack-name"></strong>
+    </div>
+
     {# Footer #}
     <div class="relative border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} px-6 py-6">
         <div id="cart-totals" class="space-y-1.5 mb-5 font-sans text-sm">
@@ -58,6 +64,14 @@ aunque el JS tarde en cargar).
             <div id="cart-discount-row" class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hidden">
                 <span>Descuento</span>
                 <span id="cart-discount">- $ 0</span>
+            </div>
+            <div id="cart-pack-discount-row" class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hidden">
+                <span>Descuento pack</span>
+                <span id="cart-pack-discount">- $ 0</span>
+            </div>
+            <div id="cart-free-shipping-row" class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hidden">
+                <span>Envío</span>
+                <span>Gratis</span>
             </div>
             <div class="flex justify-between font-bold text-lg {% if brand == 'u404' %}text-white{% else %}text-ficctura-ink{% endif %} pt-2">
                 <span>Total</span>

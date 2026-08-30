@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .cart import Cart
 from .models import (
-    Category, Order, OrderItem, Product, ProductReservation, ProductVariant, Promotion, Size,
+    Category, Order, OrderItem, Pack, Product, ProductReservation, ProductVariant, Promotion, Size,
 )
 from .payments import PaywayError, create_payway_payment, is_configured as payway_is_configured
 from .whatsapp import WhatsAppError, is_configured as whatsapp_is_configured, send_order_confirmation
@@ -86,10 +86,18 @@ def catalog_list(request):
         else Category.objects.filter(brand=request.brand, is_coming_soon=True)
     )
 
+    # Packs — pedido del cliente (29/8): "que PACKS sea una categoría
+    # más" en el catálogo. No son Category/Product (mezclan las dos
+    # marcas), así que se pasan aparte y el template los muestra como
+    # una sección más, con su propia tarjeta (ver _pack_card.html). Se
+    # ocultan durante una búsqueda, mismo criterio que "Próximamente".
+    packs = Pack.objects.none() if search_query else Pack.objects.filter(is_active=True)
+
     return render(request, 'catalog/list.html', {
         'sections': sections,
         'coming_soon_categories': coming_soon_categories,
         'search_query': search_query,
+        'packs': packs,
     })
 
 
@@ -227,11 +235,22 @@ def _cart_payload(cart, error=None):
         for d in cart.get_applicable_discounts()
     ]
 
+    # Mismo criterio que cart_view: si no queda nada en el carrito, no
+    # tiene sentido seguir arrastrando "pack activo" (lo sacaron a mano
+    # desde el panel lateral, item por item).
+    if not cart.items() and cart.get_active_pack():
+        cart.clear_active_pack()
+
+    active_pack = cart.get_active_pack()
     payload = {
         'success': error is None,
         'count': len(cart),
         'subtotal': str(cart.get_subtotal()),
         'discount': str(cart.get_discount_total()),
+        'pack_discount': str(cart.get_pack_discount_amount()),
+        'free_shipping': cart.has_free_shipping(),
+        'active_pack_name': active_pack['name'] if active_pack else None,
+        'active_pack_percent': active_pack['discount_percent'] if active_pack else 0,
         'total': str(cart.get_total()),
         'items': items,
         'promotions': promotions,
@@ -247,6 +266,12 @@ def cart_view(request):
     """Página completa del carrito — funciona sin JS (el panel lateral es progressive enhancement encima de esto)."""
     cart = Cart(request)
     items = cart.items()
+
+    # Si el carrito quedó vacío (lo vaciaron a mano, sacaron todo un
+    # ítem por ítem, etc.) no tiene sentido seguir mostrando "Pack X
+    # aplicado" — no queda nada a lo que aplicarle el descuento.
+    if not items and cart.get_active_pack():
+        cart.clear_active_pack()
 
     # "Te puede interesar" — pedido del usuario (28/8): recomendaciones
     # al azar en el carrito para invitar a seguir comprando. order_by('?')
@@ -269,6 +294,9 @@ def cart_view(request):
         'promotions': cart.get_applicable_discounts(),
         'subtotal': cart.get_subtotal(),
         'discount': cart.get_discount_total(),
+        'active_pack': cart.get_active_pack(),
+        'pack_discount': cart.get_pack_discount_amount(),
+        'free_shipping': cart.has_free_shipping(),
         'total': cart.get_total(),
         'recommended': recommended,
     })
@@ -340,6 +368,118 @@ def cart_clear(request):
 
 
 # ==========================================================
+# PACKS — pedido del cliente (29/8): niveles que mezclan remeras de
+# Ficctura y U404 en una sola compra. Única excepción a "las vidrieras
+# no se mezclan" (12/8) — se muestran igual en las dos webs, ver
+# Pack en catalog/models.py para el porqué.
+# ==========================================================
+
+def pack_list(request):
+    packs = Pack.objects.filter(is_active=True)
+    return render(request, 'catalog/pack_list.html', {'packs': packs})
+
+
+def _pack_slots(pack):
+    """
+    Arma la lista de "casilleros" a elegir para este pack: cada uno es
+    una remera puntual que el cliente tiene que definir (talle, y para
+    U404 también modelo). Se resuelve acá en vez de con un filtro de
+    template porque cada tipo de casillero junta variantes de un
+    QuerySet distinto (Sobrio Negro / Sobrio Blanco / cualquier U404).
+    """
+    sobrio = Product.objects.filter(brand='ficctura', name='Sobrio').first()
+    negro_variants = sobrio.variants.filter(color='Negro', stock__gt=0).select_related('size') if sobrio else []
+    blanco_variants = sobrio.variants.filter(color='Blanco', stock__gt=0).select_related('size') if sobrio else []
+    ambas_variants = sobrio.variants.filter(stock__gt=0).select_related('size') if sobrio else []
+
+    u404_variants = (
+        ProductVariant.objects
+        .filter(product__brand='u404', product__status='available', stock__gt=0)
+        .select_related('product', 'size')
+        .order_by('product__name', 'size__order')
+    )
+
+    slots = []
+    for i in range(pack.ficctura_negro_qty):
+        slots.append({'key': f'negro-{i}', 'label': f'Sobrio Negro #{i + 1}', 'options': negro_variants, 'kind': 'talle', 'is_free': False})
+    for i in range(pack.ficctura_blanco_qty):
+        slots.append({'key': f'blanco-{i}', 'label': f'Sobrio Blanco #{i + 1}', 'options': blanco_variants, 'kind': 'talle', 'is_free': False})
+    for i in range(pack.u404_qty):
+        slots.append({'key': f'u404-{i}', 'label': f'Universo 404 #{i + 1}', 'options': u404_variants, 'kind': 'modelo', 'is_free': False})
+    for i in range(pack.bonus_basica_qty):
+        slots.append({'key': f'bonus-{i}', 'label': f'Básica de regalo #{i + 1}', 'options': ambas_variants, 'kind': 'color', 'is_free': True})
+
+    return slots
+
+
+def pack_detail(request, slug):
+    pack = get_object_or_404(Pack, slug=slug, is_active=True)
+    slots = _pack_slots(pack)
+
+    # Precio de cada variante, para que el JS de la página sume en vivo
+    # a medida que el cliente va eligiendo (ver static/js/pack-builder.js).
+    all_variant_ids = {v.id for slot in slots for v in slot['options']}
+    prices = {
+        v.id: str(v.product.price)
+        for slot in slots for v in slot['options']
+        if v.id in all_variant_ids
+    }
+
+    return render(request, 'catalog/pack_detail.html', {
+        'pack': pack,
+        'slots': slots,
+        'prices_json': json.dumps(prices),
+        'missing_stock': not all(slot['options'] for slot in slots),
+    })
+
+
+def pack_build(request, slug):
+    pack = get_object_or_404(Pack, slug=slug, is_active=True)
+
+    if request.method != 'POST':
+        return redirect('catalog:pack_detail', slug=slug)
+
+    slots = _pack_slots(pack)
+    cart = Cart(request)
+    resolved = []
+    error = None
+
+    for slot in slots:
+        variant_id = request.POST.get(f"variant-{slot['key']}")
+        variant = next((v for v in slot['options'] if str(v.id) == variant_id), None)
+        if not variant:
+            error = f"Falta elegir «{slot['label']}» (o ese talle ya no tiene stock)."
+            break
+        resolved.append(variant)
+
+    if error:
+        prices = {v.id: str(v.product.price) for slot in slots for v in slot['options']}
+        return render(request, 'catalog/pack_detail.html', {
+            'pack': pack, 'slots': slots, 'prices_json': json.dumps(prices), 'error': error,
+        })
+
+    for variant in resolved:
+        cart.add(variant, quantity=1)
+
+    # Se guarda en sesión (no en el carrito en sí, que solo sabe de
+    # variantes+cantidad) para que Cart.get_pack_discount_amount() y el
+    # WhatsApp de confirmación sepan que este descuento/envío gratis
+    # viene de un pack, no de una promo común.
+    request.session['active_pack'] = {
+        'pack_id': pack.id,
+        'name': pack.name,
+        'discount_percent': pack.discount_percent,
+        'free_shipping': pack.free_shipping,
+    }
+    request.session.modified = True
+
+    # El aviso de "agregado" lo da el propio carrito mostrando el pack
+    # activo (ver cart.html) — no messages.success() para no depender
+    # de que las vistas de catalog ya muestren ese framework en su base.
+    return redirect('catalog:cart')
+
+
+# ==========================================================
 # CHECKOUT
 # ==========================================================
 
@@ -400,10 +540,25 @@ def checkout(request):
                     error = f'El pago no se pudo procesar: {exc}'
 
         if not error:
+            # Si venía de un pack, se anota en las notas del pedido (el
+            # modelo Order no tiene un campo propio para esto — no vale
+            # la pena una migración nueva para algo que el staff solo
+            # necesita LEER en el detalle del pedido) y su % se suma al
+            # descuento total guardado, para que subtotal-descuento
+            # siga cerrando con el total real cobrado.
+            active_pack = cart.get_active_pack()
+            pack_note = ''
+            if active_pack:
+                pack_note = (
+                    f"Pack {active_pack['name']} — {active_pack['discount_percent']}% off"
+                    f"{' + envío gratis' if active_pack['free_shipping'] else ''}.\n"
+                )
+
             order = Order.objects.create(
                 brand=request.brand, name=name, contact=contact, address=address,
-                delivery_method=delivery_method, payment_preference=payment_preference, notes=notes,
-                subtotal=cart.get_subtotal(), discount=cart.get_discount_total(),
+                delivery_method=delivery_method, payment_preference=payment_preference,
+                notes=pack_note + notes,
+                subtotal=cart.get_subtotal(), discount=cart.get_discount_total() + cart.get_pack_discount_amount(),
                 payment_discount=cart.get_payment_discount_amount(payment_preference),
                 total=cart.get_total(payment_preference),
                 status=order_status,
@@ -431,6 +586,7 @@ def checkout(request):
                     logger.warning('No se pudo mandar el WhatsApp de confirmación del pedido #%s: %s', order.id, exc)
 
             cart.clear()
+            cart.clear_active_pack()
             return redirect('catalog:order_confirmation', order_id=order.id)
 
     # % por método, para que el checkout.html muestre "Transferencia
@@ -445,8 +601,11 @@ def checkout(request):
         'promotions': cart.get_applicable_discounts(),
         'subtotal': cart.get_subtotal(),
         'discount': cart.get_discount_total(),
+        'active_pack': cart.get_active_pack(),
+        'pack_discount': cart.get_pack_discount_amount(),
+        'free_shipping': cart.has_free_shipping(),
         'total': cart.get_total(),
-        'total_after_promo': cart.get_subtotal() - cart.get_discount_total(),
+        'total_after_promo': cart.get_subtotal() - cart.get_discount_total() - cart.get_pack_discount_amount(),
         'payment_discount_percents': payment_discount_percents,
         'error': error,
         'delivery_choices': Order.DeliveryMethod.choices,

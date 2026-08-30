@@ -591,6 +591,80 @@ class PaymentDiscount(models.Model):
         return bool(self.countdown_ends_at and self.countdown_ends_at > timezone.now())
 
 
+class Pack(models.Model):
+    """
+    "Packs" — pedido del cliente (29/8): niveles (Junior/Senior/Team
+    Leader/CEO) que mezclan remeras de las DOS marcas en una sola
+    compra (Sobrio de Ficctura en Negro/Blanco + remeras de U404).
+
+    Es la ÚNICA excepción a "las vidrieras no se mezclan" (regla del
+    12/8) — pedido explícito: "que PACKS sea una categoría más" en el
+    catálogo de las dos webs. No tiene `brand` a propósito: se muestra
+    igual en ficctura.com.ar y universo404.com.ar.
+
+    No es un descuento automático ni un producto de precio fijo: el
+    cliente arma el pack eligiendo talle (y para las unidades de U404,
+    también qué modelo) de cada remera que le toca — el pack solo
+    define CUÁNTAS y de qué tipo, más el % de descuento / envío gratis
+    / bonus que se aplican sobre esa selección real (ver
+    catalog/views.py::pack_detail y Cart.get_pack_discount_amount).
+    """
+
+    name = models.CharField('nombre', max_length=40, help_text='Ej: "Junior", "CEO"')
+    slug = models.SlugField(max_length=50, blank=True, unique=True)
+    tagline = models.CharField(
+        'bajada', max_length=140,
+        help_text='Ej: "Vas bien pero recién estás arrancando"',
+    )
+    order = models.PositiveIntegerField('orden', default=0)
+    is_active = models.BooleanField('activo', default=True)
+
+    ficctura_negro_qty = models.PositiveIntegerField('unidades Sobrio Negro', default=0)
+    ficctura_blanco_qty = models.PositiveIntegerField('unidades Sobrio Blanco', default=0)
+    u404_qty = models.PositiveIntegerField(
+        'unidades U404', default=0,
+        help_text='El cliente elige qué modelo de U404 quiere para cada una.',
+    )
+    bonus_basica_qty = models.PositiveIntegerField(
+        'básicas de regalo', default=0,
+        help_text='Unidades EXTRA de Sobrio (Ficctura) totalmente gratis — ej: CEO = 1. El cliente elige color y talle igual.',
+    )
+
+    discount_percent = models.PositiveIntegerField('% de descuento', default=0)
+    free_shipping = models.BooleanField('envío gratis', default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'pack'
+        verbose_name_plural = 'packs'
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    @property
+    def total_items(self):
+        return self.ficctura_negro_qty + self.ficctura_blanco_qty + self.u404_qty + self.bonus_basica_qty
+
+    @property
+    def summary_parts(self):
+        """Lista corta tipo "2 Negro", "2 Blanco", "2 U404" para mostrar en la tarjeta del catálogo."""
+        parts = []
+        if self.ficctura_negro_qty:
+            parts.append(f"{self.ficctura_negro_qty} Negro")
+        if self.ficctura_blanco_qty:
+            parts.append(f"{self.ficctura_blanco_qty} Blanco")
+        if self.u404_qty:
+            parts.append(f"{self.u404_qty} U404")
+        if self.bonus_basica_qty:
+            parts.append(f"+{self.bonus_basica_qty} básica gratis")
+        return parts
+
+
 def build_whatsapp_url(whatsapp_number, message):
     """
     Arma un link wa.me con mensaje precargado. Si todavía no hay número

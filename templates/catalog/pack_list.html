@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load catalog_extras %}
+
+{% block title %}Packs — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-3 text-center">
+        Packs
+    </h1>
+    <p class="text-center font-sans text-sm mb-12 max-w-lg mx-auto {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        Packs que reflejan tu posición en el UNIVERSO 404 — combinan básicas de FICCTURA con remeras de U404.
+    </p>
+
+    {% if packs %}
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+        {% for pack in packs %}
+        {% include 'catalog/_pack_card.html' %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        Todavía no hay packs cargados.
+    </p>
+    {% endif %}
+
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+{% endblock %}

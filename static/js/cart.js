@@ -334,6 +334,44 @@ function renderCart(data) {
 
     }
 
+    const packDiscountRow = document.getElementById("cart-pack-discount-row");
+
+    if (packDiscountRow) {
+
+        if (Number(data.pack_discount) > 0) {
+
+            packDiscountRow.classList.remove("hidden");
+            setText("cart-pack-discount", "− " + formatPrice(data.pack_discount));
+
+        } else {
+
+            packDiscountRow.classList.add("hidden");
+
+        }
+
+    }
+
+    const freeShippingRow = document.getElementById("cart-free-shipping-row");
+    if (freeShippingRow) freeShippingRow.classList.toggle("hidden", !data.free_shipping);
+
+    const packBanner = document.getElementById("cart-pack-banner");
+
+    if (packBanner) {
+
+        if (data.active_pack_name) {
+
+            packBanner.classList.remove("hidden");
+            const pct = data.active_pack_percent ? ` — ${data.active_pack_percent}% off` : "";
+            setText("cart-pack-name", `Pack ${data.active_pack_name} aplicado${pct}`);
+
+        } else {
+
+            packBanner.classList.add("hidden");
+
+        }
+
+    }
+
     renderPromotions(data.promotions || []);
     renderItems(data.items || []);
 

@@ -174,6 +174,32 @@ class Cart:
     def get_discount_total(self):
         return sum((d['discount_amount'] for d in self.get_applicable_discounts()), Decimal('0'))
 
+    # ---- Pack (29/8) ----
+    # El pack no es una promo de catálogo (Promotion) ni un producto de
+    # precio fijo — es una marca en la SESIÓN (la puso pack_build en
+    # catalog/views.py) que dice "el % de descuento y el envío gratis de
+    # tal pack se aplican sobre lo que hay en el carrito ahora". No se
+    # valida acá que esas variantes SIGAN en el carrito (si las sacaron
+    # a mano, clear_active_pack() las limpia — ver cart_remove/cart_clear).
+
+    def get_active_pack(self):
+        return self.session.get('active_pack')
+
+    def get_pack_discount_amount(self):
+        pack = self.get_active_pack()
+        if not pack or not pack.get('discount_percent'):
+            return Decimal('0')
+        base = self.get_subtotal() - self.get_discount_total()
+        return base * Decimal(pack['discount_percent']) / Decimal('100')
+
+    def has_free_shipping(self):
+        pack = self.get_active_pack()
+        return bool(pack and pack.get('free_shipping'))
+
+    def clear_active_pack(self):
+        self.session.pop('active_pack', None)
+        self.save()
+
     def get_payment_discount_percent(self, payment_preference):
         """% de descuento (transferencia/efectivo) configurado para esta marca — 0 si no hay fila cargada, no está activo, o la forma de pago no aplica (tarjeta nunca tiene)."""
         if not payment_preference or not self.brand:
@@ -189,11 +215,11 @@ class Cart:
         percent = self.get_payment_discount_percent(payment_preference)
         if not percent:
             return Decimal('0')
-        base = self.get_subtotal() - self.get_discount_total()
+        base = self.get_subtotal() - self.get_discount_total() - self.get_pack_discount_amount()
         return base * Decimal(percent) / Decimal('100')
 
     def get_total(self, payment_preference=None):
-        total = self.get_subtotal() - self.get_discount_total()
+        total = self.get_subtotal() - self.get_discount_total() - self.get_pack_discount_amount()
         if payment_preference:
             total -= self.get_payment_discount_amount(payment_preference)
         return total

@@ -17,6 +17,10 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('checkout/<int:order_id>/gracias/', views.order_confirmation, name='order_confirmation'),
 
+    path('packs/', views.pack_list, name='pack_list'),
+    path('packs/<slug:slug>/', views.pack_detail, name='pack_detail'),
+    path('packs/<slug:slug>/armar/', views.pack_build, name='pack_build'),
+
     # Van al final: son un catch-all de slug, cualquier ruta más
     # específica de arriba tiene que quedar antes de estas dos.
     path('<slug:slug>/', views.product_detail, name='detail'),

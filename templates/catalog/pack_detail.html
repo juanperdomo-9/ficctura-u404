@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load catalog_extras asset_tags %}
+
+{% block title %}Pack {{ pack.name }} — {{ brand_config.name }}{% endblock %}
+
+{% block content %}
+{% if brand == 'u404' %}
+{% include 'u404/_navbar.html' %}
+{% else %}
+{% include 'ficctura/_navbar.html' %}
+{% endif %}
+
+<main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
+             {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    <div class="max-w-2xl mx-auto">
+        <a href="{% url 'catalog:pack_list' %}" class="font-sans text-xs uppercase tracking-[0.2em] {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %} transition-colors">
+            ← Packs
+        </a>
+
+        <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-4xl md:text-5xl uppercase tracking-wide mt-3 mb-2">
+            Pack {{ pack.name }}
+        </h1>
+        <p class="font-sans text-sm mb-8 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            {{ pack.tagline }} — {% for part in pack.summary_parts %}{{ part }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        </p>
+
+        {% if error %}
+        <p class="mb-6 px-4 py-3 rounded-sm border border-red-500/40 text-red-400 font-sans text-sm">{{ error }}</p>
+        {% endif %}
+
+        {% if missing_stock %}
+        <p class="mb-6 px-4 py-3 rounded-sm border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} font-sans text-sm">
+            Este pack no se puede armar completo ahora mismo — falta stock de alguna de las remeras que incluye. Escribinos y lo coordinamos.
+        </p>
+        {% else %}
+
+        <form method="post" action="{% url 'catalog:pack_build' pack.slug %}" id="pack-form" class="space-y-4">
+            {% csrf_token %}
+
+            {% for slot in slots %}
+            <div class="p-4 rounded-sm border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
+                <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                    {{ slot.label }}{% if slot.is_free %} <span class="{% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">— gratis</span>{% endif %}
+                </label>
+                <select name="variant-{{ slot.key }}" required data-free="{{ slot.is_free|yesno:'true,false' }}" class="pack-slot w-full font-sans text-sm px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
+                              {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
+                    <option value="">— Elegir —</option>
+                    {% for v in slot.options %}
+                    <option value="{{ v.id }}" data-price="{{ v.product.price }}">
+                        {% if slot.kind == 'modelo' %}{{ v.product.name }} — {% elif slot.kind == 'color' %}{{ v.color }} — {% endif %}Talle {{ v.size.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endfor %}
+
+            {% comment %}
+            Resumen de precio en vivo — pedido del usuario (29/8): "sumar
+            el valor de cada remera, tacharlo y poner el descuento
+            correspondiente". Se recalcula con JS (pack-builder.js) cada
+            vez que se elige algo, sin recargar la página.
+            {% endcomment %}
+            <div class="p-5 rounded-sm border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} text-center">
+                {% if pack.discount_percent %}
+                <p class="font-sans text-sm line-through {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}" id="pack-price-original">$ 0</p>
+                {% endif %}
+                <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-3xl" id="pack-price-final">$ 0</p>
+                <p class="font-sans text-xs uppercase tracking-[0.15em] mt-2 {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+                    {% if pack.free_shipping %}Envío gratis{% endif %}{% if pack.discount_percent %} · {{ pack.discount_percent }}% off{% endif %}
+                </p>
+            </div>
+
+            <button type="submit"
+                    class="btn-lift w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+                           {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
+                Agregar pack al carrito
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</main>
+
+{% if brand == 'u404' %}
+{% include 'u404/_footer.html' %}
+{% else %}
+{% include 'ficctura/_footer.html' %}
+{% endif %}
+
+<script>window.PACK_DISCOUNT_PERCENT = {{ pack.discount_percent }};</script>
+<script src="{% static_v 'js/pack-builder.js' %}"></script>
+{% endblock %}
