@@ -6,17 +6,16 @@
 // explícita: así funciona hoy, gratis, sin
 // depender de ninguna cuenta).
 //
-// Dos métodos (30/8, pedido del cliente):
-//   1. Pecho + cintura reales, contra la tabla de
-//      medidas real de esta misma página — más
-//      preciso, y el único que puede mostrar el
-//      cartel de "carpa" (ver showResult()).
-//   2. Altura + peso + contextura — el cuestionario
-//      original (13/8), estimación indirecta para
-//      quien no tiene cómo medirse ahora mismo.
-// Si carga pecho Y cintura, gana el método 1 (más
-// preciso). Si no, cae al método 2. Si no completó
-// ninguno de los dos pares, se lo avisa.
+// Se piden las 5 medidas juntas (30/8, pedido del
+// cliente — "que se ponga TODO"): altura, peso y
+// contextura (cuestionario original, 13/8) MÁS
+// pecho y cintura reales contra la tabla de medidas
+// de esta misma página. No es que una reemplace a
+// la otra — se combinan (promedio de las dos
+// estimaciones de talle) en un solo resultado. El
+// cartel de "carpa" sigue basado solo en pecho/
+// cintura (es la comparación real, más confiable
+// que la que sale de altura/peso).
 // ===========================================
 
 const SIZE_TABLE = [
@@ -61,26 +60,17 @@ function initSizeCalculator() {
             const weight = parseFloat(document.getElementById("size-calc-weight").value);
             const build = form.querySelector('input[name="size-calc-build"]:checked')?.value || "mediana";
 
-            const errorEl = document.getElementById("size-calc-error");
+            if (!chest || !waist || !height || !weight) return; // los 5 campos son required, esto no debería pasar
 
-            if (chest && waist) {
+            const indexByMeasurements = sizeIndexByMeasurements(chest, waist);
+            const indexByHeightWeight = sizeIndexByHeightWeight(height, weight, build);
 
-                // Método 1 (más preciso): contra la tabla real.
-                const size = recommendSizeByMeasurements(chest, waist);
-                showResult(size, waist > chest);
+            // Promedio de las dos estimaciones, redondeado al talle
+            // más cercano — ninguna de las dos pisa a la otra.
+            const finalIndex = Math.round((indexByMeasurements + indexByHeightWeight) / 2);
+            const size = SIZE_SCALE[Math.max(0, Math.min(SIZE_SCALE.length - 1, finalIndex))];
 
-            } else if (height && weight) {
-
-                // Método 2 (de siempre): altura+peso+contextura.
-                const size = recommendSizeByHeightWeight(height, weight, build);
-                showResult(size, false);
-
-            } else if (errorEl) {
-
-                errorEl.textContent = "Completá altura y peso, o (mejor todavía) pecho y cintura.";
-                errorEl.classList.remove("hidden");
-
-            }
+            showResult(size, waist > chest);
 
         });
 
@@ -90,20 +80,20 @@ function initSizeCalculator() {
 
 }
 
-function recommendSizeByMeasurements(chestCm, waistCm) {
+function sizeIndexByMeasurements(chestCm, waistCm) {
 
     // El talle recomendado es el MÁS CHICO que entra cómodo en las dos
     // medidas a la vez (ni pecho ni cintura quedan ajustados) — si el
     // cuerpo tiene más cintura que pecho, la cintura suele ser la que
     // termina empujando a un talle más grande, tal cual explica el
     // texto de la calculadora más arriba en esta misma página.
-    const fit = SIZE_TABLE.find(s => chestCm <= s.chest && waistCm <= s.waist);
+    const fit = SIZE_TABLE.findIndex(s => chestCm <= s.chest && waistCm <= s.waist);
 
-    return fit ? fit.name : SIZE_TABLE[SIZE_TABLE.length - 1].name; // se pasó de la tabla entera -> se recomienda el XXL igual
+    return fit === -1 ? SIZE_TABLE.length - 1 : fit; // se pasó de la tabla entera -> se recomienda el XXL igual
 
 }
 
-function recommendSizeByHeightWeight(heightCm, weightKg, build) {
+function sizeIndexByHeightWeight(heightCm, weightKg, build) {
 
     // Punto de partida según altura (0=S, 1=M, 2=L, 3=XL, 4=XXL).
     let index;
@@ -127,10 +117,9 @@ function recommendSizeByHeightWeight(heightCm, weightKg, build) {
 
     const buildAdjust = BUILD_ADJUST[build] ?? 0;
 
-    let finalIndex = Math.round(index + bmiAdjust + buildAdjust);
-    finalIndex = Math.max(0, Math.min(SIZE_SCALE.length - 1, finalIndex));
+    const rawIndex = Math.round(index + bmiAdjust + buildAdjust);
 
-    return SIZE_SCALE[finalIndex];
+    return Math.max(0, Math.min(SIZE_SCALE.length - 1, rawIndex));
 
 }
 
@@ -139,11 +128,8 @@ function showResult(size, showCarpaNote) {
     const result = document.getElementById("size-calc-result");
     const value = document.getElementById("size-calc-result-value");
     const carpaNote = document.getElementById("size-calc-carpa-note");
-    const errorEl = document.getElementById("size-calc-error");
 
     if (!result || !value) return;
-
-    if (errorEl) errorEl.classList.add("hidden");
 
     value.textContent = size;
     result.classList.remove("hidden");

@@ -133,7 +133,7 @@
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                         Altura (cm)
                     </label>
-                    <input type="number" id="size-calc-height" min="120" max="230" placeholder="Ej: 175"
+                    <input type="number" id="size-calc-height" min="120" max="230" required placeholder="Ej: 175"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                 </div>
@@ -141,7 +141,7 @@
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                         Peso (kg)
                     </label>
-                    <input type="number" id="size-calc-weight" min="30" max="250" placeholder="Ej: 72"
+                    <input type="number" id="size-calc-weight" min="30" max="250" required placeholder="Ej: 72"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                 </div>
@@ -175,19 +175,20 @@
                 </div>
 
                 {% comment %}
-                Pecho/cintura (30/8) — opcionales pero, si se cargan las
-                dos, son las que deciden el talle (contra la tabla real
-                de medidas), más precisas que altura/peso/contextura.
-                Sin ellas, cae en el cálculo de siempre.
+                Pecho/cintura (30/8) — el cliente pidió que sea TODO
+                junto: las 5 (altura, peso, contextura, pecho, cintura)
+                se combinan en un solo resultado (ver
+                static/js/size-calculator.js), no que una reemplace a
+                la otra.
                 {% endcomment %}
                 <p class="font-sans text-xs uppercase tracking-[0.15em] pt-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                    Para un resultado más preciso, medite (opcional):
+                    Y para afinar más el resultado, medite:
                 </p>
                 <div>
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                         Pecho (cm) — por abajo de las axilas
                     </label>
-                    <input type="number" id="size-calc-chest" min="30" max="90" step="0.5" placeholder="Ej: 57"
+                    <input type="number" id="size-calc-chest" min="30" max="90" step="0.5" required placeholder="Ej: 57"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                 </div>
@@ -195,12 +196,10 @@
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                         Cintura (cm) — a la altura del ombligo
                     </label>
-                    <input type="number" id="size-calc-waist" min="30" max="90" step="0.5" placeholder="Ej: 58"
+                    <input type="number" id="size-calc-waist" min="30" max="90" step="0.5" required placeholder="Ej: 58"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                 </div>
-
-                <p id="size-calc-error" class="hidden font-sans text-xs text-red-400"></p>
 
                 <button type="submit"
                         class="btn-lift w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
