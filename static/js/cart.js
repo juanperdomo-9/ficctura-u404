@@ -43,10 +43,8 @@ function initCart() {
 
     document.getElementById("cart-close")?.addEventListener("click", closeCart);
 
-    // "Seguir comprando" (28/8): mismo cierre que la ✕ — este panel es
-    // un overlay encima de la página en la que ya estabas, "seguir
-    // comprando" es simplemente volver a verla.
-    document.getElementById("cart-continue")?.addEventListener("click", closeCart);
+    // "Seguir comprando" ahora es un link normal a /catalogo/ (30/8,
+    // corregido: antes solo cerraba el panel) — no necesita JS.
 
     cartScrimEl?.addEventListener("click", closeCart);
 
