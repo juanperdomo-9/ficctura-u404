@@ -6,21 +6,23 @@
 // explícita: así funciona hoy, gratis, sin
 // depender de ninguna cuenta).
 //
-// Lógica: talle base según altura, ajustado por
-// IMC (altura+peso) y por la contextura que
-// eligió la persona. Es una heurística general de
-// remeras unisex (S/M/L/XL) — un punto de partida
-// razonable mientras no exista la tabla de
-// medidas real del taller (ver talles.html).
+// Rehecha (30/8, pedido del cliente): en vez de
+// estimar por altura/peso/contextura, pide pecho
+// (por abajo de las axilas) y cintura (altura del
+// ombligo) directo, y los compara contra la TABLA
+// REAL de medidas — los mismos números que se ven
+// en la tabla de talles.html (una sola fuente de
+// verdad, si el taller manda una tabla nueva, se
+// actualiza acá Y ahí).
 // ===========================================
 
-const SIZE_SCALE = ["S", "M", "L", "XL"];
-
-const BUILD_ADJUST = {
-    delgada: -0.5,
-    mediana: 0,
-    robusta: 0.5,
-};
+const SIZE_TABLE = [
+    { name: "S", chest: 53, waist: 54 },
+    { name: "M", chest: 55, waist: 56 },
+    { name: "L", chest: 57, waist: 58 },
+    { name: "XL", chest: 59, waist: 60 },
+    { name: "XXL", chest: 61, waist: 62 },
+];
 
 if (document.readyState === "loading") {
 
@@ -42,20 +44,56 @@ function initSizeCalculator() {
 
             e.preventDefault();
 
-            const height = parseFloat(document.getElementById("size-calc-height").value);
-            const weight = parseFloat(document.getElementById("size-calc-weight").value);
-            const build = form.querySelector('input[name="size-calc-build"]:checked')?.value || "mediana";
+            const chest = parseFloat(document.getElementById("size-calc-chest").value);
+            const waist = parseFloat(document.getElementById("size-calc-waist").value);
 
-            if (!height || !weight) return;
+            if (!chest || !waist) return;
 
-            const size = recommendSize(height, weight, build);
-            showResult(size);
+            const size = recommendSize(chest, waist);
+            // "Carpa": pedido del cliente — si la cintura da más que el
+            // pecho (más panza que pecho), este talle recomendado por
+            // pecho le va a quedar justo de cintura, pero es DE TODAS
+            // FORMAS mejor que subir de talle entero en una remera
+            // común (que quedaría como una carpa arriba).
+            const showCarpaNote = waist > chest;
+
+            showResult(size, showCarpaNote);
 
         });
 
     }
 
     initBackToPurchase();
+
+}
+
+function recommendSize(chestCm, waistCm) {
+
+    // El talle recomendado es el MÁS CHICO que entra cómodo en las dos
+    // medidas a la vez (ni pecho ni cintura quedan ajustados) — si el
+    // cuerpo tiene más cintura que pecho, la cintura suele ser la que
+    // termina empujando a un talle más grande, tal cual explica el
+    // texto de la calculadora más arriba en esta misma página.
+    const fit = SIZE_TABLE.find(s => chestCm <= s.chest && waistCm <= s.waist);
+
+    return fit ? fit.name : SIZE_TABLE[SIZE_TABLE.length - 1].name; // pasa el talle más grande de la tabla -> se recomienda el XXL igual
+
+}
+
+function showResult(size, showCarpaNote) {
+
+    const result = document.getElementById("size-calc-result");
+    const value = document.getElementById("size-calc-result-value");
+    const carpaNote = document.getElementById("size-calc-carpa-note");
+
+    if (!result || !value) return;
+
+    value.textContent = size;
+    result.classList.remove("hidden");
+
+    if (carpaNote) carpaNote.classList.toggle("hidden", !showCarpaNote);
+
+    result.scrollIntoView({ behavior: "smooth", block: "center" });
 
 }
 
@@ -90,49 +128,5 @@ function initBackToPurchase() {
         // referrer raro/no parseable — se deja oculto, no rompe nada.
 
     }
-
-}
-
-function recommendSize(heightCm, weightKg, build) {
-
-    // Punto de partida según altura (0=S, 1=M, 2=L, 3=XL).
-    let index;
-
-    if (heightCm < 165) index = 0;
-    else if (heightCm < 175) index = 1;
-    else if (heightCm < 183) index = 2;
-    else index = 3;
-
-    // Ajuste por IMC — complexión más allá de lo que dice la altura sola.
-    const heightM = heightCm / 100;
-    const bmi = weightKg / (heightM * heightM);
-
-    let bmiAdjust = 0;
-
-    if (bmi < 19) bmiAdjust = -0.7;
-    else if (bmi < 24) bmiAdjust = 0;
-    else if (bmi < 27) bmiAdjust = 0.4;
-    else if (bmi < 30) bmiAdjust = 0.8;
-    else bmiAdjust = 1.2;
-
-    const buildAdjust = BUILD_ADJUST[build] ?? 0;
-
-    let finalIndex = Math.round(index + bmiAdjust + buildAdjust);
-    finalIndex = Math.max(0, Math.min(SIZE_SCALE.length - 1, finalIndex));
-
-    return SIZE_SCALE[finalIndex];
-
-}
-
-function showResult(size) {
-
-    const result = document.getElementById("size-calc-result");
-    const value = document.getElementById("size-calc-result-value");
-
-    if (!result || !value) return;
-
-    value.textContent = size;
-    result.classList.remove("hidden");
-    result.scrollIntoView({ behavior: "smooth", block: "center" });
 
 }

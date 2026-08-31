@@ -96,12 +96,15 @@
     {# ===== Calculadora de talle ===== #}
     {% comment %}
     Pedido del usuario (13/8): "calculadora de talles con IA". Se
-    resolvió como cuestionario inteligente (altura + peso + contextura →
-    lógica de recomendación), no una IA de verdad conectada a una API —
-    así funciona hoy mismo, gratis, sin depender de ninguna cuenta
-    externa (ver static/js/size-calculator.js para la lógica). Como la
-    tabla de medidas real todavía no está (arriba), el resultado se
-    muestra como referencia, no como dato exacto.
+    resolvió como cuestionario inteligente, no una IA de verdad
+    conectada a una API — así funciona hoy mismo, gratis, sin depender
+    de ninguna cuenta externa (ver static/js/size-calculator.js).
+
+    Rehecha (30/8, pedido del cliente): antes pedía altura+peso+
+    contextura (una estimación indirecta); ahora pide directo pecho
+    (por abajo de las axilas) y cintura (altura del ombligo) y los
+    compara contra la tabla real de medidas de acá arriba — mismos
+    números, una sola fuente de verdad (ver SIZE_TABLE en el JS).
     {% endcomment %}
     <section id="calculadora" data-fx-focus class="px-6 py-16 scroll-mt-28">
         <div class="max-w-md mx-auto">
@@ -128,47 +131,19 @@
             <form id="size-calc-form" class="space-y-4">
                 <div>
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                        Altura (cm)
+                        Pecho (cm) — por abajo de las axilas
                     </label>
-                    <input type="number" id="size-calc-height" min="120" max="230" required placeholder="Ej: 175"
+                    <input type="number" id="size-calc-chest" min="30" max="90" step="0.5" required placeholder="Ej: 57"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                 </div>
                 <div>
                     <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-1.5 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                        Peso (kg)
+                        Cintura (cm) — a la altura del ombligo
                     </label>
-                    <input type="number" id="size-calc-weight" min="30" max="250" required placeholder="Ej: 72"
+                    <input type="number" id="size-calc-waist" min="30" max="90" step="0.5" required placeholder="Ej: 58"
                            class="w-full font-sans px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
-                </div>
-                <div>
-                    <p class="font-sans text-xs uppercase tracking-[0.15em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                        Contextura
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="size-calc-build" value="delgada" class="sr-only peer" checked>
-                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
-                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
-                                Delgada
-                            </span>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="size-calc-build" value="mediana" class="sr-only peer">
-                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
-                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
-                                Mediana
-                            </span>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="size-calc-build" value="robusta" class="sr-only peer">
-                            <span class="block font-sans text-sm px-4 py-2 rounded-sm border transition-colors
-                                         {% if brand == 'u404' %}border-u404-border text-u404-ink peer-checked:bg-u404-accent peer-checked:text-u404-bg peer-checked:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink peer-checked:bg-ficctura-accent peer-checked:text-white peer-checked:border-ficctura-accent{% endif %}">
-                                Robusta
-                            </span>
-                        </label>
-                    </div>
                 </div>
 
                 <button type="submit"
@@ -201,8 +176,20 @@
                     —
                 </p>
                 <p class="font-sans text-xs mt-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                    Es una referencia general — todavía no tenemos la tabla de medidas exacta del taller.
-                    Si estás entre dos talles, escribinos y te ayudamos.
+                    Calculado contra la tabla de medidas de acá arriba. Si estás entre dos talles, escribinos y te ayudamos.
+                </p>
+                {% comment %}
+                Cartel de "carpa" — pedido del cliente (30/8): si la
+                cintura da más que el pecho (cuerpo con más panza que
+                pecho), se explica por qué el talle recomendado igual
+                le va a quedar mejor que subir de talle en una remera
+                común. Arranca oculto, lo muestra size-calculator.js
+                solo cuando aplica.
+                {% endcomment %}
+                <p id="size-calc-carpa-note" class="hidden font-sans text-xs mt-4 pt-4 border-t {% if brand == 'u404' %}border-u404-border text-u404-ink{% else %}border-ficctura-border text-ficctura-ink{% endif %} text-left leading-5">
+                    Con este talle vas a estar más cómodo en la cintura, y arriba te va a quedar mucho mejor que una remera
+                    normal — que para darte el espacio que necesitás en la cintura, termina quedándote como una carpa en
+                    pecho y hombros.
                 </p>
             </div>
         </div>

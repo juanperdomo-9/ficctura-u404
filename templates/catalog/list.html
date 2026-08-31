@@ -43,26 +43,6 @@
     </p>
     {% endif %}
 
-    {% comment %}
-    Packs — pedido del cliente (29/8): "una categoría más" del catálogo,
-    mezclan FICCTURA + U404 (única excepción a las vidrieras separadas,
-    ver Pack en catalog/models.py). Van primero, bien visibles.
-    {% endcomment %}
-    {% if packs %}
-    <section id="cat-packs" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
-        <div class="flex items-baseline gap-3 mb-6 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-3">
-            <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide">
-                Packs
-            </h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {% for pack in packs %}
-            {% include 'catalog/_pack_card.html' %}
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
-
     {% for category, products in sections %}
     <section id="cat-{{ category.slug }}" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
         <div class="flex items-baseline gap-3 mb-6 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-3">
@@ -88,6 +68,27 @@
         </div>
     </section>
     {% endfor %}
+
+    {% comment %}
+    Packs — pedido del cliente (29/8): "una categoría más" del catálogo,
+    mezclan FICCTURA + U404 (única excepción a las vidrieras separadas,
+    ver Pack en catalog/models.py). Van DESPUÉS de los productos
+    (pedido 29/8) — antes iban primero.
+    {% endcomment %}
+    {% if packs %}
+    <section id="cat-packs" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
+        <div class="flex items-baseline gap-3 mb-6 border-b {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} pb-3">
+            <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide">
+                Packs
+            </h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for pack in packs %}
+            {% include 'catalog/_pack_card.html' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
     {% if coming_soon_categories %}
     <section class="max-w-6xl mx-auto">

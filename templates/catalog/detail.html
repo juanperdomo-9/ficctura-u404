@@ -26,11 +26,35 @@
             {# ===== Galería ===== #}
             <div>
                 {% with images=product.images.all %}
-                <div id="gallery-main" class="aspect-[3/4] rounded-sm border overflow-hidden flex items-center justify-center mb-3
+                <div id="gallery-main" class="relative aspect-[3/4] rounded-sm border overflow-hidden flex items-center justify-center mb-3 touch-pan-y
                             {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}">
                     {% if images %}
                     <img id="gallery-main-img" src="{{ product.primary_image.image.url }}" alt="{{ product.primary_image.alt_text|default:product.name }}"
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover select-none pointer-events-none">
+                    {% if images|length > 1 %}
+                    {% comment %}
+                    Flechas + deslizar en mobile — pedido del usuario
+                    (30/8). El deslizar se maneja con touchstart/touchend
+                    en gallery.js, estas dos son el equivalente para
+                    mouse/teclado (y para mobile también, por si no
+                    desliza justo).
+                    {% endcomment %}
+                    <button type="button" id="gallery-prev" aria-label="Foto anterior"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center
+                                   bg-black/40 text-white hover:bg-black/60 transition-colors backdrop-blur-sm">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button type="button" id="gallery-next" aria-label="Foto siguiente"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center
+                                   bg-black/40 text-white hover:bg-black/60 transition-colors backdrop-blur-sm">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5">
+                        {% for image in images %}
+                        <span data-gallery-dot class="w-1.5 h-1.5 rounded-full bg-white/50 transition-colors"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     {% else %}
                     <span class="font-sans text-xs uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
                         Sin imagen todavía
@@ -41,7 +65,7 @@
                 {% if images|length > 1 %}
                 <div class="grid grid-cols-5 gap-2">
                     {% for image in images %}
-                    <button type="button" data-gallery-thumb data-src="{{ image.image.url }}"
+                    <button type="button" data-gallery-thumb data-src="{{ image.image.url }}" data-index="{{ forloop.counter0 }}"
                             class="aspect-square rounded-sm border overflow-hidden
                                    {% if brand == 'u404' %}border-u404-border hover:border-u404-accent{% else %}border-ficctura-border hover:border-ficctura-accent{% endif %} transition-colors">
                         <img src="{{ image.image.url }}" alt="" class="w-full h-full object-cover">
