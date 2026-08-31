@@ -54,6 +54,18 @@
                         WhatsApp
                     </a>
                     {% endif %}
+                    {% comment %}
+                    Faltaba (30/8, pedido del cliente) — el footer de
+                    Ficctura ya tenía este link con el mismo criterio
+                    ({{ brand_config.instagram }}, cargado en
+                    settings.py::BRANDS), acá nunca se había agregado.
+                    {% endcomment %}
+                    {% if brand_config.instagram %}
+                    <a href="https://instagram.com/{{ brand_config.instagram }}" target="_blank" rel="noopener"
+                       class="rounded-full border border-u404-border px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-u404-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-u404-accent hover:text-u404-accent">
+                        Instagram
+                    </a>
+                    {% endif %}
                 </div>
             </div>
 
