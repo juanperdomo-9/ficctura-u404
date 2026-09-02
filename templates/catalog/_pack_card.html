@@ -1,6 +1,6 @@
 {% load catalog_extras %}
 <a href="{% url 'catalog:pack_detail' pack.slug %}" class="group block product-card-lift" data-fx-focus>
-    <div class="aspect-[3/4] mb-3 rounded-sm border flex flex-col items-center justify-center text-center px-4 relative overflow-hidden
+    <div class="aspect-[3/4] mb-3 rounded-sm border flex flex-col text-center px-4 pt-4 pb-4 relative overflow-hidden
                 {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}">
 
         <div class="pointer-events-none absolute inset-0 opacity-[0.06]
@@ -11,9 +11,13 @@
         Badges (30/8, pedido del cliente): antes solo estaba el de %
         off — ahora "Envío gratis" va en TODOS los packs (los 4 lo
         tienen), y "Básica gratis" en el que tenga bonus_basica_qty
-        (hoy, solo el CEO).
+        (hoy, solo el CEO). Corregido (30/8): con hasta 3 badges
+        apilados (CEO) se superponían con el nombre/bajada porque
+        estaban con position:absolute y el contenido centrado no les
+        dejaba lugar. Ahora van en el flujo normal, arriba de todo, y
+        el resto del contenido se centra en el espacio que sobra.
         {% endcomment %}
-        <div class="absolute top-2 left-2 flex flex-col items-start gap-1">
+        <div class="relative flex flex-wrap justify-center gap-1 mb-3 shrink-0">
             {% if pack.discount_percent %}
             <span class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
                          {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
@@ -34,19 +38,21 @@
             {% endif %}
         </div>
 
-        <p class="relative {% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-3xl uppercase tracking-wide mb-2">
-            {{ pack.name }}
-        </p>
-        <p class="relative font-sans text-xs uppercase tracking-[0.1em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-            {{ pack.tagline }}
-        </p>
-        <div class="relative flex flex-wrap justify-center gap-1.5">
-            {% for part in pack.summary_parts %}
-            <span class="font-sans text-[10px] uppercase tracking-[0.1em] px-2 py-1 rounded-sm border
-                         {% if brand == 'u404' %}border-u404-border text-u404-ink{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
-                {{ part }}
-            </span>
-            {% endfor %}
+        <div class="relative flex-1 flex flex-col items-center justify-center">
+            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-3xl uppercase tracking-wide mb-2">
+                {{ pack.name }}
+            </p>
+            <p class="font-sans text-xs uppercase tracking-[0.1em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                {{ pack.tagline }}
+            </p>
+            <div class="flex flex-wrap justify-center gap-1.5">
+                {% for part in pack.summary_parts %}
+                <span class="font-sans text-[10px] uppercase tracking-[0.1em] px-2 py-1 rounded-sm border
+                             {% if brand == 'u404' %}border-u404-border text-u404-ink{% else %}border-ficctura-border text-ficctura-ink{% endif %}">
+                    {{ part }}
+                </span>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
