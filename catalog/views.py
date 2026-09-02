@@ -383,14 +383,29 @@ def _pack_slots(pack):
     """
     Arma la lista de "casilleros" a elegir para este pack: cada uno es
     una remera puntual que el cliente tiene que definir (talle, y para
-    U404 también modelo). Se resuelve acá en vez de con un filtro de
-    template porque cada tipo de casillero junta variantes de un
-    QuerySet distinto (Sobrio Negro / Sobrio Blanco / cualquier U404).
+    U404/Ficctura también modelo). Se resuelve acá en vez de con un
+    filtro de template porque cada tipo de casillero junta variantes de
+    un QuerySet distinto (Ficctura Negro / Ficctura Blanco / cualquier
+    U404).
+
+    OJO — bug real (30/8): esto ANTES buscaba un producto puntual
+    llamado "Sobrio" para las unidades Negro/Blanco. El cliente separó
+    ese producto en dos (uno por color, con nombre propio cada uno —
+    hoy "New York" para el Negro, "Buenos Aires" para el Blanco) y el
+    pack dejó de poder armarse (0 opciones en esos casilleros). Ahora
+    busca por COLOR entre TODOS los productos de Ficctura, sin
+    depender de ningún nombre puntual — si el cliente vuelve a
+    renombrar o a agregar otro producto en alguno de esos colores,
+    esto sigue andando solo.
     """
-    sobrio = Product.objects.filter(brand='ficctura', name='Sobrio').first()
-    negro_variants = sobrio.variants.filter(color='Negro', stock__gt=0).select_related('size') if sobrio else []
-    blanco_variants = sobrio.variants.filter(color='Blanco', stock__gt=0).select_related('size') if sobrio else []
-    ambas_variants = sobrio.variants.filter(stock__gt=0).select_related('size') if sobrio else []
+    ficctura_variants = (
+        ProductVariant.objects
+        .filter(product__brand='ficctura', product__status='available', stock__gt=0)
+        .select_related('product', 'size')
+        .order_by('product__name', 'size__order')
+    )
+    negro_variants = ficctura_variants.filter(color='Negro')
+    blanco_variants = ficctura_variants.filter(color='Blanco')
 
     u404_variants = (
         ProductVariant.objects
@@ -401,13 +416,13 @@ def _pack_slots(pack):
 
     slots = []
     for i in range(pack.ficctura_negro_qty):
-        slots.append({'key': f'negro-{i}', 'label': f'Sobrio Negro #{i + 1}', 'options': negro_variants, 'kind': 'talle', 'is_free': False})
+        slots.append({'key': f'negro-{i}', 'label': f'Ficctura Negro #{i + 1}', 'options': negro_variants, 'kind': 'modelo', 'is_free': False})
     for i in range(pack.ficctura_blanco_qty):
-        slots.append({'key': f'blanco-{i}', 'label': f'Sobrio Blanco #{i + 1}', 'options': blanco_variants, 'kind': 'talle', 'is_free': False})
+        slots.append({'key': f'blanco-{i}', 'label': f'Ficctura Blanco #{i + 1}', 'options': blanco_variants, 'kind': 'modelo', 'is_free': False})
     for i in range(pack.u404_qty):
         slots.append({'key': f'u404-{i}', 'label': f'Universo 404 #{i + 1}', 'options': u404_variants, 'kind': 'modelo', 'is_free': False})
     for i in range(pack.bonus_basica_qty):
-        slots.append({'key': f'bonus-{i}', 'label': f'Básica de regalo #{i + 1}', 'options': ambas_variants, 'kind': 'color', 'is_free': True})
+        slots.append({'key': f'bonus-{i}', 'label': f'Básica de regalo #{i + 1}', 'options': ficctura_variants, 'kind': 'modelo', 'is_free': True})
 
     return slots
 
