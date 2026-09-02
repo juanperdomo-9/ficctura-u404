@@ -111,6 +111,44 @@ function initProductPanel() {
 
 }
 
+// Deja una fila de variante SIN PK como si nunca se hubiera tocado —
+// se usa cada vez que se descarta una fila que se había agregado con
+// "+Talle" en esta misma sesión (sacar un pill suelto, o quitar la
+// tarjeta de color entera) para devolverla al pool de filas libres.
+// Bug real (29-30/8, dos reportes del cliente): antes solo se
+// limpiaba el color y el talle quedaba con un valor real puesto —
+// Django la seguía viendo como "cambiada" (has_changed() por el
+// talle) y exigía el color como obligatorio aunque la fila se
+// estuviera por descartar. Limpiar TODOS los campos que "+Talle" pudo
+// haber tocado (talle, stock — el color y el hex ya se resetean
+// aparte donde hace falta) es lo que hace que Django la trate como
+// una fila extra vacía de nuevo y la ignore.
+function resetVariantRowToBlank(row) {
+
+    const sizeSelect = row.querySelector('[data-role="size-wrap"] select');
+    if (sizeSelect) sizeSelect.value = "";
+
+    // "0" y no "" — el modelo tiene stock con default=0, así que ese
+    // es el valor real que trae una fila en blanco (initial), no un
+    // string vacío. Si se pone "" acá, stock también pasa a ser
+    // "obligatorio" (PositiveIntegerField tampoco admite blank).
+    const stockInput = row._stockInput || row.querySelector('[data-role="stock-wrap"] input');
+    if (stockInput) stockInput.value = "0";
+
+    const colorInput = row.querySelector('[data-role="color-wrap"] input');
+    if (colorInput) colorInput.value = "";
+
+    // Mismo motivo que el stock: el <input type="color"> nunca manda
+    // vacío, el initial real de una fila en blanco es "#000000" (ver
+    // _reset_extra_row_initial en dashboard/views.py) — si queda en
+    // otro valor (lo cambió el header de la tarjeta), has_changed()
+    // sigue viendo la fila como "cambiada" aunque size/color/stock ya
+    // estén bien, y Django vuelve a exigirlos igual.
+    const hexInputRow = row.querySelector('[data-role="hex-wrap"] input');
+    if (hexInputRow) hexInputRow.value = "#000000";
+
+}
+
 function renderVariantCard(container, colorName, rows, sizeOptions, unused, photoData, isNew) {
 
     const card = document.createElement("div");
@@ -242,8 +280,20 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
             } else {
 
-                row.querySelector('[data-role="color-wrap"] input').value = "";
-                row.remove();
+                // Bug real (30/8, tercer reporte de este mismo tipo):
+                // row.remove() saca la fila del DOM y JAMÁS la vuelve a
+                // meter en ningún lado — queda huérfana, solo una
+                // referencia en el array `unused` en JS. Un elemento
+                // que no es descendiente del <form> no manda NADA al
+                // enviar (ni siquiera vacío), así que esa fila
+                // directamente desaparece del POST — Django la sigue
+                // contando (TOTAL_FORMS) pero no le llega ni un campo,
+                // y la marca "obligatoria" entera. Por eso hay que
+                // reinsertarla en el pool (que sí vive adentro del
+                // form) en vez de solo sacarla.
+                resetVariantRowToBlank(row);
+                const pool = document.getElementById("variant-pool");
+                if (pool) pool.appendChild(row); else row.remove();
                 unused.push(row);
 
             }
@@ -336,11 +386,27 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
             } else {
 
-                row.querySelector('[data-role="color-wrap"] input').value = "";
+                // Bug real (29-30/8, dos reportes del cliente): esta
+                // fila no tiene pk (se agregó en esta misma sesión con
+                // "+Talle" y todavía no está guardada) — antes solo se
+                // le vaciaba el color y quedaba COLGADA adentro de
+                // `card`, con el talle todavía puesto. card.remove() de
+                // más abajo se la llevaba puesta enterita, y aunque no
+                // se la llevara, Django la seguía viendo "cambiada" por
+                // el talle y exigía el color de nuevo. resetVariantRow
+                // ToBlank() limpia TODO (talle, stock, hex — el color
+                // ya estaba acá) y la fila vuelve al pool de filas libres.
+                if (row._stockInput) row.querySelector('[data-role="stock-wrap"]').appendChild(row._stockInput);
+                resetVariantRowToBlank(row);
+                if (pool) pool.appendChild(row);
+                row.classList.add("hidden");
+                unused.push(row);
 
             }
 
         });
+
+        const photoPool = document.getElementById("photo-pool");
 
         cardPhotoRows.forEach(row => {
 
@@ -351,7 +417,16 @@ function renderVariantCard(container, colorName, rows, sizeOptions, unused, phot
 
             } else {
 
+                // Mismo bug/mismo arreglo que las filas de talles de
+                // arriba: una foto recién agregada con "+" (sin
+                // guardar todavía) vive movida adentro de `card` — sin
+                // sacarla de ahí antes, card.remove() se la lleva
+                // puesta y esa fila del formset de fotos queda sin
+                // ningún campo en el POST (Django la marca "imagen
+                // obligatoria" en vez de ignorarla).
                 row.querySelector('[data-role="color-wrap"] input').value = "";
+                if (photoPool) photoPool.appendChild(row);
+                if (photoData) photoData.unused.push(row);
 
             }
 
