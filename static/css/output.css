@@ -1597,6 +1597,9 @@
     --tw-tracking: var(--tracking-widest);
     letter-spacing: var(--tracking-widest);
   }
+  .break-words {
+    overflow-wrap: break-word;
+  }
   .whitespace-nowrap {
     white-space: nowrap;
   }
@@ -2069,9 +2072,6 @@
     .md\:gap-14 {
       gap: calc(var(--spacing) * 14);
     }
-    .md\:px-8 {
-      padding-inline: calc(var(--spacing) * 8);
-    }
     .md\:px-10 {
       padding-inline: calc(var(--spacing) * 10);
     }
@@ -2090,6 +2090,10 @@
     .md\:text-2xl {
       font-size: var(--text-2xl);
       line-height: var(--tw-leading, var(--text-2xl--line-height));
+    }
+    .md\:text-3xl {
+      font-size: var(--text-3xl);
+      line-height: var(--tw-leading, var(--text-3xl--line-height));
     }
     .md\:text-4xl {
       font-size: var(--text-4xl);

@@ -93,20 +93,20 @@
     {% comment %}
     Sección "Ficctura" en U404 (11/9, pedido del cliente) — segunda
     excepción a "las vidrieras no se mezclan" (12/8), ver catalog_list.
-    Va en su propio bloque con la identidad visual de Ficctura (mismo
-    criterio que el cartel de cross-sell de más abajo), NO mezclada en
-    la grilla de arriba, para que se note claramente que es "la otra
-    marca". Las tarjetas se re-skinean a Ficctura pasando brand='ficctura'
-    al include — no toca el brand global de la página (sigue siendo U404
-    en navbar/footer/resto).
+    Corregido (11/9): el fondo va con los colores de U404 (no un
+    recuadro blanco de Ficctura) — el pedido fue que se sienta parte
+    del catálogo de U404, no un bloque aparte con otra identidad. Lo
+    único que queda "de Ficctura" son las tarjetas de producto en sí
+    (brand='ficctura' en el include), que se distinguen solas por su
+    propio estilo de card.
     {% endcomment %}
     {% if ficctura_products %}
-    <section id="cat-ficctura" class="max-w-6xl mx-auto mb-16 scroll-mt-28 rounded-sm border border-ficctura-border bg-ficctura-bg text-ficctura-ink px-5 py-8 md:px-8">
-        <div class="flex items-baseline gap-3 mb-6 border-b border-ficctura-border pb-3">
-            <h2 class="font-ficctura font-bold text-lg md:text-xl uppercase tracking-wide">
+    <section id="cat-ficctura" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
+        <div class="flex items-baseline gap-3 mb-6 border-b border-u404-border pb-3">
+            <h2 class="font-u404 font-bold text-lg md:text-xl uppercase tracking-wide">
                 Ficctura
             </h2>
-            <span class="font-sans text-xs uppercase tracking-[0.1em] text-ficctura-muted">
+            <span class="font-sans text-xs uppercase tracking-[0.1em] text-u404-muted">
                 Básicos premium, la otra mitad del universo
             </span>
         </div>

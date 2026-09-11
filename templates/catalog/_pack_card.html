@@ -16,6 +16,15 @@
         estaban con position:absolute y el contenido centrado no les
         dejaba lugar. Ahora van en el flujo normal, arriba de todo, y
         el resto del contenido se centra en el espacio que sobra.
+
+        Corregido (11/9): el badge decía "Envío gratis (CABA y AMBA)"
+        completo acá adentro y esa frase tan larga empujaba todo hacia
+        abajo dentro de la tarjeta de aspect ratio fijo con
+        overflow-hidden — con nombres largos (ej. "Principiante") el
+        texto quedaba cortado. El badge vuelve a ser corto ("Envío
+        gratis" nomás, con tooltip); la aclaración de CABA/AMBA
+        completa sigue en el renglón de abajo (fuera de esta caja de
+        alto fijo, ver más abajo) y en pack_detail/carrito/checkout.
         {% endcomment %}
         <div class="relative flex flex-wrap justify-center gap-1 mb-3 shrink-0">
             {% if pack.discount_percent %}
@@ -25,9 +34,10 @@
             </span>
             {% endif %}
             {% if pack.free_shipping %}
-            <span class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+            <span title="Envío gratis a CABA y AMBA"
+                  class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
                          {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
-                Envío gratis (CABA y AMBA)
+                Envío gratis
             </span>
             {% endif %}
             {% if pack.bonus_basica_qty %}
@@ -38,8 +48,18 @@
             {% endif %}
         </div>
 
-        <div class="relative flex-1 flex flex-col items-center justify-center">
-            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-3xl uppercase tracking-wide mb-2">
+        <div class="relative flex-1 flex flex-col items-center justify-center w-full">
+            {% comment %}
+            Corregido (11/9): "Principiante" es una sola palabra larga
+            (a diferencia de "Junior"/"Senior"/"CEO") y en mobile (la
+            tarjeta angosta de grid-cols-2) se salía del recuadro en
+            vez de bajar de línea — como la tarjeta tiene
+            overflow-hidden, quedaba directamente cortada. break-words
+            fuerza el corte dentro de la palabra si hace falta, y
+            text-2xl (en vez de 3xl) en mobile le da más margen antes
+            de necesitarlo.
+            {% endcomment %}
+            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-2xl md:text-3xl uppercase tracking-wide mb-2 break-words w-full">
                 {{ pack.name }}
             </p>
             <p class="font-sans text-xs uppercase tracking-[0.1em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
