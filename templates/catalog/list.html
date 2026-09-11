@@ -90,6 +90,34 @@
     </section>
     {% endif %}
 
+    {% comment %}
+    Sección "Ficctura" en U404 (11/9, pedido del cliente) — segunda
+    excepción a "las vidrieras no se mezclan" (12/8), ver catalog_list.
+    Va en su propio bloque con la identidad visual de Ficctura (mismo
+    criterio que el cartel de cross-sell de más abajo), NO mezclada en
+    la grilla de arriba, para que se note claramente que es "la otra
+    marca". Las tarjetas se re-skinean a Ficctura pasando brand='ficctura'
+    al include — no toca el brand global de la página (sigue siendo U404
+    en navbar/footer/resto).
+    {% endcomment %}
+    {% if ficctura_products %}
+    <section id="cat-ficctura" class="max-w-6xl mx-auto mb-16 scroll-mt-28 rounded-sm border border-ficctura-border bg-ficctura-bg text-ficctura-ink px-5 py-8 md:px-8">
+        <div class="flex items-baseline gap-3 mb-6 border-b border-ficctura-border pb-3">
+            <h2 class="font-ficctura font-bold text-lg md:text-xl uppercase tracking-wide">
+                Ficctura
+            </h2>
+            <span class="font-sans text-xs uppercase tracking-[0.1em] text-ficctura-muted">
+                Básicos premium, la otra mitad del universo
+            </span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in ficctura_products %}
+            {% include 'catalog/_product_card.html' with brand='ficctura' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
     {% if coming_soon_categories %}
     <section class="max-w-6xl mx-auto">
         <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-lg md:text-xl uppercase tracking-wide mb-6 border-b

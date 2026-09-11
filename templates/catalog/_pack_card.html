@@ -27,7 +27,7 @@
             {% if pack.free_shipping %}
             <span class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
                          {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
-                Envío gratis
+                Envío gratis (CABA y AMBA)
             </span>
             {% endif %}
             {% if pack.bonus_basica_qty %}
@@ -58,6 +58,6 @@
 
     <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">Pack {{ pack.name }}</p>
     <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-        {% if pack.free_shipping %}Envío gratis{% endif %}{% if pack.discount_percent %} · {{ pack.discount_percent }}% off{% endif %}
+        {% if pack.free_shipping %}Envío gratis (CABA y AMBA){% endif %}{% if pack.discount_percent %} · {{ pack.discount_percent }}% off{% endif %}
     </p>
 </a>

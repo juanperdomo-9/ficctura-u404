@@ -62,7 +62,7 @@
                 <div class="mb-4 px-4 py-3 rounded-sm border {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %} font-sans text-sm">
                     📦 <strong>Pack {{ active_pack.name }}</strong> aplicado
                     {% if active_pack.discount_percent %} — {{ active_pack.discount_percent }}% off{% endif %}
-                    {% if free_shipping %} + envío gratis{% endif %}
+                    {% if free_shipping %} + envío gratis (CABA y AMBA){% endif %}
                 </div>
                 {% endif %}
 
@@ -82,7 +82,7 @@
                     {% endif %}
                     {% if free_shipping %}
                     <div class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
-                        <span>Envío</span><span>Gratis</span>
+                        <span>Envío</span><span>Gratis (CABA y AMBA)</span>
                     </div>
                     {% endif %}
                     <div class="flex justify-between font-bold text-lg pt-2">

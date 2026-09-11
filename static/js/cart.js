@@ -372,6 +372,38 @@ function renderCart(data) {
 
     renderPromotions(data.promotions || []);
     renderItems(data.items || []);
+    renderPackRecommendation(data.pack_recommendation || null);
+
+}
+
+// "Te falta poco para el pack X" (11/9) — solo se muestra cuando el
+// server manda una recomendación (no hay pack activo todavía y algo
+// del carrito ya suma para alguno).
+function renderPackRecommendation(rec) {
+
+    const el = document.getElementById("cart-pack-recommendation");
+    const textEl = document.getElementById("cart-pack-recommendation-text");
+
+    if (!el || !textEl) return;
+
+    if (!rec) {
+
+        el.classList.add("hidden");
+        return;
+
+    }
+
+    const benefits = [];
+    if (rec.discount_percent) benefits.push(`${rec.discount_percent}% off`);
+    if (rec.free_shipping) benefits.push("envío gratis a CABA y AMBA");
+    const benefitsText = benefits.length ? ` (${benefits.join(" + ")})` : "";
+
+    textEl.textContent = rec.needed > 0
+        ? `Te ${rec.needed === 1 ? "falta 1 producto" : `faltan ${rec.needed} productos`} para completar el Pack ${rec.pack_name}${benefitsText} →`
+        : `¡Ya tenés lo necesario para el Pack ${rec.pack_name}${benefitsText}! Armalo →`;
+
+    el.href = `/catalogo/packs/${rec.pack_slug}/`;
+    el.classList.remove("hidden");
 
 }
 

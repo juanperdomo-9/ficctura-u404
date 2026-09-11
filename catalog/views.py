@@ -4,7 +4,7 @@ import time
 
 from django.conf import settings
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .cart import Cart
@@ -93,11 +93,26 @@ def catalog_list(request):
     # ocultan durante una búsqueda, mismo criterio que "Próximamente".
     packs = Pack.objects.none() if search_query else Pack.objects.filter(is_active=True)
 
+    # Remeras de Ficctura en U404 (11/9, pedido del cliente) — segunda
+    # excepción a "las vidrieras no se mezclan" (12/8), después de
+    # Packs. A diferencia de esa regla, ACÁ sí es unidireccional: U404
+    # muestra también el catálogo de Ficctura en su propia sección
+    # aparte (no mezclada en la grilla principal — mismo criterio
+    # visual que Packs), pero Ficctura sigue sin mostrar nada de U404.
+    # Se resuelve la misma lógica de status/stock que el catálogo
+    # normal (agotadas se ven difuminadas con reserva, ver
+    # _product_card.html) — por eso no se usa .available() acá tampoco.
+    ficctura_products = (
+        Product.objects.none() if (request.brand != 'u404' or search_query)
+        else Product.objects.filter(brand='ficctura').select_related('category').prefetch_related('images')
+    )
+
     return render(request, 'catalog/list.html', {
         'sections': sections,
         'coming_soon_categories': coming_soon_categories,
         'search_query': search_query,
         'packs': packs,
+        'ficctura_products': ficctura_products,
     })
 
 
@@ -107,13 +122,23 @@ def product_detail(request, slug):
     — si alguien intenta ver un producto de la otra marca (por link
     directo o adivinando la URL), da 404 en vez de mostrarlo fuera de
     su tienda. Ver catalog_list para el mismo criterio.
+
+    ÚNICA excepción (11/9, mismo criterio que catalog_list): si estamos
+    en U404, también se puede abrir un producto de Ficctura — es lo que
+    linkean las tarjetas de la sección "Ficctura" del catálogo de U404.
+    Sigue siendo unidireccional: en ficctura.com.ar esto no cambia en
+    nada, ahí solo se ven productos de Ficctura. Se busca primero en la
+    marca propia y recién si no hay nada se prueba con Ficctura (dos
+    queries separadas, no un __in) para no arriesgarse a un
+    MultipleObjectsReturned si algún día coincide un slug entre marcas
+    — el slug no tiene unique_together por marca.
     """
-    product = get_object_or_404(
-        Product.objects.filter(brand=request.brand).prefetch_related(
-            'images', 'variants__size', 'measurements__size',
-        ),
-        slug=slug,
-    )
+    prefetch = ('images', 'variants__size', 'measurements__size')
+    product = Product.objects.filter(brand=request.brand, slug=slug).prefetch_related(*prefetch).first()
+    if not product and request.brand == 'u404':
+        product = Product.objects.filter(brand='ficctura', slug=slug).prefetch_related(*prefetch).first()
+    if not product:
+        raise Http404('Producto no encontrado.')
 
     in_stock = product.status == Product.Status.AVAILABLE and product.total_stock > 0
 
@@ -164,9 +189,15 @@ def reserve_product(request, slug):
     WhatsApp, esto guarda la reserva en la base (ver ProductReservation)
     para que el cliente pueda contar cuántas reservas tiene cada modelo y
     priorizar qué producir después. Acá la remera se muestra bien, sin el
-    difuminado que tiene en el listado.
+    difuminado que tiene en el listado. Mismo criterio cross-brand que
+    product_detail (11/9): en U404 también puede tocar a un agotado de
+    Ficctura, de la sección Ficctura del catálogo.
     """
-    product = get_object_or_404(Product.objects.filter(brand=request.brand), slug=slug)
+    product = Product.objects.filter(brand=request.brand, slug=slug).first()
+    if not product and request.brand == 'u404':
+        product = Product.objects.filter(brand='ficctura', slug=slug).first()
+    if not product:
+        raise Http404('Producto no encontrado.')
 
     # Talles: los que tuvo el producto originalmente si existen, si no
     # el listado global — igual sirve solo como preferencia, no reserva
@@ -254,6 +285,7 @@ def _cart_payload(cart, error=None):
         'total': str(cart.get_total()),
         'items': items,
         'promotions': promotions,
+        'pack_recommendation': _pack_recommendation(cart),
     }
 
     if error:
@@ -299,6 +331,7 @@ def cart_view(request):
         'free_shipping': cart.has_free_shipping(),
         'total': cart.get_total(),
         'recommended': recommended,
+        'pack_recommendation': _pack_recommendation(cart),
     })
 
 
@@ -311,10 +344,15 @@ def cart_add(request, variant_id):
     if request.method != 'POST':
         return JsonResponse({'success': False}, status=405)
 
+    # Cross-brand (11/9): en U404 también se puede sumar una variante
+    # de Ficctura (sección Ficctura del catálogo) — el carrito ya era
+    # brand-agnostic a nivel de datos (ver Cart en catalog/cart.py,
+    # usado igual para Packs), acá solo se relaja el filtro de marca.
+    allowed_brands = ['u404', 'ficctura'] if request.brand == 'u404' else [request.brand]
     variant = get_object_or_404(
         ProductVariant.objects.select_related('product'),
         pk=variant_id,
-        product__brand=request.brand,
+        product__brand__in=allowed_brands,
     )
 
     cart = Cart(request)
@@ -425,6 +463,66 @@ def _pack_slots(pack):
         slots.append({'key': f'bonus-{i}', 'label': f'Básica de regalo #{i + 1}', 'options': ficctura_variants, 'kind': 'modelo', 'is_free': True})
 
     return slots
+
+
+def _pack_recommendation(cart):
+    """
+    "Te falta poco para el pack X" — pedido del usuario (11/9): en el
+    carrito, sugerir el pack más cercano a completarse con lo que ya
+    hay adentro. Cuenta cuántas unidades de cada "ingrediente" de pack
+    (Ficctura Negro / Ficctura Blanco / U404) ya tiene el carrito y
+    compara contra lo que pide cada pack activo — el que necesita
+    MENOS unidades más para completarse gana. No se sugiere nada si ya
+    hay un pack aplicado (no tiene sentido ofrecer otro) ni si nada de
+    lo que hay en el carrito suma para ningún pack (si alguien agregó
+    una sola remera cualquiera, ofrecerle un pack de 6 no ayuda).
+    """
+    if cart.get_active_pack():
+        return None
+
+    items = cart.items()
+    if not items:
+        return None
+
+    negro_have = sum(
+        i['quantity'] for i in items
+        if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Negro'
+    )
+    blanco_have = sum(
+        i['quantity'] for i in items
+        if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Blanco'
+    )
+    u404_have = sum(i['quantity'] for i in items if i['variant'].product.brand == 'u404')
+
+    best = None
+    for pack in Pack.objects.filter(is_active=True):
+        contributes = (
+            min(negro_have, pack.ficctura_negro_qty)
+            + min(blanco_have, pack.ficctura_blanco_qty)
+            + min(u404_have, pack.u404_qty)
+        )
+        if contributes == 0:
+            continue
+
+        needed = (
+            max(0, pack.ficctura_negro_qty - negro_have)
+            + max(0, pack.ficctura_blanco_qty - blanco_have)
+            + max(0, pack.u404_qty - u404_have)
+        )
+
+        if best is None or needed < best['needed']:
+            best = {'pack': pack, 'needed': needed}
+
+    if not best:
+        return None
+
+    return {
+        'pack_name': best['pack'].name,
+        'pack_slug': best['pack'].slug,
+        'needed': best['needed'],
+        'discount_percent': best['pack'].discount_percent,
+        'free_shipping': best['pack'].free_shipping,
+    }
 
 
 def pack_detail(request, slug):

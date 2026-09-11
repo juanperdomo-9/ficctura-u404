@@ -54,6 +54,17 @@ aunque el JS tarde en cargar).
         📦 <strong id="cart-pack-name"></strong>
     </div>
 
+    {% comment %}
+    "Te falta poco para el pack X" — pedido del usuario (11/9). Solo
+    aparece si TODAVÍA no hay un pack aplicado (ver
+    catalog/views.py::_pack_recommendation) — se pinta con
+    static/js/cart.js::renderCart().
+    {% endcomment %}
+    <a id="cart-pack-recommendation" href="#" class="relative block mx-6 mb-4 px-4 py-3 rounded-sm border hidden font-sans text-sm transition-colors
+                {% if brand == 'u404' %}border-u404-border hover:border-u404-accent{% else %}border-ficctura-border hover:border-ficctura-accent{% endif %}">
+        🎯 <span id="cart-pack-recommendation-text"></span>
+    </a>
+
     {# Footer #}
     <div class="relative border-t {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %} px-6 py-6">
         <div id="cart-totals" class="space-y-1.5 mb-5 font-sans text-sm">
@@ -71,7 +82,7 @@ aunque el JS tarde en cargar).
             </div>
             <div id="cart-free-shipping-row" class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %} hidden">
                 <span>Envío</span>
-                <span>Gratis</span>
+                <span>Gratis (CABA y AMBA)</span>
             </div>
             <div class="flex justify-between font-bold text-lg {% if brand == 'u404' %}text-white{% else %}text-ficctura-ink{% endif %} pt-2">
                 <span>Total</span>

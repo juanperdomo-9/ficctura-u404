@@ -69,8 +69,27 @@
         <div class="mb-8 px-4 py-3 rounded-sm border {% if brand == 'u404' %}border-u404-accent/50 text-u404-accent{% else %}border-ficctura-accent/50 text-ficctura-accent{% endif %} font-sans text-sm">
             📦 <strong>Pack {{ active_pack.name }}</strong> aplicado
             {% if active_pack.discount_percent %} — {{ active_pack.discount_percent }}% off{% endif %}
-            {% if free_shipping %} + envío gratis{% endif %}
+            {% if free_shipping %} + envío gratis (CABA y AMBA){% endif %}
         </div>
+        {% elif pack_recommendation %}
+        {% comment %}
+        "Te falta poco para el pack X" — pedido del usuario (11/9), ver
+        catalog/views.py::_pack_recommendation. Mismo criterio que el
+        panel lateral (static/js/cart.js), acá server-rendered.
+        {% endcomment %}
+        <a href="{% url 'catalog:pack_detail' pack_recommendation.pack_slug %}"
+           class="mb-8 block px-4 py-3 rounded-sm border transition-colors font-sans text-sm
+                  {% if brand == 'u404' %}border-u404-border hover:border-u404-accent{% else %}border-ficctura-border hover:border-ficctura-accent{% endif %}">
+            🎯
+            {% if pack_recommendation.needed == 1 %}
+            Te falta 1 producto para completar el Pack {{ pack_recommendation.pack_name }}
+            {% elif pack_recommendation.needed > 1 %}
+            Te faltan {{ pack_recommendation.needed }} productos para completar el Pack {{ pack_recommendation.pack_name }}
+            {% else %}
+            ¡Ya tenés lo necesario para el Pack {{ pack_recommendation.pack_name }}! Armalo
+            {% endif %}
+            {% if pack_recommendation.discount_percent %}({{ pack_recommendation.discount_percent }}% off{% if pack_recommendation.free_shipping %} + envío gratis a CABA y AMBA{% endif %}){% elif pack_recommendation.free_shipping %}(envío gratis a CABA y AMBA){% endif %} →
+        </a>
         {% endif %}
 
         <div class="space-y-1.5 mb-8 font-sans text-sm max-w-sm ml-auto">
@@ -89,7 +108,7 @@
             {% endif %}
             {% if free_shipping %}
             <div class="flex justify-between {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
-                <span>Envío</span><span>Gratis</span>
+                <span>Envío</span><span>Gratis (CABA y AMBA)</span>
             </div>
             {% endif %}
             <div class="flex justify-between font-bold text-lg pt-2">
