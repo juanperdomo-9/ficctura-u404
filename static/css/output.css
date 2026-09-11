@@ -1757,6 +1757,10 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
+  .blur {
+    --tw-blur: blur(8px);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
   .blur-\[3px\] {
     --tw-blur: blur(3px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -2064,6 +2068,9 @@
     }
     .md\:gap-14 {
       gap: calc(var(--spacing) * 14);
+    }
+    .md\:px-8 {
+      padding-inline: calc(var(--spacing) * 8);
     }
     .md\:px-10 {
       padding-inline: calc(var(--spacing) * 10);
@@ -2512,6 +2519,20 @@ select option {
 }
 .cart-badge-pop {
   animation: cart-badge-pop .35s ease-out;
+}
+@keyframes reveal-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.reveal-pop {
+  animation: reveal-pop .25s ease-out;
 }
 .js [data-fx-focus] {
   opacity: 0;

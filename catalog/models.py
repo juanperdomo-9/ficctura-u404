@@ -89,8 +89,13 @@ class Product(models.Model):
         AVAILABLE = 'available', 'Disponible'
         # "Agotado" tal como lo define el brief: un producto real que
         # existió y se quedó sin stock, se conserva visible con captura
-        # de interés — no se oculta ni se borra.
-        SOLD_OUT = 'sold_out', 'Agotado'
+        # de interés — no se oculta ni se borra. Etiqueta cambiada a
+        # "Reserva" en el panel (11/9, pedido del cliente) — el VALUE
+        # ('sold_out') no cambia, solo cómo se ve en el <select> del
+        # dashboard; el storefront sigue con su propio copy fijo
+        # ("Agotada" en la tarjeta, ver _product_card.html) que no se
+        # tocó porque el pedido fue puntual "en la opción del panel".
+        SOLD_OUT = 'sold_out', 'Reserva'
 
     class LicenseStatus(models.TextChoices):
         NOT_NEEDED = 'not_needed', 'No requiere licencia'
