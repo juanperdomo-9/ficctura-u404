@@ -35,23 +35,50 @@
         </p>
         {% else %}
 
-        <form method="post" action="{% url 'catalog:pack_build' pack.slug %}" id="pack-form" class="space-y-4">
+        {% comment %}
+        Rediseño (14/9, pedido del cliente): "cuando entrás ahí que
+        tengas para seleccionar tiene que ser más claro, bien bien
+        bien obvio, intuitivo" — antes era una lista de <select> sin
+        más contexto. Ahora cada remera tiene un número (1, 2, 3...) y
+        se marca visualmente como "lista" apenas elegís algo (ver
+        static/js/pack-builder.js), + un contador de progreso arriba
+        y el botón de submit deshabilitado/con la cuenta de lo que
+        falta hasta que estén todas completas.
+        {% endcomment %}
+        <p class="font-sans text-sm mb-1 {% if brand == 'u404' %}text-u404-ink{% else %}text-ficctura-ink{% endif %}">
+            Elegí talle {% if pack.u404_qty %}y modelo{% endif %} para cada una de las remeras del pack. A medida que vayas completando, abajo se va armando el precio final con el descuento ya aplicado.
+        </p>
+        <div class="flex items-center justify-between mb-6 font-sans text-xs uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+            <span>Progreso</span>
+            <span id="pack-progress">0 / {{ slots|length }}</span>
+        </div>
+
+        <form method="post" action="{% url 'catalog:pack_build' pack.slug %}" id="pack-form" data-brand="{{ brand }}" class="space-y-4">
             {% csrf_token %}
 
             {% for slot in slots %}
-            <div class="p-4 rounded-sm border {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}">
-                <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-                    {{ slot.label }}{% if slot.is_free %} <span class="{% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">— gratis</span>{% endif %}
-                </label>
-                <select name="variant-{{ slot.key }}" required data-free="{{ slot.is_free|yesno:'true,false' }}" class="pack-slot w-full font-sans text-sm px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
-                              {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
-                    <option value="">— Elegir —</option>
-                    {% for v in slot.options %}
-                    <option value="{{ v.id }}" data-price="{{ v.product.price }}">
-                        {% if slot.kind == 'modelo' %}{{ v.product.name }} — {% elif slot.kind == 'color' %}{{ v.color }} — {% endif %}Talle {{ v.size.name }}
-                    </option>
-                    {% endfor %}
-                </select>
+            <div class="pack-slot-card flex items-start gap-4 p-4 rounded-sm border transition-colors
+                        {% if brand == 'u404' %}border-u404-border{% else %}border-ficctura-border{% endif %}"
+                 data-slot-card>
+                <div data-slot-num
+                     class="shrink-0 w-8 h-8 mt-0.5 rounded-full border flex items-center justify-center font-sans text-sm font-bold transition-colors
+                            {% if brand == 'u404' %}border-u404-border text-u404-muted{% else %}border-ficctura-border text-ficctura-muted{% endif %}">
+                    {{ forloop.counter }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <label class="block font-sans text-xs uppercase tracking-[0.15em] mb-2 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+                        {{ slot.label }}{% if slot.is_free %} <span class="{% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">— gratis</span>{% endif %}
+                    </label>
+                    <select name="variant-{{ slot.key }}" required data-free="{{ slot.is_free|yesno:'true,false' }}" class="pack-slot w-full font-sans text-sm px-4 py-3 rounded-sm border bg-transparent outline-none transition-colors
+                                  {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
+                        <option value="">— Elegir —</option>
+                        {% for v in slot.options %}
+                        <option value="{{ v.id }}" data-price="{{ v.product.price }}">
+                            {% if slot.kind == 'modelo' %}{{ v.product.name }} — {% elif slot.kind == 'color' %}{{ v.color }} — {% endif %}Talle {{ v.size.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             {% endfor %}
 
@@ -71,8 +98,15 @@
                 </p>
             </div>
 
-            <button type="submit"
-                    class="btn-lift w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors
+            {% comment %}
+            Arranca deshabilitado — pack-builder.js lo habilita y le
+            cambia el texto ("Elegí 3 más para continuar" → "Agregar
+            pack al carrito") a medida que se completan los slots.
+            disabled:opacity-50 en vez de sacar el estilo entero: tiene
+            que notarse que todavía no se puede tocar.
+            {% endcomment %}
+            <button type="submit" id="pack-submit" disabled
+                    class="btn-lift w-full font-sans text-sm font-semibold uppercase tracking-[0.2em] py-4 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0
                            {% if brand == 'u404' %}bg-u404-accent text-u404-bg hover:bg-u404-accent-hover{% else %}bg-ficctura-accent text-white hover:bg-ficctura-accent-hover{% endif %}">
                 Agregar pack al carrito
             </button>

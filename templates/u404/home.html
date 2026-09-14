@@ -43,7 +43,11 @@
         </h2>
 
         {% if featured_products %}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {% comment %}
+        Fotos más grandes acá también (14/9, pedido del cliente) —
+        mismo criterio que catalog/list.html.
+        {% endcomment %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for product in featured_products %}
             {% include 'catalog/_product_card.html' %}
             {% endfor %}

@@ -142,7 +142,7 @@
         <h2 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-xl md:text-2xl uppercase tracking-wide mb-8 text-center">
             Te puede interesar
         </h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+        <div class="grid {% if brand == 'u404' %}grid-cols-1 sm:grid-cols-2 lg:grid-cols-3{% else %}grid-cols-2 md:grid-cols-4{% endif %} gap-5 md:gap-6">
             {% for product in recommended %}
             {% include 'catalog/_product_card.html' %}
             {% endfor %}

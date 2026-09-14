@@ -61,7 +61,17 @@
             {% endfor %}
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% comment %}
+        Fotos más grandes en U404 (14/9, pedido del cliente): "las
+        vistas previas tienen que ser el doble de lo que son... en el
+        teléfono veo un cuadrado muy chiquito" — en Ficctura el
+        cuadrito chico es a propósito (ahí importa mostrar el calce,
+        no el diseño), pero en U404 (remeras gráficas) el diseño hay
+        que verlo bien grande, sobre todo en mobile. Menos columnas =
+        cada tarjeta más grande (mismo _product_card.html, no hace
+        falta imagen nueva).
+        {% endcomment %}
+        <div class="grid {% if brand == 'u404' %}grid-cols-1 sm:grid-cols-2 lg:grid-cols-3{% else %}grid-cols-2 md:grid-cols-3 lg:grid-cols-4{% endif %} gap-6">
             {% for product in products %}
             {% include 'catalog/_product_card.html' %}
             {% endfor %}
