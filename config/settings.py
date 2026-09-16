@@ -298,6 +298,11 @@ BRANDS = {
         # Confirmado en el informe de onboarding: se terminó usando este
         # usuario tras problemas con universo.404/uniforme.404.
         'instagram': 'eluniverso404',
+        # Meta Pixel (16/9, pedido del cliente) — solo U404 por ahora,
+        # de la cuenta de Meta Ads de esta marca. Se inyecta en
+        # templates/base.html solo cuando esta clave está presente, así
+        # que a Ficctura no le pega nada mientras no tenga la suya.
+        'meta_pixel_id': '1075271578209235',
     },
     'ficctura': {
         'name': 'FICCTURA',
