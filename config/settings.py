@@ -294,7 +294,7 @@ DEFAULT_BRAND = 'u404'
 BRANDS = {
     'u404': {
         'name': 'UNIVERSO 404',
-        'whatsapp_number': '5491155698878',  # 11 5569-8878 — coordinación de transferencia/efectivo (13/8)
+        'whatsapp_number': '5491125421577',  # 11 2542-1577 — cambiado (16/9, pedido del cliente), antes 11 5569-8878
         # Confirmado en el informe de onboarding: se terminó usando este
         # usuario tras problemas con universo.404/uniforme.404.
         'instagram': 'eluniverso404',
@@ -306,7 +306,7 @@ BRANDS = {
     },
     'ficctura': {
         'name': 'FICCTURA',
-        'whatsapp_number': '5491155698878',  # 11 5569-8878 — coordinación de transferencia/efectivo (13/8)
+        'whatsapp_number': '5491125421577',  # 11 2542-1577 — cambiado (16/9, pedido del cliente), antes 11 5569-8878
         'instagram': 'ficctura',  # instagram.com/ficctura (13/8)
     },
 }
