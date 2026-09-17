@@ -424,6 +424,28 @@ select option {
     animation: reveal-pop .25s ease-out;
 }
 
+/* Botón flotante de WhatsApp (17/9) — verde real de WhatsApp a
+   propósito, no el acento de la marca (ver base.html). El anillo
+   pulsa despacio detrás del ícono para llamar la atención sin ser
+   invasivo — mismo criterio "sutil" que el resto de las
+   micro-interacciones del sitio. */
+.wa-float {
+    background: #25d366;
+}
+.wa-float-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: #25d366;
+    opacity: .55;
+    animation: wa-pulse 2.6s ease-out infinite;
+}
+@keyframes wa-pulse {
+    0%   { transform: scale(1);   opacity: .55; }
+    70%  { transform: scale(1.55); opacity: 0; }
+    100% { transform: scale(1.55); opacity: 0; }
+}
+
 /* ==========================================================
    ENFOQUE — animación de entrada al scrollear, para todo el
    sitio EXCEPTO el gateway (que ya tiene la suya: reveal-up +

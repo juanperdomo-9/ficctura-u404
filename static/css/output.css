@@ -338,6 +338,9 @@
   .left-5 {
     left: calc(var(--spacing) * 5);
   }
+  .left-6 {
+    left: calc(var(--spacing) * 6);
+  }
   .left-7 {
     left: calc(var(--spacing) * 7);
   }
@@ -1926,6 +1929,12 @@
       --tw-translate-y: calc(var(--spacing) * -0.5);
       translate: var(--tw-translate-x) var(--tw-translate-y);
     }
+    .hover\:scale-105:hover {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
     .hover\:border-ficctura-accent:hover {
       border-color: var(--color-ficctura-accent);
     }
@@ -2558,6 +2567,31 @@ select option {
 }
 .reveal-pop {
   animation: reveal-pop .25s ease-out;
+}
+.wa-float {
+  background: #25d366;
+}
+.wa-float-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #25d366;
+  opacity: .55;
+  animation: wa-pulse 2.6s ease-out infinite;
+}
+@keyframes wa-pulse {
+  0% {
+    transform: scale(1);
+    opacity: .55;
+  }
+  70% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
 }
 .js [data-fx-focus] {
   opacity: 0;
