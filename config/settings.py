@@ -82,6 +82,7 @@ if CLOUDINARY_CONFIGURED:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'config.frame_embed.AllowFrameEmbedMiddleware',
     # WhiteNoise: sirve los estáticos compilados (collectstatic) directo
     # desde el proceso de Django, sin depender de un Nginx aparte — es
     # el patrón estándar para un web service simple en Render.
