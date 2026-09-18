@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from .models import PaymentDiscount, Product, ProductVariant, Promotion
+from .models import Pack, PaymentDiscount, Product, ProductVariant, Promotion
 
 
 class Cart:
@@ -178,12 +178,63 @@ class Cart:
     # El pack no es una promo de catálogo (Promotion) ni un producto de
     # precio fijo — es una marca en la SESIÓN (la puso pack_build en
     # catalog/views.py) que dice "el % de descuento y el envío gratis de
-    # tal pack se aplican sobre lo que hay en el carrito ahora". No se
-    # valida acá que esas variantes SIGAN en el carrito (si las sacaron
-    # a mano, clear_active_pack() las limpia — ver cart_remove/cart_clear).
+    # tal pack se aplican sobre lo que hay en el carrito ahora".
+
+    def _pack_item_counts(self):
+        """
+        Cuenta cuántas unidades de cada "ingrediente" de pack hay AHORA
+        en el carrito (Ficctura Negro / Ficctura Blanco / U404). Única
+        fuente de esta cuenta — la usan tanto get_active_pack() acá
+        abajo como catalog/views.py::_pack_recommendation.
+        """
+        items = self.items()
+        negro = sum(
+            i['quantity'] for i in items
+            if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Negro'
+        )
+        blanco = sum(
+            i['quantity'] for i in items
+            if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Blanco'
+        )
+        u404 = sum(i['quantity'] for i in items if i['variant'].product.brand == 'u404')
+        return negro, blanco, u404
 
     def get_active_pack(self):
-        return self.session.get('active_pack')
+        """
+        Bug real (18/9, reportado por el usuario): "si agrego un pack y
+        lo borro me sigue apareciendo pack junior aplicado y envío
+        gratis". Antes esto devolvía ciegamente lo que hubiera en la
+        sesión — cart_remove/cart_subtract NUNCA llamaban a
+        clear_active_pack() (pese a lo que decía el comentario viejo
+        acá), solo se limpiaba si el carrito quedaba TOTALMENTE vacío
+        (ver _cart_payload). Si sacabas UNA sola remera del pack y
+        dejabas las demás (o cualquier otra cosa) en el carrito, el
+        pack seguía "aplicado" para siempre con datos que ya no
+        reflejan lo que hay adentro.
+
+        Ahora cada vez que se pide el pack activo, se revalida contra
+        el carrito actual — si ya no alcanza para justificarlo, se
+        limpia solo. Esto también es lo que hace que
+        _pack_recommendation vuelva a funcionar: esa función no
+        recomienda nada mientras haya un active_pack (aunque esté
+        stale), así que este fix arregla los dos síntomas reportados
+        con el mismo cambio.
+        """
+        pack_data = self.session.get('active_pack')
+        if not pack_data:
+            return None
+
+        pack = Pack.objects.filter(pk=pack_data.get('pack_id')).first()
+        if not pack:
+            self.clear_active_pack()
+            return None
+
+        negro, blanco, u404 = self._pack_item_counts()
+        if negro < pack.ficctura_negro_qty or blanco < pack.ficctura_blanco_qty or u404 < pack.u404_qty:
+            self.clear_active_pack()
+            return None
+
+        return pack_data
 
     def get_pack_discount_amount(self):
         pack = self.get_active_pack()

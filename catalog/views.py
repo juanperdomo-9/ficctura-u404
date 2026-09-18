@@ -492,19 +492,14 @@ def _pack_recommendation(cart):
     if cart.get_active_pack():
         return None
 
-    items = cart.items()
-    if not items:
+    if not cart.items():
         return None
 
-    negro_have = sum(
-        i['quantity'] for i in items
-        if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Negro'
-    )
-    blanco_have = sum(
-        i['quantity'] for i in items
-        if i['variant'].product.brand == 'ficctura' and i['variant'].color == 'Blanco'
-    )
-    u404_have = sum(i['quantity'] for i in items if i['variant'].product.brand == 'u404')
+    # Misma cuenta que usa Cart.get_active_pack() para autoinvalidarse
+    # (18/9) — una sola fuente de verdad para "cuánto hay de cada
+    # ingrediente de pack en el carrito", en vez de recalcularlo acá
+    # de nuevo con el riesgo de que las dos cuentas se desincronicen.
+    negro_have, blanco_have, u404_have = cart._pack_item_counts()
 
     evaluated = []
     for pack in Pack.objects.filter(is_active=True):
