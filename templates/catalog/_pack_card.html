@@ -50,16 +50,15 @@
 
         <div class="relative flex-1 flex flex-col items-center justify-center w-full">
             {% comment %}
-            Corregido (11/9): "Principiante" es una sola palabra larga
-            (a diferencia de "Junior"/"Senior"/"CEO") y en mobile (la
-            tarjeta angosta de grid-cols-2) se salía del recuadro en
-            vez de bajar de línea — como la tarjeta tiene
-            overflow-hidden, quedaba directamente cortada. break-words
-            fuerza el corte dentro de la palabra si hace falta, y
-            text-2xl (en vez de 3xl) en mobile le da más margen antes
-            de necesitarlo.
+            Corregido (18/9): con text-2xl, "Team Leader" todavía
+            cortaba "LEADER" a la mitad en mobile (grid-cols-2) —
+            baja un escalón más (text-lg) para que las palabras de
+            hasta 6-7 letras entren en una sola línea sin partirse.
+            break-words se deja como red de seguridad para nombres
+            futuros más largos, pero ya no debería activarse con los
+            4 nombres actuales (Junior/Senior/Team Leader/CEO).
             {% endcomment %}
-            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-2xl md:text-3xl uppercase tracking-wide mb-2 break-words w-full">
+            <p class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-black text-lg sm:text-2xl md:text-3xl uppercase tracking-wide mb-2 break-words w-full">
                 {{ pack.name }}
             </p>
             <p class="font-sans text-xs uppercase tracking-[0.1em] mb-4 {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">

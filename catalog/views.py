@@ -471,11 +471,23 @@ def _pack_recommendation(cart):
     carrito, sugerir el pack más cercano a completarse con lo que ya
     hay adentro. Cuenta cuántas unidades de cada "ingrediente" de pack
     (Ficctura Negro / Ficctura Blanco / U404) ya tiene el carrito y
-    compara contra lo que pide cada pack activo — el que necesita
-    MENOS unidades más para completarse gana. No se sugiere nada si ya
-    hay un pack aplicado (no tiene sentido ofrecer otro) ni si nada de
-    lo que hay en el carrito suma para ningún pack (si alguien agregó
-    una sola remera cualquiera, ofrecerle un pack de 6 no ayuda).
+    compara contra lo que pide cada pack activo. No se sugiere nada si
+    ya hay un pack aplicado (no tiene sentido ofrecer otro) ni si nada
+    de lo que hay en el carrito suma para ningún pack (si alguien
+    agregó una sola remera cualquiera, ofrecerle un pack de 6 no
+    ayuda).
+
+    Bug real (18/9, reportado por el usuario): antes elegía el pack
+    con MENOS unidades faltantes — pero apenas el carrito completaba
+    Junior (needed=0), ESE quedaba ganando para siempre contra
+    Senior/Team Leader/CEO (que con el mismo carrito todavía faltan
+    varias unidades, siempre needed > 0), así que nunca se pasaba a
+    sugerir el próximo escalón. Ahora se recorren los packs en orden
+    (Pack.Meta.ordering ya es por 'order', de Junior a CEO) y se
+    sugiere el PRIMERO que todavía no está completo — eso sí avanza:
+    apenas se completa Junior, la próxima vez que se llama esto ya
+    recomienda Senior. Si el carrito ya alcanza para todos los packs
+    activos, se muestra el más alto (el mejor beneficio disponible).
     """
     if cart.get_active_pack():
         return None
@@ -494,27 +506,25 @@ def _pack_recommendation(cart):
     )
     u404_have = sum(i['quantity'] for i in items if i['variant'].product.brand == 'u404')
 
-    best = None
+    evaluated = []
     for pack in Pack.objects.filter(is_active=True):
         contributes = (
             min(negro_have, pack.ficctura_negro_qty)
             + min(blanco_have, pack.ficctura_blanco_qty)
             + min(u404_have, pack.u404_qty)
         )
-        if contributes == 0:
-            continue
-
         needed = (
             max(0, pack.ficctura_negro_qty - negro_have)
             + max(0, pack.ficctura_blanco_qty - blanco_have)
             + max(0, pack.u404_qty - u404_have)
         )
+        evaluated.append({'pack': pack, 'contributes': contributes, 'needed': needed})
 
-        if best is None or needed < best['needed']:
-            best = {'pack': pack, 'needed': needed}
-
-    if not best:
+    if not evaluated or not any(e['contributes'] > 0 for e in evaluated):
         return None
+
+    next_incomplete = next((e for e in evaluated if e['needed'] > 0), None)
+    best = next_incomplete or evaluated[-1]
 
     return {
         'pack_name': best['pack'].name,

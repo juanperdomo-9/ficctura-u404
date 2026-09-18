@@ -2058,6 +2058,10 @@
     .sm\:flex-row {
       flex-direction: row;
     }
+    .sm\:text-2xl {
+      font-size: var(--text-2xl);
+      line-height: var(--tw-leading, var(--text-2xl--line-height));
+    }
   }
   @media (width >= 48rem) {
     .md\:col-span-2 {
