@@ -117,6 +117,7 @@ class Cart:
             Promotion.objects
             .filter(is_active=True, brand=self.brand)
             .select_related('buy_category', 'get_category')
+            .prefetch_related('products')
         )
 
     def get_applicable_discounts(self):
@@ -126,18 +127,28 @@ class Cart:
         descuenta. Las unidades más baratas de la categoría "regalo" son
         las que se descuentan primero (criterio estándar de este tipo de
         ofertas).
+
+        Si la promo tiene `products` cargados (19/9 — 2x1/3x2 puntual
+        entre unos pocos diseños, no toda la categoría), esa lista
+        manda de los dos lados (comprando y regalo) e ignora
+        buy_category/get_category por completo.
         """
         items = self.items()
         discounts = []
 
         for promo in self.get_promotions():
-            buy_category_id = promo.buy_category_id
-            get_category_id = promo.get_category_id or promo.buy_category_id
+            promo_product_ids = {p.id for p in promo.products.all()}
 
-            buy_qty_in_cart = sum(
-                item['quantity'] for item in items
-                if item['variant'].product.category_id == buy_category_id
-            )
+            if promo_product_ids:
+                buy_qty_in_cart = sum(
+                    item['quantity'] for item in items
+                    if item['variant'].product_id in promo_product_ids
+                )
+            else:
+                buy_qty_in_cart = sum(
+                    item['quantity'] for item in items
+                    if item['variant'].product.category_id == promo.buy_category_id
+                )
 
             if buy_qty_in_cart < promo.buy_quantity:
                 continue
@@ -146,10 +157,17 @@ class Cart:
             free_units = sets * promo.get_quantity
 
             candidate_prices = []
-            for item in items:
-                if item['variant'].product.category_id == get_category_id:
-                    price = item['variant'].product.price or Decimal('0')
-                    candidate_prices.extend([price] * item['quantity'])
+            if promo_product_ids:
+                for item in items:
+                    if item['variant'].product_id in promo_product_ids:
+                        price = item['variant'].product.price or Decimal('0')
+                        candidate_prices.extend([price] * item['quantity'])
+            else:
+                get_category_id = promo.get_category_id or promo.buy_category_id
+                for item in items:
+                    if item['variant'].product.category_id == get_category_id:
+                        price = item['variant'].product.price or Decimal('0')
+                        candidate_prices.extend([price] * item['quantity'])
 
             candidate_prices.sort()
             discounted_prices = candidate_prices[:free_units]

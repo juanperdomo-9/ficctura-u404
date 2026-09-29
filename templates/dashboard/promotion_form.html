@@ -58,6 +58,24 @@
         </div>
     </div>
 
+    {% comment %}
+    Productos puntuales (19/9, pedido del cliente) — para un 2x1/3x2
+    entre unos pocos diseños en vez de toda la categoría (ej: "2x1
+    entre ACDC, Guns N' Roses, Volver al Futuro y Nakatomi", sin que
+    entre Jeep aunque sea de la misma categoría). Vacío = se comporta
+    como siempre, por categoría entera (buy_category/get_category de
+    arriba). Ctrl+click (o cmd+click en Mac) para elegir varios.
+    {% endcomment %}
+    <div class="border-t border-white/10 pt-4">
+        <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">
+            Solo estos productos (opcional — Ctrl+click para elegir varios)
+        </label>
+        {{ form.products }}
+        <p class="text-xs text-white/40 mt-1">
+            Si elegís productos acá, la promo cuenta solo entre ellos — ignora la categoría de arriba.
+        </p>
+    </div>
+
     <div class="border-t border-white/10 pt-4 grid sm:grid-cols-2 gap-4">
         <div>
             <label class="block text-xs uppercase tracking-wide text-white/50 mb-1">Empieza el (opcional)</label>

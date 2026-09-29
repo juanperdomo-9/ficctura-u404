@@ -204,6 +204,17 @@ class Product(models.Model):
         return sum(v.stock for v in self.variants.all())
 
     @property
+    def active_promotion(self):
+        """
+        La promo de productos puntuales (ver Promotion.products, 19/9)
+        que incluye a este producto, si hay alguna activa — para el
+        badge de la tarjeta (ver _product_card.html). None si no tiene
+        ninguna. Si hubiera más de una activa a la vez sobre el mismo
+        producto (caso raro), se muestra la primera nomás.
+        """
+        return self.promotions.filter(is_active=True).first()
+
+    @property
     def urgency_stock_percent(self):
         if not self.urgency_stock_limit:
             return 0
@@ -501,6 +512,26 @@ class Promotion(models.Model):
         help_text='100 = gratis. Ej: 50 = mitad de precio.',
     )
 
+    # Pedido del cliente (19/9): "2x1 con la posibilidad de las
+    # siguientes remeras: ACDC, Guns N' Roses, Volver al Futuro y
+    # Nakatomi" — puntual entre 4 diseños, no toda la categoría
+    # "Remera" (que también tiene otros modelos, ej. Jeep, que NO
+    # entran en esta promo). Antes esto solo se podía armar por
+    # categoría entera. Si se cargan productos acá, el carrito cuenta
+    # SOLO entre ellos (ignora buy_category/get_category para elegir
+    # qué suma) — buy_category se sigue pidiendo igual (por ahora no
+    # vale la pena una migración para hacerlo opcional) pero deja de
+    # importar en el cálculo cuando hay productos puntuales cargados.
+    products = models.ManyToManyField(
+        Product, blank=True, related_name='promotions',
+        verbose_name='solo estos productos (opcional)',
+        help_text=(
+            'Si cargás productos acá, la promo cuenta SOLO entre ellos — para un '
+            '2x1/3x2 puntual entre unos pocos diseños, no toda la categoría. '
+            'Vacío = se comporta como siempre, por categoría entera.'
+        ),
+    )
+
     starts_at = models.DateTimeField(null=True, blank=True, verbose_name='empieza el')
     ends_at = models.DateTimeField(null=True, blank=True, verbose_name='termina el')
 
@@ -518,7 +549,16 @@ class Promotion(models.Model):
         return self.banner_text or self.badge_text or self.name
 
     def applies_to_category(self, category):
-        """Si esta promo involucra `category`, ya sea como la que hay que comprar o la del regalo."""
+        """
+        Si esta promo involucra `category`, ya sea como la que hay que
+        comprar o la del regalo. Una promo restringida a productos
+        puntuales (ver `products`) NUNCA "pertenece" a una categoría
+        entera — no correspondería mostrar su badge en el encabezado
+        de toda la sección (ver _product_card.html para el badge por
+        producto en su lugar).
+        """
+        if self.products.exists():
+            return False
         relevant_ids = {self.buy_category_id, self.get_category_id or self.buy_category_id}
         return category.id in relevant_ids
 

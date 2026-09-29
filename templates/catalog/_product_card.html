@@ -77,14 +77,31 @@
         {% endif %}
         {% endwith %}
 
-        {% if product.is_limited_edition %}
+        {% comment %}
+        Badge de promo puntual (19/9, pedido del cliente) — ver
+        Promotion.products / Product.active_promotion en
+        catalog/models.py. Solo en la tarjeta "disponible": una
+        agotada no tiene sentido promocionarla para comprar.
+        {% endcomment %}
+        {% with promo=product.active_promotion %}
+        {% if product.is_limited_edition or promo %}
         <div class="absolute top-2 left-2 flex flex-col gap-1">
+            {% if promo %}
+            <span title="{{ promo.name }}"
+                  class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+                {{ promo.badge_text|default:promo.name }}
+            </span>
+            {% endif %}
+            {% if product.is_limited_edition %}
             <span class="font-sans text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm
                          {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
                 Edición limitada
             </span>
+            {% endif %}
         </div>
         {% endif %}
+        {% endwith %}
     </div>
 
     <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">{{ product.name }}</p>

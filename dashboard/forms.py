@@ -114,16 +114,26 @@ class PromotionForm(DashStyledFormMixin, forms.ModelForm):
         if brand:
             self.fields['buy_category'].queryset = Category.objects.filter(brand=brand)
             self.fields['get_category'].queryset = Category.objects.filter(brand=brand)
+            self.fields['products'].queryset = Product.objects.filter(brand=brand).order_by('name')
         self.fields['get_category'].required = False
+        self.fields['products'].required = False
 
     class Meta:
         model = Promotion
         fields = [
             'name', 'badge_text', 'banner_text', 'is_active',
             'buy_category', 'buy_quantity', 'get_category', 'get_quantity', 'get_discount_percent',
+            'products',
             'starts_at', 'ends_at',
         ]
         widgets = {'starts_at': _dt_local(), 'ends_at': _dt_local()}
+        help_texts = {
+            'buy_category': (
+                'Se sigue pidiendo siempre, pero si cargás productos puntuales '
+                'más abajo, esta categoría deja de usarse para el cálculo — '
+                'elegí cualquiera (ej. la que más se le parezca).'
+            ),
+        }
 
 
 ProductImageFormSet = inlineformset_factory(
