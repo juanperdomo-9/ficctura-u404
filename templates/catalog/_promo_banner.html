@@ -10,8 +10,9 @@ Rediseño "mucho más llamativo, que se sepa que hay una oferta" (pedido
 del usuario, 13/8, segunda vuelta) + contador cíclico: franja de
 "OFERTA FLASH" fija a la izquierda, con fondo que alterna negro/rojo
 sin parar (rojo = "urgente" universal, no compite con los colores de
-marca del resto del sitio) y un contador que cuenta 10 minutos, corta,
-y se reinicia solo a los 5 — ver static/js/promo-countdown-cycle.js.
+marca del resto del sitio) y un contador que cuenta 5hs (29/9, antes
+10 minutos), corta, y se reinicia solo a los 5 minutos — ver
+static/js/promo-countdown-cycle.js.
 Sincronizado por reloj (no por cuándo cada visita cargó la página), así
 todos ven el mismo número.
 {% endcomment %}
@@ -33,7 +34,7 @@ todos ven el mismo número.
         </span>
         <span data-promo-cycle
               class="hidden items-center justify-center font-sans text-sm md:text-base font-black tabular-nums px-2.5 py-1 rounded-sm promo-countdown-badge whitespace-nowrap bg-white text-red-600">
-            10:00
+            05:00:00
         </span>
     </div>
 
