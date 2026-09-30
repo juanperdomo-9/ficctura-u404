@@ -81,7 +81,22 @@ def catalog_list(request):
             .first()
         )
         if highlighted_promo and highlighted_promo.products.exists():
-            products = products.filter(pk__in=highlighted_promo.products.values_list('pk', flat=True))
+            # Bug real (30/9, reportado por el usuario): esto hacía
+            # products.filter(pk__in=...) sobre el queryset que YA
+            # venía filtrado por brand=request.brand más arriba — con
+            # eso, los productos de Ficctura que están en el 2x1 de
+            # U404 quedaban afuera SIEMPRE (el filtro de marca los
+            # descartaba antes de llegar acá), aunque el carrito sí
+            # los aplica bien. Achica productos DIRECTO desde la
+            # promo (que puede mezclar marcas a propósito, ver
+            # Promotion.products) en vez de intersecar con el
+            # queryset de la marca.
+            products = (
+                highlighted_promo.products
+                .select_related('category')
+                .prefetch_related('images')
+                .all()
+            )
         else:
             highlighted_promo = None
 
