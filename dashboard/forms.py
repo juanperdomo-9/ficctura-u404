@@ -106,17 +106,34 @@ class PaymentDiscountForm(DashStyledFormMixin, forms.ModelForm):
         widgets = {'countdown_ends_at': _dt_local()}
 
 
+class _ProductWithBrandChoiceField(forms.ModelMultipleChoiceField):
+    """Muestra la marca al lado del nombre (ej. "NY (Ficctura)") — sin esto, en el selector de productos puntuales no había forma de distinguir cuál es de cuál marca al elegir entre las dos."""
+    def label_from_instance(self, product):
+        return f'{product.name} ({product.get_brand_display()})'
+
+
 class PromotionForm(DashStyledFormMixin, forms.ModelForm):
     """Regla "llevá X, llevate Y" (3x2 y variantes) — esta sí es una lista, puede haber varias por marca."""
+
+    products = _ProductWithBrandChoiceField(
+        queryset=Product.objects.none(), required=False, widget=forms.SelectMultiple,
+    )
 
     def __init__(self, *args, brand=None, **kwargs):
         super().__init__(*args, **kwargs)
         if brand:
             self.fields['buy_category'].queryset = Category.objects.filter(brand=brand)
             self.fields['get_category'].queryset = Category.objects.filter(brand=brand)
-            self.fields['products'].queryset = Product.objects.filter(brand=brand).order_by('name')
         self.fields['get_category'].required = False
-        self.fields['products'].required = False
+        # Bug real (30/9, reportado por el usuario): esto filtraba por
+        # `brand=brand` — con eso, un 2x1 de U404 que también incluye
+        # productos de Ficctura (caso real: NY y Buenos Aires en el
+        # 2x1 de clásicos) nunca los mostraba como opción para
+        # elegir, aunque el carrito sí sabe aplicarlos bien. Los
+        # productos puntuales son la ÚNICA excepción real a "cada
+        # promo es de una marca" — por eso acá se listan los de las
+        # DOS marcas siempre, sin importar desde qué panel se entre.
+        self.fields['products'].queryset = Product.objects.all().order_by('brand', 'name')
 
     class Meta:
         model = Promotion
