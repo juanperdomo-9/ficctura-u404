@@ -64,6 +64,27 @@ def catalog_list(request):
             | Q(material__icontains=search_query)
         )
 
+    # "Que el banner del 2x1 te lleve a las remeras seleccionadas"
+    # (29/9, pedido del cliente) — ?promo=<id> filtra el catálogo a
+    # SOLO los productos de esa promo puntual (ver
+    # Promotion.products/core/context_processors.py::banner_link, que
+    # arma este link solo). Mismo criterio que el buscador: si hay un
+    # promo destacado, tampoco tiene sentido mezclar con "Próximamente"
+    # ni el resto — se ignora silenciosamente si el id no existe, ya
+    # venció, o no tiene productos cargados (se ve el catálogo entero).
+    highlighted_promo = None
+    promo_id = request.GET.get('promo', '').strip()
+    if promo_id and not search_query:
+        highlighted_promo = (
+            Promotion.objects.filter(pk=promo_id, brand=request.brand, is_active=True)
+            .prefetch_related('products')
+            .first()
+        )
+        if highlighted_promo and highlighted_promo.products.exists():
+            products = products.filter(pk__in=highlighted_promo.products.values_list('pk', flat=True))
+        else:
+            highlighted_promo = None
+
     sections_by_category = {}
     for product in products:
         sections_by_category.setdefault(product.category, []).append(product)
@@ -81,8 +102,13 @@ def catalog_list(request):
     for category, _products in sections:
         category.promotions = [p for p in active_promotions if p.applies_to_category(category)]
 
+    # "Próximamente"/Packs/Ficctura son ruido tanto en una búsqueda
+    # como mirando un promo destacado puntual — mismo criterio para
+    # los dos casos.
+    hide_extras = bool(search_query or highlighted_promo)
+
     coming_soon_categories = (
-        Category.objects.none() if search_query
+        Category.objects.none() if hide_extras
         else Category.objects.filter(brand=request.brand, is_coming_soon=True)
     )
 
@@ -91,7 +117,7 @@ def catalog_list(request):
     # marcas), así que se pasan aparte y el template los muestra como
     # una sección más, con su propia tarjeta (ver _pack_card.html). Se
     # ocultan durante una búsqueda, mismo criterio que "Próximamente".
-    packs = Pack.objects.none() if search_query else Pack.objects.filter(is_active=True)
+    packs = Pack.objects.none() if hide_extras else Pack.objects.filter(is_active=True)
 
     # Remeras de Ficctura en U404 (11/9, pedido del cliente) — segunda
     # excepción a "las vidrieras no se mezclan" (12/8), después de
@@ -103,7 +129,7 @@ def catalog_list(request):
     # normal (agotadas se ven difuminadas con reserva, ver
     # _product_card.html) — por eso no se usa .available() acá tampoco.
     ficctura_products = (
-        Product.objects.none() if (request.brand != 'u404' or search_query)
+        Product.objects.none() if (request.brand != 'u404' or hide_extras)
         else Product.objects.filter(brand='ficctura').select_related('category').prefetch_related('images')
     )
 
@@ -113,6 +139,7 @@ def catalog_list(request):
         'search_query': search_query,
         'packs': packs,
         'ficctura_products': ficctura_products,
+        'highlighted_promo': highlighted_promo,
     })
 
 

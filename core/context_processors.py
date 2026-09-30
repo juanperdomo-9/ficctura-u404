@@ -52,10 +52,20 @@ def brand(request):
         # Imports acá adentro (no al tope del archivo) para evitar un
         # import circular: catalog todavía no depende de core, pero
         # conviene no asumirlo a nivel de módulo.
+        from django.urls import reverse
+
         from catalog.models import BrandPromotion, PaymentDiscount, Promotion
 
-        for promo in Promotion.objects.filter(brand=active_brand, is_active=True):
+        for promo in Promotion.objects.filter(brand=active_brand, is_active=True).prefetch_related('products'):
             banner_items.append({'text': f"🎁 {promo.display_banner_text}", 'countdown_to': None})
+            # "Que el banner del 2x1 te lleve a las remeras
+            # seleccionadas" (29/9, pedido del cliente) — se arma solo,
+            # mismo criterio que el resto de este ticker: nada que
+            # cargar a mano. Si hay más de una promo puntual activa a
+            # la vez, gana la primera (mismo límite que ya tenía este
+            # ticker con un solo link para todo el banner).
+            if not banner_link and promo.products.exists():
+                banner_link = f"{reverse('catalog:list')}?promo={promo.id}"
 
         payment_discount = PaymentDiscount.objects.filter(brand=active_brand, is_active=True).first()
         if payment_discount and payment_discount.display_banner_text:
@@ -71,6 +81,8 @@ def brand(request):
             if brand_promo.urgency_type != BrandPromotion.UrgencyType.NONE:
                 banner_urgency = brand_promo
             if brand_promo.link_url:
+                # Curado a mano — gana sobre el que se arma solo desde
+                # una Promotion puntual (ver el loop de arriba).
                 banner_link = brand_promo.link_url
 
     return {

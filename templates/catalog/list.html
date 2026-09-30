@@ -32,6 +32,24 @@
         </div>
     </form>
 
+    {% comment %}
+    "Que el banner del 2x1 te lleve a las remeras seleccionadas" (29/9,
+    pedido del cliente) — ?promo=<id> filtra acá abajo a solo esos
+    productos (ver catalog_list). Este cartel deja clarísimo que es
+    una vista filtrada, no todo el catálogo, con salida fácil.
+    {% endcomment %}
+    {% if highlighted_promo %}
+    <div class="max-w-2xl mx-auto mb-10 px-5 py-4 rounded-sm border text-center
+                {% if brand == 'u404' %}border-u404-accent bg-u404-surface{% else %}border-ficctura-accent bg-ficctura-surface{% endif %}">
+        <p class="font-sans text-sm font-semibold uppercase tracking-[0.1em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
+            🎁 {{ highlighted_promo.name }}
+        </p>
+        <a href="{% url 'catalog:list' %}" class="font-sans text-xs uppercase tracking-[0.15em] underline {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %}">
+            Ver todo el catálogo
+        </a>
+    </div>
+    {% endif %}
+
     {% if search_query and not sections %}
     <p class="text-center {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %} uppercase tracking-[0.1em] text-sm mb-12">
         No encontramos nada para "{{ search_query }}".
