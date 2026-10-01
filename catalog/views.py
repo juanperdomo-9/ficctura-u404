@@ -100,11 +100,24 @@ def catalog_list(request):
         else:
             highlighted_promo = None
 
-    sections_by_category = {}
-    for product in products:
-        sections_by_category.setdefault(product.category, []).append(product)
+    # Agrupar por categoría se rompe para un promo destacado (30/9,
+    # reportado por el usuario): Category es por marca, así que "NY"
+    # (categoría Remera de Ficctura) y "ACDC" (categoría Remera de
+    # U404) son técnicamente categorías DISTINTAS aunque se llamen
+    # igual — agrupando por categoría quedaban en dos secciones
+    # "Remera" separadas en vez de una sola grilla. Un promo
+    # destacado no se agrupa por categoría: va plano, una sola
+    # grilla con todo (ver list.html).
+    if highlighted_promo:
+        sections = []
+        highlighted_products = list(products)
+    else:
+        sections_by_category = {}
+        for product in products:
+            sections_by_category.setdefault(product.category, []).append(product)
 
-    sections = sorted(sections_by_category.items(), key=lambda item: (item[0].order, item[0].name))
+        sections = sorted(sections_by_category.items(), key=lambda item: (item[0].order, item[0].name))
+        highlighted_products = []
 
     # Promos "llevá X, llevate Y" activas y visibles en esta tienda —
     # ahora estrictamente de la marca activa, mismo criterio que el
@@ -155,6 +168,7 @@ def catalog_list(request):
         'packs': packs,
         'ficctura_products': ficctura_products,
         'highlighted_promo': highlighted_promo,
+        'highlighted_products': highlighted_products,
     })
 
 

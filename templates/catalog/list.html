@@ -48,6 +48,21 @@
             Ver todo el catálogo
         </a>
     </div>
+
+    {% comment %}
+    Grilla plana, SIN agrupar por categoría (30/9, corregido: un
+    producto de Ficctura y uno de U404 "pertenecen" a categorías
+    Remera DISTINTAS aunque se llamen igual — agrupar por categoría
+    las separaba en dos secciones "Remera" en vez de una sola grilla
+    mezclada, que es justo lo que pedía el cliente).
+    {% endcomment %}
+    <section class="max-w-6xl mx-auto mb-16">
+        <div class="grid {% if brand == 'u404' %}grid-cols-1 sm:grid-cols-2 lg:grid-cols-3{% else %}grid-cols-2 md:grid-cols-3 lg:grid-cols-4{% endif %} gap-6">
+            {% for product in highlighted_products %}
+            {% include 'catalog/_product_card.html' with brand=product.brand %}
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
 
     {% if search_query and not sections %}
