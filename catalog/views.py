@@ -32,6 +32,10 @@ def is_valid_whatsapp(value):
     return digit_count >= 8
 
 
+def _other_brand(brand):
+    return 'ficctura' if brand == 'u404' else 'u404'
+
+
 def catalog_list(request):
     """
     Catálogo de la marca activa, agrupado por categoría.
@@ -191,8 +195,11 @@ def product_detail(request, slug):
     """
     prefetch = ('images', 'variants__size', 'measurements__size')
     product = Product.objects.filter(brand=request.brand, slug=slug).prefetch_related(*prefetch).first()
-    if not product and request.brand == 'u404':
-        product = Product.objects.filter(brand='ficctura', slug=slug).prefetch_related(*prefetch).first()
+    if not product:
+        # 8/10: ahora en las DOS direcciones — el 2x1 de Ficctura
+        # incluye remeras de U404, así que Ficctura también tiene que
+        # poder abrir sus fichas (antes solo U404 → Ficctura).
+        product = Product.objects.filter(brand=_other_brand(request.brand), slug=slug).prefetch_related(*prefetch).first()
     if not product:
         raise Http404('Producto no encontrado.')
 
@@ -250,8 +257,8 @@ def reserve_product(request, slug):
     Ficctura, de la sección Ficctura del catálogo.
     """
     product = Product.objects.filter(brand=request.brand, slug=slug).first()
-    if not product and request.brand == 'u404':
-        product = Product.objects.filter(brand='ficctura', slug=slug).first()
+    if not product:
+        product = Product.objects.filter(brand=_other_brand(request.brand), slug=slug).first()
     if not product:
         raise Http404('Producto no encontrado.')
 
@@ -404,7 +411,8 @@ def cart_add(request, variant_id):
     # de Ficctura (sección Ficctura del catálogo) — el carrito ya era
     # brand-agnostic a nivel de datos (ver Cart en catalog/cart.py,
     # usado igual para Packs), acá solo se relaja el filtro de marca.
-    allowed_brands = ['u404', 'ficctura'] if request.brand == 'u404' else [request.brand]
+    # 8/10: en las dos direcciones (ver product_detail).
+    allowed_brands = ['u404', 'ficctura']
     variant = get_object_or_404(
         ProductVariant.objects.select_related('product'),
         pk=variant_id,
