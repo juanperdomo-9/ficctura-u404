@@ -143,6 +143,28 @@
     (brand='ficctura' en el include), que se distinguen solas por su
     propio estilo de card.
     {% endcomment %}
+    {% comment %}
+    Remeras de U404 que entran en el 2x1 de Ficctura (11/10, pedido
+    del cliente) — solo esas, no todo U404. Ver catalog_list.
+    {% endcomment %}
+    {% if u404_promo_products %}
+    <section id="cat-u404-2x1" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
+        <div class="flex items-baseline gap-3 mb-6 border-b border-ficctura-border pb-3">
+            <h2 class="font-ficctura font-bold text-lg md:text-xl uppercase tracking-wide">
+                Universo 404
+            </h2>
+            <span class="font-sans text-xs uppercase tracking-[0.1em] text-ficctura-muted">
+                También entran en el 2x1
+            </span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in u404_promo_products %}
+            {% include 'catalog/_product_card.html' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
     {% if ficctura_products %}
     <section id="cat-ficctura" class="max-w-6xl mx-auto mb-16 scroll-mt-28">
         <div class="flex items-baseline gap-3 mb-6 border-b border-u404-border pb-3">

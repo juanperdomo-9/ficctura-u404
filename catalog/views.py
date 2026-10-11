@@ -165,7 +165,18 @@ def catalog_list(request):
         else Product.objects.filter(brand='ficctura').select_related('category').prefetch_related('images')
     )
 
+    # 11/10, pedido del cliente: en el catálogo general de Ficctura
+    # también se ven las remeras de U404 que entran en un 2x1 activo de
+    # Ficctura (no todo U404 — solo las de la promo).
+    u404_promo_products = (
+        Product.objects.none() if (request.brand != 'ficctura' or hide_extras)
+        else Product.objects.filter(
+            brand='u404', promotions__brand='ficctura', promotions__is_active=True,
+        ).distinct().select_related('category').prefetch_related('images')
+    )
+
     return render(request, 'catalog/list.html', {
+        'u404_promo_products': u404_promo_products,
         'sections': sections,
         'coming_soon_categories': coming_soon_categories,
         'search_query': search_query,
