@@ -323,6 +323,9 @@
   .right-16 {
     right: calc(var(--spacing) * 16);
   }
+  .bottom-0 {
+    bottom: 0px;
+  }
   .bottom-2 {
     bottom: calc(var(--spacing) * 2);
   }
@@ -1288,6 +1291,9 @@
   .\!p-0 {
     padding: 0px !important;
   }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -1771,18 +1777,6 @@
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
-  }
-  .blur {
-    --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .blur-\[3px\] {
-    --tw-blur: blur(3px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .grayscale-\[60\%\] {
-    --tw-grayscale: grayscale(60%);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .invert {
     --tw-invert: invert(100%);
@@ -2557,20 +2551,6 @@ select option {
 }
 .cart-badge-pop {
   animation: cart-badge-pop .35s ease-out;
-}
-@keyframes reveal-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.reveal-pop {
-  animation: reveal-pop .25s ease-out;
 }
 .wa-float {
   background: #25d366;

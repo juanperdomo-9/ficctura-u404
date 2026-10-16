@@ -433,6 +433,12 @@ def cart_add(request, variant_id):
     cart = Cart(request)
     quantity = int(request.POST.get('quantity', 1))
 
+    # 16/10, pedido del cliente: un producto en "Reserva" (todavía no
+    # fabricado) no se puede comprar aunque tenga stock cargado por
+    # error — si no, "si nos compran no tenemos".
+    if variant.product.status == Product.Status.SOLD_OUT:
+        return JsonResponse(_cart_payload(cart, error=f'{variant.product.name} está en reserva — todavía no se puede comprar.'), status=400)
+
     current_qty = cart.cart.get(str(variant.id), {}).get('quantity', 0)
 
     if current_qty + quantity > variant.stock:

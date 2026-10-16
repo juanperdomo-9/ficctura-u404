@@ -268,7 +268,7 @@
                 {# ===== Si está agotado: reservar ===== #}
                 {% if not in_stock %}
                 <p class="font-sans text-sm uppercase tracking-[0.1em] mb-3 {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
-                    Agotado
+                    {% if product.status == 'sold_out' %}Reserva{% else %}Agotado{% endif %}
                 </p>
                 {% comment %}
                 Pedido del usuario (10/8): en vez del link directo a

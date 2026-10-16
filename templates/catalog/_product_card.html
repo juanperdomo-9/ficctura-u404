@@ -1,17 +1,21 @@
 {% load catalog_extras %}
 {% if product.status == 'sold_out' %}
-<div class="group block product-card-lift" data-fx-focus>
-    <div class="aspect-[3/4] mb-3 overflow-hidden rounded-sm border cursor-pointer
+{% comment %}
+Producto en "Reserva" (todavía no fabricado / sin stock). 16/10,
+pedido del cliente: se saca el "jueguito" de desbloqueo por niveles
+(11/9) — la foto se ve normal y toda la tarjeta lleva directo a
+reservar. Nunca a la ficha de compra: si no lo fabricaron, no se
+tiene que poder comprar (ver también cart_add).
+{% endcomment %}
+<a href="{% url 'catalog:reserve' product.slug %}" class="group block product-card-lift" data-fx-focus>
+    <div class="aspect-[3/4] mb-3 overflow-hidden rounded-sm border
                 {% if brand == 'u404' %}bg-u404-surface border-u404-border{% else %}bg-ficctura-surface border-ficctura-border{% endif %}
-                flex items-center justify-center relative"
-         data-reveal-card
-         data-reveal-slug="{{ product.slug }}"
-         data-reveal-href="{% url 'catalog:reserve' product.slug %}">
+                flex items-center justify-center relative">
 
         {% with image=product.primary_image %}
         {% if image %}
-        <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}" data-reveal-img
-             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 blur-[3px] grayscale-[60%] opacity-60">
+        <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}"
+             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
         {% else %}
         <span class="font-sans text-[11px] uppercase tracking-[0.15em] {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
             Sin imagen
@@ -19,10 +23,10 @@
         {% endif %}
         {% endwith %}
 
-        <div class="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
-            <span class="font-sans text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm
+        <div class="absolute top-2 left-2 flex flex-col gap-1">
+            <span class="font-sans text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-sm
                          {% if brand == 'u404' %}bg-u404-bg/90 text-u404-accent{% else %}bg-ficctura-bg/90 text-ficctura-accent{% endif %}">
-                Agotada
+                Reserva
             </span>
             {% if product.is_limited_edition %}
             <span class="font-sans text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm
@@ -32,34 +36,19 @@
             {% endif %}
         </div>
 
-        {% comment %}
-        Reveal tipo videojuego (11/9, pedido del cliente): "que no
-        muestre la foto de una... que mientras vaya apretando se vayan
-        desbloqueando niveles, tipo videojuego". Cada click sobre esta
-        tarjeta sube un nivel (menos blur/grayscale, más opacidad) —
-        ver static/js/product-reveal.js. En el último nivel, el
-        próximo click ya lleva a la reserva. El nombre/precio de abajo
-        siguen siendo un link normal a la reserva (afuera de este div)
-        para que la ficha se pueda alcanzar igual aunque el JS no
-        llegue a cargar.
-        {% endcomment %}
-        <div class="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-3 pointer-events-none">
-            <span class="text-xl" data-reveal-lock>🔒</span>
-            <span data-reveal-hint
-                  class="font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center px-4 py-2 rounded-sm
-                         {% if brand == 'u404' %}bg-u404-bg/90 text-u404-accent border border-u404-accent/60{% else %}bg-ficctura-bg/90 text-ficctura-accent border border-ficctura-accent/60{% endif %}">
-                Reservar próxima entrega →
+        <div class="absolute inset-x-0 bottom-0 p-3">
+            <span class="block font-sans text-[11px] font-semibold uppercase tracking-[0.15em] text-center px-4 py-2 rounded-sm
+                         {% if brand == 'u404' %}bg-u404-accent text-u404-bg{% else %}bg-ficctura-accent text-white{% endif %}">
+                Reservar →
             </span>
         </div>
     </div>
 
-    <a href="{% url 'catalog:reserve' product.slug %}" class="block">
-        <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">{{ product.name }}</p>
-        <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
-            {{ product.price|pesos }}
-        </p>
-    </a>
-</div>
+    <p class="font-sans text-sm font-medium uppercase tracking-[0.05em]">{{ product.name }}</p>
+    <p class="font-sans text-sm {% if brand == 'u404' %}text-u404-muted{% else %}text-ficctura-muted{% endif %}">
+        {{ product.price|pesos }}
+    </p>
+</a>
 {% else %}
 <a href="{% url 'catalog:detail' product.slug %}" class="group block product-card-lift" data-fx-focus>
     <div class="aspect-[3/4] mb-3 overflow-hidden rounded-sm border
