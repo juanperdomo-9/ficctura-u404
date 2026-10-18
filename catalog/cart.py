@@ -133,6 +133,13 @@ class Cart:
         manda de los dos lados (comprando y regalo) e ignora
         buy_category/get_category por completo.
         """
+        # Bug real (17/10, reportado por el cliente): con un pack
+        # aplicado, el 2x1 se sumaba encima — el Junior (3 remeras +
+        # envío gratis) terminaba cobrando 2 de 3. Los packs ya tienen
+        # su propio beneficio: no se combinan con las promos.
+        if self.get_active_pack():
+            return []
+
         items = self.items()
         discounts = []
 

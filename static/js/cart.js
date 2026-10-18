@@ -373,6 +373,33 @@ function renderCart(data) {
     renderPromotions(data.promotions || []);
     renderItems(data.items || []);
     renderPackRecommendation(data.pack_recommendation || null);
+    renderPromoProgress(data.promo_progress || null);
+
+}
+
+// 2x1 (17/10): aviso de "sumá 1 más" + "Seguir comprando" lleva a la
+// vista filtrada de la promo si el carrito tiene remeras de ella.
+function renderPromoProgress(progress) {
+
+    const hint = document.getElementById("cart-promo-hint");
+    const hintText = document.getElementById("cart-promo-hint-text");
+    const cont = document.getElementById("cart-continue");
+
+    if (cont) cont.href = (progress && progress.continue_url) || "/catalogo/";
+
+    if (!hint || !hintText) return;
+
+    if (progress && progress.hint) {
+
+        hintText.textContent = progress.hint.text;
+        hint.href = progress.hint.url;
+        hint.classList.remove("hidden");
+
+    } else {
+
+        hint.classList.add("hidden");
+
+    }
 
 }
 

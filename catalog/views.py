@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
 from .cart import Cart
 from .models import (
@@ -307,6 +308,44 @@ def reserve_product(request, slug):
 # CARRITO
 # ==========================================================
 
+def _promo_progress(cart):
+    """
+    "Seguir comprando" del 2x1 (17/10, pedido del cliente): si el
+    carrito tiene remeras de una promo puntual (Promotion.products),
+    devuelve a dónde seguir comprando (la vista filtrada de esa promo,
+    para elegir la segunda sin dar vueltas) y, si el par está
+    incompleto, cuántas faltan para la próxima gratis. Con un pack
+    aplicado no hay promos (ver Cart.get_applicable_discounts).
+    """
+    result = {'continue_url': reverse('catalog:list'), 'hint': None}
+    if cart.get_active_pack():
+        return result
+
+    items = cart.items()
+    for promo in cart.get_promotions():
+        promo_ids = {p.id for p in promo.products.all()}
+        if not promo_ids:
+            continue
+        qty = sum(i['quantity'] for i in items if i['variant'].product_id in promo_ids)
+        if not qty:
+            continue
+        url = f"{reverse('catalog:list')}?promo={promo.id}"
+        result['continue_url'] = url
+        missing = (promo.buy_quantity - qty % promo.buy_quantity) % promo.buy_quantity
+        if missing:
+            free = promo.get_quantity
+            result['hint'] = {
+                'text': (
+                    f"Sumá {missing} remera{'s' if missing > 1 else ''} más de la promo "
+                    f"({promo.name}) y te llevás {free} "
+                    f"{'gratis' if promo.get_discount_percent == 100 else 'con descuento'}"
+                ),
+                'url': url,
+            }
+        break
+    return result
+
+
 def _cart_payload(cart, error=None):
     """
     Estado del carrito en un dict listo para JSON — lo consume tanto el
@@ -360,6 +399,7 @@ def _cart_payload(cart, error=None):
         'items': items,
         'promotions': promotions,
         'pack_recommendation': _pack_recommendation(cart),
+        'promo_progress': _promo_progress(cart),
     }
 
     if error:
@@ -406,6 +446,7 @@ def cart_view(request):
         'total': cart.get_total(),
         'recommended': recommended,
         'pack_recommendation': _pack_recommendation(cart),
+        'promo_progress': _promo_progress(cart),
     })
 
 
@@ -517,9 +558,12 @@ def _pack_slots(pack):
     renombrar o a agregar otro producto en alguno de esos colores,
     esto sigue andando solo.
     """
+    # 17/10: también se excluyen productos sin precio cargado — una
+    # remera sin precio (ej. escote en V que todavía no existe) entraba
+    # al armador y rompía la suma ("NaN").
     ficctura_variants = (
         ProductVariant.objects
-        .filter(product__brand='ficctura', product__status='available', stock__gt=0)
+        .filter(product__brand='ficctura', product__status='available', product__price__isnull=False, stock__gt=0)
         .select_related('product', 'size')
         .order_by('product__name', 'size__order')
     )
@@ -528,7 +572,7 @@ def _pack_slots(pack):
 
     u404_variants = (
         ProductVariant.objects
-        .filter(product__brand='u404', product__status='available', stock__gt=0)
+        .filter(product__brand='u404', product__status='available', product__price__isnull=False, stock__gt=0)
         .select_related('product', 'size')
         .order_by('product__name', 'size__order')
     )

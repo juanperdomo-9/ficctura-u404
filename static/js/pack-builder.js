@@ -88,7 +88,8 @@ function initPackBuilder() {
             if (select.dataset.free === "true") return;
 
             const opt = select.options[select.selectedIndex];
-            const price = opt ? parseFloat(opt.dataset.price || "0") : 0;
+            const parsed = opt ? parseFloat(opt.dataset.price || "0") : 0;
+            const price = Number.isFinite(parsed) ? parsed : 0; // nunca "NaN" en el total (17/10)
             total += price;
 
         });

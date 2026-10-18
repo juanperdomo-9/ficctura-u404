@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load catalog_extras asset_tags %}
+{% load catalog_extras asset_tags l10n %}
 
 {% block title %}Pack {{ pack.name }} — {{ brand_config.name }}{% endblock %}
 
@@ -73,7 +73,7 @@
                                   {% if brand == 'u404' %}border-u404-border text-u404-ink focus:border-u404-accent{% else %}border-ficctura-border text-ficctura-ink focus:border-ficctura-accent{% endif %}">
                         <option value="">— Elegir —</option>
                         {% for v in slot.options %}
-                        <option value="{{ v.id }}" data-price="{{ v.product.price }}">
+                        <option value="{{ v.id }}" data-price="{{ v.product.price|default:0|unlocalize }}">
                             {% if slot.kind == 'modelo' %}{{ v.product.name }} — {% elif slot.kind == 'color' %}{{ v.color }} — {% endif %}Talle {{ v.size.name }}
                         </option>
                         {% endfor %}
