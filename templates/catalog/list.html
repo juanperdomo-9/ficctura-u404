@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load catalog_extras %}
+{% load catalog_extras static %}
 
 {% block title %}Catálogo — {{ brand_config.name }}{% endblock %}
 
@@ -12,6 +12,21 @@
 
 <main class="min-h-screen pt-[calc(var(--header-h)+2rem)] pb-20 px-5 md:px-10
              {% if brand == 'u404' %}bg-u404-bg text-u404-ink{% else %}bg-ficctura-bg text-ficctura-ink{% endif %}">
+
+    {% comment %}
+    Banner del 2x1 arriba de todo (22/10, pedido del cliente) — la foto
+    del posteo de Instagram. Solo aparece mientras haya un 2x1 puntual
+    activo en U404 (ver catalog_list::featured_promo) y lleva a la vista
+    filtrada con las remeras de la promo.
+    {% endcomment %}
+    {% if featured_promo %}
+    <a href="{% url 'catalog:list' %}?promo={{ featured_promo.id }}"
+       class="block max-w-xl mx-auto mb-10 rounded-sm overflow-hidden border border-u404-border btn-lift"
+       aria-label="{{ featured_promo.name }} — ver las remeras de la promo">
+        <img src="{% static 'img/banner-2x1.webp' %}" alt="2x1 en remeras — elegí tus dos diseños favoritos"
+             width="685" height="760" class="block w-full h-auto">
+    </a>
+    {% endif %}
 
     <h1 class="{% if brand == 'u404' %}font-u404{% else %}font-ficctura{% endif %} font-bold text-3xl md:text-4xl uppercase tracking-wide mb-8 text-center">
         Catálogo
@@ -43,6 +58,15 @@
                 {% if brand == 'u404' %}border-u404-accent bg-u404-surface{% else %}border-ficctura-accent bg-ficctura-surface{% endif %}">
         <p class="font-sans text-sm font-semibold uppercase tracking-[0.1em] {% if brand == 'u404' %}text-u404-accent{% else %}text-ficctura-accent{% endif %}">
             🎁 {{ highlighted_promo.name }}
+        </p>
+        {% comment %}
+        "Se combina como quieras y se puede hacer todas las veces que
+        quieras" (22/10, pedido del cliente).
+        {% endcomment %}
+        <p class="mt-2 mb-3 font-sans text-sm {% if brand == 'u404' %}text-u404-ink{% else %}text-ficctura-ink{% endif %}">
+            Combinalas como quieras: cualquier remera de acá entra en la promo, del mismo modelo o de modelos distintos.
+            Y se repite todas las veces que quieras:
+            {% for buy, get in promo_examples %}<strong>{{ buy }} remeras → {{ get }} gratis</strong>{% if not forloop.last %} · {% endif %}{% endfor %}.
         </p>
         <a href="{% url 'catalog:list' %}" class="font-sans text-xs uppercase tracking-[0.15em] underline {% if brand == 'u404' %}text-u404-muted hover:text-u404-accent{% else %}text-ficctura-muted hover:text-ficctura-accent{% endif %}">
             Ver todo el catálogo

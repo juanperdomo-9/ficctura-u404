@@ -176,7 +176,31 @@ def catalog_list(request):
         ).distinct().select_related('category').prefetch_related('images')
     )
 
+    # Banner con la foto del 2x1 arriba de todo del catálogo de U404
+    # (22/10, pedido del cliente) — linkea a la vista filtrada de la
+    # promo. Solo mientras haya un 2x1 puntual activo: si se desactiva
+    # la promo, el banner desaparece solo (no queda anunciando algo que
+    # ya no existe).
+    featured_promo = None
+    if request.brand == 'u404' and not search_query:
+        featured_promo = (
+            Promotion.objects.filter(brand='u404', is_active=True, products__isnull=False)
+            .distinct().first()
+        )
+
+    # "Se combina como quieras y se repite todas las veces que quieras"
+    # (22/10, pedido del cliente) — ejemplos con los números reales de
+    # la promo (ej. 2→1 gratis, 4→2, 6→3).
+    promo_examples = []
+    if highlighted_promo:
+        promo_examples = [
+            (highlighted_promo.buy_quantity * k, highlighted_promo.get_quantity * k)
+            for k in (1, 2, 3)
+        ]
+
     return render(request, 'catalog/list.html', {
+        'featured_promo': featured_promo,
+        'promo_examples': promo_examples,
         'u404_promo_products': u404_promo_products,
         'sections': sections,
         'coming_soon_categories': coming_soon_categories,
